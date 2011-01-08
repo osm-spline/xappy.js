@@ -1,0 +1,59 @@
+===============
+osm@spline Xapi
+===============
+
+Aim
+============
+
+We like to rewrite some parts of the XApi needed for our own application. Our 
+aim is not get a full implementation of the Xapi, but to answer only specific 
+requests, at low latency. For this subset of Xapi we want completly cover the 
+original api. 
+
+Requests
+=============
+
+This is a list of example requests, we want to optimize.
+
+* xapi.spline.de/api/0.6/node[amenity=*]
+* xapi.spline.de/api/0.6/node[highway=busstop]
+* xapi.spline.de/api/0.6/node[bbox=-6,50,2,61]
+* xapi.spline.de/api/0.6/node[amenity=hospital][bbox=-6,50,2,61]
+
+a more formal description
+-------------------------
+
+We serve the node endpoint, but no others. We implment the tag based filtering,
+for only one tag and a bounding box.
+
+database shema 
+================
+
+We keep data in a highly specioaliced shema, that allows us to prevent tables
+growing to big. And supports our requests at maximum speed. 
+
+|  CREATE TABLE <tagname>:<tagvalue> (
+|       {bigint id}
+|       {longitude float4},
+|       {latitude float4},
+|       {object varchar}
+|  ) PRIMARY KEY id;
+
+Implmentation
+=============
+
+Teilprobleme:
+..............
+
+1. Database import
+
+mögliche Technologien:
+* Osmosis- plugin
+* selbst in python (Protobuf consumer, async pgsql schreiber)
+
+
+2. Web API
+..............
+
+mögliche Technologien:
+* node.js
