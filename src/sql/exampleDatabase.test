@@ -1,0 +1,17 @@
+CREATE TABLE "anamnity#pub" (
+        id bigint PRIMARY KEY,
+        longitude float4,
+        latitude float4,
+        object varchar);
+
+CREATE TABLE "highway#tohell" (
+        id bigint PRIMARY KEY,
+        longitude float4,
+        latitude float4,
+        object varchar);
+
+CREATE TABLE "anamnity#resturant" (
+        id bigint PRIMARY KEY,
+        longitude float4,
+        latitude float4,
+        object varchar);
