@@ -34,24 +34,19 @@ function getDataBaseResult(tag,bbox,res) {
 
 function createQuery(tag,bbox){
     // FIXME: validate
-    // var table = tag[0] + "#" + tag[1];
-    // var filter = "";
+    var table = tag[0] + "#" + tag[1];
+    var filter = "";
 
-    // // input validation
-    // for(i=0;i<bbox.length;i++){
-    //     bbox[i] = parseFloat(bbox[i]);
-    // }
+    // input validation
+    for(i=0;i<bbox.length;i++){
+        bbox[i] = parseFloat(bbox[i]);
+    }
 
-    // if(bbox){
-    //     filter = "WHERE longitude > " + bbox[0] + " AND longitude < " + bbox[1] +
-    //              " AND latitude > " + bbox[2] + " AND latitude < " + bbox[3];
-    // }
-
-
-    return "SELECT id, tags, linestring \
-	    FROM ways \
-	    WHERE (tags @> '\"amenity\"=>\"pub\"' AND \
-		lseg(linestring) @ box('(13.0882097323,52.3418234221)'::point,'(13.7606105539,52.6697240587)'::point));"
+    if(bbox){
+        filter = "WHERE longitude > " + bbox[0] + " AND longitude < " + bbox[1] +
+                 " AND latitude > " + bbox[2] + " AND latitude < " + bbox[3];
+    } 
+    return "SELECT * FROM \"" + table + "\" " + filter + ";";
 }
 
 
