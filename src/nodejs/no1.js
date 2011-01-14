@@ -5,18 +5,21 @@ var builder = require('xmlbuilder')
 
 var connectionString = "pg://user:password@host/database";
 
+function createDateString(date) {
+	
+	//2006-09-11T16:28:25+01:00 time format
+	date = Date(date);
+	return date.getUTCFullYear() + "-" + date.getUTCDate() + "-" + date.getUTCDate() + "T";
+}
+
+function createWayBboxQuery(key, value, left, bottom, right, top) {
+	return "SELECT id,tstamp,version,changeset_id, nodes, user_id, hstore_to_array(tags) as tags FROM ways WHERE (tags @> hstore('" + key + "','" + value + "') AND linestring && st_setsrid(st_makebox2d(st_setsrid(st_makepoint(" + 
+		left + "," + bottom + "),4326), st_setsrid(st_makepoint(" + right + "," + top + "),4326)),4326));";
+}
 
 function createNodeBboxQuery(key, value, left, bottom, right, top) {
-	/*
-	 * return "SELECT * from nodes WHERE (tags @> '\"" + key
-				+ "\"=>\"" + value + "\"'" +  
-				" AND POINT(geom) @ polygon(box('(" + left
-				 + "," + bottom +")'::point,'(" + 
-				+ right + "," + top + ")'::point)));";
-	*/
-	
-	return "SELECT id,tstamp,version,changeset_id, X(geom) as lat, Y(geom) as lon FROM nodes WHERE (tags @> hstore('" + key + "','" + value + "') AND geom && st_setsrid(st_makebox2d(st_setsrid(st_makepoint(" + 
-	left + "," + bottom + "),4326), st_setsrid(st_makepoint(" + right + "," + top + "),4326)),4326));";
+	return "SELECT id, user_id,tstamp,version,changeset_id, hstore_to_array(tags) as tags, X(geom) as lat, Y(geom) as lon FROM nodes WHERE (tags @> hstore('" + key + "','" + value + "') AND geom && st_setsrid(st_makebox2d(st_setsrid(st_makepoint(" + 
+		left + "," + bottom + "),4326), st_setsrid(st_makepoint(" + right + "," + top + "),4326)),4326));";
 }
 
 
@@ -35,57 +38,61 @@ function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
 					res.end('\n');
 		}
 		else {
-			console.log(createNodeBboxQuery(key, value, left, bottom, right, top));
-			client.query(createNodeBboxQuery(key, value, left, bottom, right, top), function(err,result) {
+			//console.log(createNodeBboxQuery(key, value, left, bottom, right, top));
+			var success = false;
+			var query = client.query(createNodeBboxQuery(key, value, left, bottom, right, top));
+			
+			query.on('error', function(err) {
 				
-				if (err) {
-					console.log(err);
-					res.writeHead(404,{});
-					res.end('\n');
-				}
-				else {
-					console.log(result.rows);
-					
-					res.writeHead(200, {'Content-Type': 'text/plain'});
-					//res.write("lala");
-					res.write("<xml>");
-					for(var i=0; i<result.rows.length;i++) {
-						/*//res.write(result.rows[i].id);
-						res.write("<node id='" + result.rows[i].id + "'" +
-						" timestamp='" + result.rows[i].tstamp + "'" +
-						+ " version='" + result.rows[i].version + "'" +
-						//+ " changeset='" + result.rows[i].changeset_id + "'" +
-						">");
-						res.write("</node>");
-						//console.log(result.rows[i].id);
-						*/
-						var node = builder.begin('node')
-							.att('id', result.rows[i].id)
-							.att('timetamp', result.rows[i].tstamp)
-							.att('version', result.rows[i].version)
-							.att('changeset', result.rows[i].changeset_id)
-							.att('lat', result.rows[i].lat)
-							.att('lon', result.rows[i].lon);
-							
-							
-							
-							res.write(builder.toString());
-						
-					}
+				console.log(err);
+				res.writeHead(404,{});
+				res.end('\n');
+			});
+			
+			query.on('end', function() {
+				if(success) {
 					res.write("</xml>");
     				res.end();
 				}
+				else {
+					//perhaps write 404? is error also raised?
+				}
 			});
-		}
 			
-		
-		
+			query.on('row', function(row) {
+					
+					if(!success) {
+						success = true;
+						res.writeHead(200, {'Content-Type': 'text/plain'});
+						res.write("<xml>");
+					}
+					
+					console.log(row);
+					
+					var node = builder.begin('node')
+						.att('id', row.id)
+						.att('timetamp', row.tstamp)
+						.att('version', row.version)
+						.att('changeset', row.changeset_id)
+						.att('lat', row.lat)
+						.att('lon', row.lon);
+					var temp = row.tags.replace("{","").replace("}","").split(",");
+					for(var x=0;x<temp.length;x=x+2)
+						node.ele('tag')
+							.att('k',escape(temp[x]))
+							.att('v',escape(temp[x+1]));
+							
+							//for(var x=0; x< tags.length;x++)
+								//console.log(tags[x]);
+								/*node.ele('tag')
+									.att('k',tags[x][0])
+									.att('v',tags[x][1]);			
+							*/
+					res.write(builder.toString({ pretty: true }));
+					//res.write(builder.toString());
+					});
+		}
 	});
-		
-	//console.log(createNodeBboxQuery(key, value, left, bottom, right, top));
-	
-    //res.writeHead(200, {'Content-Type': 'text/plain'});
-    //res.end( 'bbox: '+ left + bottom + right + top + ' key:' +key +' value:'+value+'!\n');
 }
 
 function wayWorldHandler(req, res, key, value) {
@@ -93,7 +100,56 @@ function wayWorldHandler(req, res, key, value) {
     res.writeHead(200, {'Content-Type': 'text/plain'});
     
 }
-function wayBboxHandler(req, res, key, value, bbox, left, bottom, right, top) {
+function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
+	pg.connect(connectionString, function(err,client) {
+		if(err) {
+			console.log(err);
+			res.writeHead(404,{});
+			res.end();
+		}
+		else {
+			var success = false;
+			console.log(createWayBboxQuery(key, value, left, bottom, right, top));
+			var query = client.query(createWayBboxQuery(key, value, left, bottom, right, top));
+			
+			query.on('error', function(err) {
+				console.log(err);
+				res.writeHead(404,{});
+				res.end();
+			});
+			
+			query.on('end', function() {
+				if(success) {
+					res.write("</xml>");
+					res.end();
+				}
+				else {
+					res.end();
+					//perhaps write 404?
+				}
+			});
+			
+			query.on('row', function(row) {
+				if(!success) {
+					success = true;
+					res.writeHead(200, {'Content-Type': 'text/plain'});
+					res.write("<xml>");
+				}
+				console.log(row);
+				
+				builder.begin('way')
+					.att('id', row.id)
+					.att('timetamp', row.tstamp)
+					.att('version', row.version)
+					.att('changeset', row.changeset_id);
+				
+				res.write(builder.toString());
+			});
+		
+		}
+		
+	});
+	
 }
 
 function relationWorldHandler(req, res, key, value) {
@@ -112,9 +168,9 @@ myRoutes = clutch.route404([
 				['GET /api/node\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?)\\]$',nodeBboxHandler],
 				//['GET /api/node\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+\\.\\d+),(\\d+),(\\d+),(\\d+)\\]$',nodeBboxHandler],
 				['GET /api/way\\[(\\w+)=(\\w+)\\]$',wayWorldHandler],
-				['GET /api/way\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d),(\\d),(\\d),(\\d)\\]$',wayBboxHandler],
+				['GET /api/way\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?)\\]$',wayBboxHandler],
 				['GET /api/relation\\[(\\w+)=(\\w+)\\]$',relationWorldHandler],
-				['GET /api/relation\\[(\\w+)=(\\w+)\\](\\[bbox=(\\d),(\\d),(\\d),(\\d)\\])$',relationBboxHandler],
+				//['GET /api/relation\\[(\\w+)=(\\w+)\\](\\[bbox=(\\d),(\\d),(\\d),(\\d)\\])$',relationBboxHandler],
 				]);
 
 
