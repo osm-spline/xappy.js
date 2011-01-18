@@ -27,3 +27,6 @@ cd ../../..
 
 # fetch and compile npm
 curl http://npmjs.org/install.sh |  PATH=`pwd`/usr/bin:${PATH} sh
+
+# load development code and compile dependencies
+usr/bin/npm link src/nodejs/
