@@ -5,13 +5,29 @@ var builder = require('xmlbuilder')
 
 var connectionString = "pg://user:password@host/database";
 
-function createDateString(date) {
-	
-	//2006-09-11T16:28:25+01:00 time format
-	date = Date(date);
-	return date.getUTCFullYear() + "-" + date.getUTCDate() + "-" + date.getUTCDate() + "T";
+function toISO8601(date) {
+	//2007-03-31T00:09:22+01:00
+    var pad_two = function(n) {
+        return (n < 10 ? '0' : '') + n;
+    };
+    var pad_three = function(n) {
+        return (n < 100 ? '0' : '') + (n < 10 ? '0' : '') + n;
+    };
+    return [
+        date.getUTCFullYear(),
+        '-',
+        pad_two(date.getUTCMonth() + 1),
+        '-',
+        pad_two(date.getUTCDate()),
+        'T',
+        pad_two(date.getUTCHours()),
+        ':',
+        pad_two(date.getUTCMinutes()),
+        ':',
+        pad_two(date.getUTCSeconds()),
+        '+01:00'	//FIX ME
+    ].join('');
 }
-
 function createWayBboxQuery(key, value, left, bottom, right, top) {
 	return "SELECT id,tstamp,version,changeset_id, nodes, user_id, hstore_to_array(tags) as tags FROM ways WHERE (tags @> hstore('" + key + "','" + value + "') AND linestring && st_setsrid(st_makebox2d(st_setsrid(st_makepoint(" + 
 		left + "," + bottom + "),4326), st_setsrid(st_makepoint(" + right + "," + top + "),4326)),4326));";
@@ -54,11 +70,15 @@ function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
 			});
 			
 			query.on('end', function() {
+				//console.log("end event\n");
 				if(success) {
 					res.write("</xml>");
     				res.end();
 				}
 				else {
+					//empty response
+					res.writeHead(404,{});
+					res.end();
 					//perhaps write 404? is error also raised?
 				}
 			});
@@ -75,17 +95,18 @@ function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
 					
 					var node = builder.begin('node')
 						.att('id', row.id)
-						.att('timetamp', row.tstamp)
+						.att('timetamp', toISO8601(row.tstamp))
 						.att('version', row.version)
 						.att('changeset', row.changeset_id)
 						.att('lat', row.lat)
 						.att('lon', row.lon);
-					var temp = row.tags.replace("{","").replace("}","").split(",");
-					for(var x=0;x<temp.length;x=x+2)
-						node.ele('tag')
-							.att('k',escape(temp[x]))
-							.att('v',escape(temp[x+1]));
-							
+					if(row.tags != '{}') {
+						var temp = row.tags.replace("{","").replace("}","").split(",");
+						for(var x=0;x<temp.length;x=x+2)
+							node.ele('tag')
+								.att('k',escape(temp[x]))
+								.att('v',escape(temp[x+1]));
+					}		
 							//for(var x=0; x< tags.length;x++)
 								//console.log(tags[x]);
 								/*node.ele('tag')
@@ -112,6 +133,7 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
 			res.end();
 		}
 		else {
+			var count = 0;
 			var success = false;
 			//console.log(createWayBboxQuery(key, value, left, bottom, right, top));
 			var query = client.query(createWayBboxQuery(key, value, left, bottom, right, top));
@@ -124,10 +146,15 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
 			
 			query.on('end', function() {
 				if(success) {
-					res.write("</xml>");
-					res.end();	//problem!!!
+					if(count == 0) {
+						res.write("</xml>");
+						res.end();
+					}
+					//res.write("</xml>");
+					//res.end();	//problem!!!
 				}
 				else {
+					res.writeHead(404,{});
 					res.end();
 					//perhaps write 404?
 				}
@@ -141,40 +168,50 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
 				}
 				//console.log(row);
 				if(row.nodes != '{}') {
-					
+					count++;
 					var subquery = client.query(createNodesForWayQuery(row.nodes));
 					subquery.on('error',function(err) {});
+					subquery.on('end', function() {
+						count--;
+						if(count==0)
+							res.write("</xml>");
+							res.end();
+						});
 					subquery.on('row', function(row) {
 						console.log(row);
 						var node = builder.begin('node')
 							.att('id', row.id)
-							.att('timetamp', row.tstamp)
+							.att('timetamp', toISO8601(row.tstamp))
 							.att('version', row.version)
 							.att('changeset', row.changeset_id)
 							.att('lat', row.lat)
 							.att('lon', row.lon);
-						var temp = row.tags.replace("{","").replace("}","").split(",");
-						for(var x=0;x<temp.length;x=x+2)
-							node.ele('tag')
-								.att('k',escape(temp[x]))
-								.att('v',escape(temp[x+1]));
-						
+						if(row.tags != '{}') {
+							var temp = row.tags.replace("{","").replace("}","").split(",");
+							for(var x=0;x<temp.length;x=x+2)
+								node.ele('tag')
+									.att('k',escape(temp[x]))
+									.att('v',escape(temp[x+1]));
+						}
 						res.write(builder.toString({pretty:'true'}));
 						});
+						
 					//console.log(createNodesForWayQuery(row.nodes));
 				}
 				
 				var way = builder.begin('way')
 					.att('id', row.id)
-					.att('timetamp', row.tstamp)
+					.att('timetamp', toISO8601(row.tstamp))
 					.att('version', row.version)
 					.att('changeset', row.changeset_id);
-				var temp = row.tags.replace("{","").replace("}","").split(",");
-				for(var x=0;x<temp.length;x=x+2)
-					way.ele('tag')
-						.att('k',escape(temp[x]))
-						.att('v',escape(temp[x+1]));
-						
+				if(row.tags != '{}') {
+					var temp = row.tags.replace("{","").replace("}","").split(",");
+					for(var x=0;x<temp.length;x=x+2)
+						way.ele('tag')
+							.att('k',escape(temp[x]))
+							.att('v',escape(temp[x+1]));
+				}
+					
 				var temp = row.nodes.replace("{","").replace("}","").split(",");
 				for(var x=0;x<temp.length;x++)
 					way.ele('nd')
