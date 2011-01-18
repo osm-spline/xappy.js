@@ -1,0 +1,11 @@
+{ "name" : "xapi-osm-spline"
+, "version" : "0.0.1"
+, "description" : "An osm xapi implementation"
+, "autor" : "osm@spline <osm@lists.spline.de> (http://osm.spline.de)"
+, "files" : ["."]
+, "dependencies" :
+  { "postgres" : "*"
+  , "clutch" : "*"
+  , "xmlbuilder" : "*"
+  }
+}
