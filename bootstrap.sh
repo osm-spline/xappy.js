@@ -30,6 +30,7 @@ if [ ! -f ${PREFIX}/bin/node ]; then
     cd ${PREFIX}/src/node-v${NODE_VERSION} 
     ./configure --prefix=${PREFIX}
     make install
+    cd ${PREFIX}/..
 else 
    echo "!! node already installed"
 fi
