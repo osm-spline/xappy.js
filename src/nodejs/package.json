@@ -4,7 +4,7 @@
 , "autor" : "osm@spline <osm@lists.spline.de> (http://osm.spline.de)"
 , "files" : ["."]
 , "dependencies" :
-  { "postgres" : "*"
+  { "pg" : "*"
   , "clutch" : "*"
   , "xmlbuilder" : "*"
   }
