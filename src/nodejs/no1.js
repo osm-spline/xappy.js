@@ -103,26 +103,30 @@ function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
 						res.write("<xml>");
 					}
 
-					console.log(row);
+	
 
-					var node = builder.begin('node')
-						.att('id', row.id)
-						.att('timetamp', toISO8601(row.tstamp))
-						.att('version', row.version)
-						.att('changeset', row.changeset_id)
-						.att('lat', row.lat)
-						.att('lon', row.lon);
-					if(row.tags != '{}') {
-						var temp = row.tags.replace("{","").replace("}","").split(",");
-						for(var x=0;x<temp.length;x=x+2)
-							node.ele('tag')
-								.att('k',escape(temp[x]))
-								.att('v',escape(temp[x+1]));
-					}
-
-					res.write(builder.toString({ pretty: true }));
+					res.write(createXmlFromRow(row));
 				});
 	});
+}
+
+function createXmlFromRow(row) {
+    console.log(row);
+    var node = builder.begin('node')
+        .att('id', row.id)
+        .att('timetamp', toISO8601(row.tstamp))
+        .att('version', row.version)
+        .att('changeset', row.changeset_id)
+        .att('lat', row.lat)
+        .att('lon', row.lon);
+    if(row.tags != '{}') {
+        var temp = row.tags.replace("{","").replace("}","").split(",");
+        for(var x=0;x<temp.length;x=x+2)
+            node.ele('tag')
+                .att('k',escape(temp[x]))
+                .att('v',escape(temp[x+1]));
+    }
+    return builder.toString({ pretty: true });
 }
 
 function wayWorldHandler(req, res, key, value) {
