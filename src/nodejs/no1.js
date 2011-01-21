@@ -110,10 +110,7 @@ function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
 		.att('lat', row.lat)
 		.att('lon', row.lon);
 
-	
-
-					res.write(createXmlFromRow(row));
-				});
+		res.write(createXmlFromRow(row));
 	});
     });
 }
