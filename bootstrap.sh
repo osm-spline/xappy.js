@@ -6,6 +6,10 @@
 PREFIX=`pwd`/usr/
 NODE_VERSION=0.3.5
 
+# use full for development
+DEV_TOOLS="node-dev jslint"
+
+
 # end config 
 ###########################
 
@@ -45,3 +49,7 @@ fi
 
 # load development code and compile dependencies
 npm link src/nodejs/
+
+for TOOL in $DEV_TOOLS; do
+    npm install $TOOL
+done;
