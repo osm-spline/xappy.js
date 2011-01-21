@@ -5,7 +5,21 @@ var builder = require('xmlbuilder');
 var config = require('./config.json');
 
 
+// load config
+process.argv.forEach(
+        function (val,index, array){
+            if(val=="-c"){
+                path = array[index+1];
+                console.log(path[0]);
+                if( path[0] != '/'){
+                    path = __dirname + '/' + path;
+                }
+                config = require(path);
+            }
+        });
+
 var connectionString = config['connectionString'];
+
 console.log("server starting...");
 console.log("Connection String: " + connectionString);
 
@@ -46,23 +60,15 @@ function createNodesForWayQuery(nodes) {
 	return "SELECT id, tstamp, version, changeset_id, hstore_to_array(tags) as tags, X(geom) as lat, Y(geom) as lon FROM nodes WHERE id = ANY('" + nodes + "');";
 }
 
-
-
 function nodeWorldHandler(req, res, key, value) {
 
     res.writeHead(200, {'Content-Type': 'text/plain'});
     res.end(' key:' +key +' value:'+value+'\n');
 }
 function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
-	pg.connect(connectionString, function(err,client) {
-		
-		if (err) {
-			console.log(err);	
-			res.writeHead(404,{});
-					res.end('\n');
-		}
-		else {
-			//console.log(createNodeBboxQuery(key, value, left, bottom, right, top));
+	console.log("nodeBboxHandler");
+	db_connect(res, function() {
+ 			//console.log(createNodeBboxQuery(key, value, left, bottom, right, top));
 			var success = false;
 			var query = client.query(createNodeBboxQuery(key, value, left, bottom, right, top));
 			
@@ -111,33 +117,36 @@ function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
 								.att('k',escape(temp[x]))
 								.att('v',escape(temp[x+1]));
 					}		
-							//for(var x=0; x< tags.length;x++)
-								//console.log(tags[x]);
-								/*node.ele('tag')
-									.att('k',tags[x][0])
-									.att('v',tags[x][1]);			
-							*/
+
 					res.write(builder.toString({ pretty: true }));
-					//res.write(builder.toString());
-					});
-		}
+				});
 	});
 }
 
 function wayWorldHandler(req, res, key, value) {
-
     res.writeHead(200, {'Content-Type': 'text/plain'});
-    
 }
-function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
-	pg.connect(connectionString, function(err,client) {
+
+function connectionError(err, res) {
+	console.log(err);
+	console.log("foobar");
+}
+
+function db_connect(res, callback) {
+	pg.connect(connectionString, function(err, client) {
 		if(err) {
-			console.log(err);
+			console.log(err['message']);
 			res.writeHead(404,{});
 			res.end();
+		} else {
+			callback();
 		}
-		else {
-			var count = 0;
+	});
+}
+
+function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
+	db_connect(res, function() {
+           	var count = 0;
 			var success = false;
 			//console.log(createWayBboxQuery(key, value, left, bottom, right, top));
 			var query = client.query(createWayBboxQuery(key, value, left, bottom, right, top));
@@ -223,11 +232,7 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
 				
 				res.write(builder.toString({pretty:'true'}));
 			});
-		
-		}
-		
-	});
-	
+		});	
 }
 
 function relationWorldHandler(req, res, key, value) {
