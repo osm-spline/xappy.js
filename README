@@ -26,7 +26,15 @@ a more formal description
 We serve the node endpoint, but no others. We implment the tag based filtering,
 for only one tag and a bounding box.
 
-Dabase setup
+Basic setup
+=============
+
+Just execute bootstrap.sh which will install node and everything you need into
+your local directory. If you don't trust us read the bootstrap.sh. If you have
+node and npm installed you can just use "npm link src/nodejs/" to install all 
+the dependencies.
+
+Database setup
 =============
 
 We use postgres 9.* with postgis 1.5. Postgres 9.0 is used becaus we need some
