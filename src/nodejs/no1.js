@@ -5,7 +5,21 @@ var builder = require('xmlbuilder');
 var config = require('./config.json');
 
 
+// load config
+process.argv.forEach(
+        function (val,index, array){
+            if(val=="-c"){
+                path = array[index+1];
+                console.log(path[0]);
+                if( path[0] != '/'){
+                    path = __dirname + '/' + path;
+                }
+                config = require(path);
+            }
+        });
+
 var connectionString = config['connectionString'];
+
 console.log("server starting...");
 console.log("Connection String: " + connectionString);
 
