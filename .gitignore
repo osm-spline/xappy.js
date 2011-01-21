@@ -1,2 +1,13 @@
 usr/
+
+# Temp Files #
+##############
 *.swp
+
+
+# OS generated files #
+######################
+*.DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
