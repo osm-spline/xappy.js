@@ -13,14 +13,14 @@ process.argv.forEach(function (val,index, array){
         config = require(path);
     }
 });
-var connectionString = config['connectionString'];
+var connectionString = config.connectionString;
 
 //set up logger
 var log4js = require('log4js')(); //note the need to call the function
 //log4js.addAppender(log4js.fileAppender('osm-xapi.log'), 'cheese');
 
 var log = log4js.getLogger('global');
-log.setLevel(config['logLevel']);
+log.setLevel(config.logLevel);
 
 log.info("server starting...");
 
