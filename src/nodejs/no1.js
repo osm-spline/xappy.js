@@ -20,10 +20,10 @@ var connectionString = config['connectionString'];
 var log4js = require('log4js')(); //note the need to call the function
 //log4js.addAppender(log4js.fileAppender('osm-xapi.log'), 'cheese');
 
-var logger = log4js.getLogger('global');
-logger.setLevel('ALL');
+var log.= log4js.getlog.'global');
+log.setLevel('ALL');
 
-logger.info("server starting...");
+log.info("server starting...");
 
 function toISO8601(date) {
     //2007-03-31T00:09:22+01:00
@@ -67,14 +67,14 @@ function nodeWorldHandler(req, res, key, value) {
 }
 
 function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
-    console.log("nodeBboxHandler");
+    log.error("nodeBboxHandler");
     db_connect(res, function(client) {
- 	console.log(createNodeBboxQuery(key, value, left, bottom, right, top));
+ 	log.info(createNodeBboxQuery(key, value, left, bottom, right, top));
 	var success = false;
 	var query = client.query(createNodeBboxQuery(key, value, left, bottom, right, top));
 
 	query.on('error', function(err) {
-	    console.log(err);
+	    log.error(err);
 	    res.writeHead(404,{});
 	    res.end('\n');
 	});
@@ -100,7 +100,7 @@ function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
 		res.write("<xml>");
 	    }
 
-	    console.log(row);
+	    log.debug(row);
 
 	    var node = builder.begin('node')
 		.att('id', row.id)
@@ -119,7 +119,7 @@ function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
 }
 
 function createXmlFromRow(row) {
-    console.log(row);
+    log.debug(row);
     var node = builder.begin('node')
         .att('id', row.id)
         .att('timetamp', toISO8601(row.tstamp))
@@ -142,18 +142,18 @@ function wayWorldHandler(req, res, key, value) {
 }
 
 function connectionError(err, res) {
-    console.log(err);
-    console.log("foobar");
+    log.error(err);
+    log.fatal("connectionError not implemented");
 }
 
 function db_connect(res, callback) {
     pg.connect(connectionString, function(err, client) {
 	if(err) {
-	    console.log(err['message']);
+	    log.error('message');
 	    res.writeHead(404,{});
 	    res.end();
 	} else {
-      	    console.log("db connection was successfull");
+      	    log.info("db connection was successfull");
 	    callback(client);
 	}
     });
@@ -167,7 +167,7 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
 	var query = client.query(createWayBboxQuery(key, value, left, bottom, right, top));
 
 	query.on('error', function(err) {
-	    console.log(err);
+	    log.error(err);
 	    res.writeHead(404,{});
 	    res.end();
 	});
@@ -206,7 +206,7 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
 		    res.end();
 		});
 		subquery.on('row', function(row) {
-		    console.log(row);
+		    log.debug(row);
 		    var node = builder.begin('node')
 			.att('id', row.id)
 			.att('timetamp', toISO8601(row.tstamp))
@@ -274,4 +274,4 @@ myRoutes = clutch.route404([
 
 var http = require('http');
 http.createServer(myRoutes).listen(config.port, config.host);
-logger.info("Started server at " + config.host + ":" + config.port );
+log.info("Started server at " + config.host + ":" + config.port );
