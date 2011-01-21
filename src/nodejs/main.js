@@ -7,15 +7,6 @@ var config = require('./config.json');
 var log4js = require('log4js')(); 
 var log = log4js.getLogger('global');
 
-var options = [
-      { short       : 'c'
-      , long        : 'config'
-      , description : 'Select configuration file'
-      , value       : true
-      , callback    : function(value) { loadCustomConfig(value); }
-      }
-];
-
 function loadCustomConfig(path) {
         log.info("reading custom config: " + path);
         if( path[0] != '/'){
@@ -25,17 +16,27 @@ function loadCustomConfig(path) {
         config = require(path);
 }
 
+var options = [
+      { short       : 'c' ,
+        long        : 'config' ,
+        description : 'Select configuration file' ,
+        value       : true ,
+        callback    : function(value) { loadCustomConfig(value); }
+      }
+];
+
+
 function createWayBboxQuery(key, value, left, bottom, right, top) {
     return {
-        text: 'SELECT id,tstamp,version,changeset_id,nodes,user_id,hstore_to_array(tags) as tags \
-               FROM ways \
-               WHERE ( \
-                   tags @> hstore($1, $2) AND \
-                   linestring && st_setsrid(st_makebox2d( \
-                       st_setsrid(st_makepoint($3, $4), 4326), \
-                       st_setsrid(st_makepoint($5, $6), 4326) \
-                   ), 4326) \
-               )',
+        text: 'SELECT id,tstamp,version,changeset_id,nodes,user_id,hstore_to_array(tags) as tags ' +
+              'FROM ways ' +
+              'WHERE ( ' +
+              '    tags @> hstore($1, $2) AND ' +
+              '    linestring && st_setsrid(st_makebox2d( ' +
+              '        st_setsrid(st_makepoint($3, $4), 4326), ' +
+              '        st_setsrid(st_makepoint($5, $6), 4326) ' +
+              '    ), 4326) ' +
+              ')', 
         values: [key, value, left, bottom, right, top],
         name: 'way bbox query'
     };
@@ -43,15 +44,15 @@ function createWayBboxQuery(key, value, left, bottom, right, top) {
 
 function createNodeBboxQuery(key, value, left, bottom, right, top) {
     return {
-        text: 'SELECT id,user_id,tstamp,version,changeset_id,hstore_to_array(tags) as tags, X(geom) as lat, Y(geom) as lon \
-               FROM nodes \
-               WHERE ( \
-                   tags @> hstore($1, $2) AND \
-                   geom && st_setsrid(st_makebox2d( \
-                       st_setsrid(st_makepoint($3, $4), 4326), \
-                       st_setsrid(st_makepoint($5, $6), 4326) \
-                   ), 4326) \
-               )',
+        text: 'SELECT id,user_id,tstamp,version,changeset_id,hstore_to_array(tags) as tags, X(geom) as lat, Y(geom) as lon ' +
+              'FROM nodes ' +
+              'WHERE ( ' +
+              '    tags @> hstore($1, $2) AND ' +
+              '    geom && st_setsrid(st_makebox2d( ' +
+              '        st_setsrid(st_makepoint($3, $4), 4326), ' +
+              '        st_setsrid(st_makepoint($5, $6), 4326) ' +
+              '    ), 4326) ' +
+              ')',
         values: [key, value, left, bottom, right, top],
         name: 'node bbox query'
     };
@@ -59,12 +60,27 @@ function createNodeBboxQuery(key, value, left, bottom, right, top) {
 
 function createNodesForWayQuery(nodes) {
     return {
-        text: 'SELECT id,tstamp,version,changeset_id,hstore_to_array(tags) as tags, X(geom) as lat, Y(geom) as lon \
-               FROM nodes \
-               WHERE (id = ANY($1))',
+        text: 'SELECT id,tstamp,version,changeset_id,hstore_to_array(tags) as tags, X(geom) as lat, Y(geom) as lon ' +
+              'FROM nodes ' +
+              'WHERE (id = ANY($1))',
         values: [nodes],
         name: 'nodes for way'
     };
+}
+
+function dbConnect(res, callback) {
+    pg.connect(config.connectionString, function(err, client) {
+        if(err) {
+            log.error('message');
+            console.log(config.connectionString);
+            console.log(err);
+            res.writeHead(404,{});
+            res.end();
+        } else {
+            log.info("db connection was successfull");
+            callback(client);
+        }
+    });
 }
 
 function nodeWorldHandler(req, res, key, value) {
@@ -73,7 +89,7 @@ function nodeWorldHandler(req, res, key, value) {
 }
 
 function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
-    db_connect(res, function(client) {
+    dbConnect(res, function(client) {
         var success = false;
         var query = client.query(createNodeBboxQuery(key, value, left, bottom, right, top));
 
@@ -117,23 +133,9 @@ function connectionError(err, res) {
     log.fatal("connectionError not implemented");
 }
 
-function db_connect(res, callback) {
-    pg.connect(config['connectionString'], function(err, client) {
-        if(err) {
-            log.error('message');
-            console.log(config['connectionString']);
-            console.log(err);
-            res.writeHead(404,{});
-            res.end();
-        } else {
-            log.info("db connection was successfull");
-            callback(client);
-        }
-    });
-}
 
 function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
-    db_connect(res, function(client) {
+    dbConnect(res, function(client) {
         var count = 0;
         var success = false;
         //console.log(createWayBboxQuery(key, value, left, bottom, right, top));
@@ -147,7 +149,7 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
 
         query.on('end', function() {
             if(success) {
-                if(count == 0) {
+                if(count === 0) {
                     res.write("</xml>");
                     res.end();
                 }
@@ -174,9 +176,10 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
                 subquery.on('error',function(err) {});
                 subquery.on('end', function() {
                     count--;
-                    if(count==0)
+                    if(count === 0){
                         res.write("</xml>");
-                    res.end();
+                        res.end();
+                    }
                 });
                 subquery.on('row', function(row) {
                     res.write(xmlGenerator.createNode(row));
@@ -206,7 +209,7 @@ myRoutes = clutch.route404([
     //['GET /api/node\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+\\.\\d+),(\\d+),(\\d+),(\\d+)\\]$',nodeBboxHandler],
     ['GET /api/way\\[(\\w+)=(\\w+)\\]$',wayWorldHandler],
     ['GET /api/way\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?)\\]$',wayBboxHandler],
-    ['GET /api/relation\\[(\\w+)=(\\w+)\\]$',relationWorldHandler],
+    ['GET /api/relation\\[(\\w+)=(\\w+)\\]$',relationWorldHandler]
     //['GET /api/relation\\[(\\w+)=(\\w+)\\](\\[bbox=(\\d),(\\d),(\\d),(\\d)\\])$',relationBboxHandler],
 ]);
 
