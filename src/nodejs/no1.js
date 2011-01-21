@@ -103,17 +103,8 @@ function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
 		res.write("<xml>");
 	    }
 
-	    log.debug(row);
+	    res.write(createXmlFromRow(row));
 
-	    var node = builder.begin('node')
-		.att('id', row.id)
-		.att('timetamp', toISO8601(row.tstamp))
-		.att('version', row.version)
-		.att('changeset', row.changeset_id)
-		.att('lat', row.lat)
-		.att('lon', row.lon);
-
-		res.write(createXmlFromRow(row));
 	});
     });
 }
@@ -122,7 +113,7 @@ function createXmlFromRow(row) {
     log.debug(row);
     var node = builder.begin('node')
         .att('id', row.id)
-        .att('timetamp', toISO8601(row.tstamp))
+        .att('timestamp', toISO8601(row.tstamp))
         .att('version', row.version)
         .att('changeset', row.changeset_id)
         .att('lat', row.lat)
@@ -206,6 +197,7 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
 		    res.end();
 		});
 		subquery.on('row', function(row) {
+<<<<<<< HEAD
 		    log.debug(row);
 		    var node = builder.begin('node')
 			.att('id', row.id)
@@ -222,6 +214,9 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
 			    .att('v',escape(temp[x+1]));
 		    }
 		    res.write(builder.toString({pretty:'true'}));
+=======
+		    res.write(createXmlFromRow(row));
+>>>>>>> be4bf1e3bc92921c502508072cd75196238a3fca
 		});
 
 		//console.log(createNodesForWayQuery(row.nodes));
