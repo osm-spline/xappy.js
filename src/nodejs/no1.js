@@ -20,7 +20,10 @@ var connectionString = config['connectionString'];
 var log4js = require('log4js')(); //note the need to call the function
 //log4js.addAppender(log4js.fileAppender('osm-xapi.log'), 'cheese');
 
-var log.= log4js.getlog.'global');
+var util = require('util');
+
+
+var log = log4js.getLogger('global');
 log.setLevel('ALL');
 
 log.info("server starting...");
