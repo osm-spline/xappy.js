@@ -1,28 +1,29 @@
 var clutch = require('clutch');
+var http = require('http');
 var pg = require('pg');
 var xmlGenerator = require('./xmlGenerator.js');
-
-// load config
+var opts = require('opts');
 var config = require('./config.json');
-process.argv.forEach(function (val,index, array){
-    if(val=="-c"){
-        path = array[index+1];
+var log4js = require('log4js')(); 
+var log = log4js.getLogger('global');
+
+var options = [
+      { short       : 'c'
+      , long        : 'config'
+      , description : 'Select configuration file'
+      , value       : true
+      , callback    : function(value) { loadCustomConfig(value); }
+      }
+];
+
+function loadCustomConfig(path) {
+        log.info("reading custom config: " + path);
         if( path[0] != '/'){
             path = __dirname + '/' + path;
         }
+        log.info(path);
         config = require(path);
-    }
-});
-var connectionString = config['connectionString'];
-
-//set up logger
-var log4js = require('log4js')(); //note the need to call the function
-//log4js.addAppender(log4js.fileAppender('osm-xapi.log'), 'cheese');
-
-var log = log4js.getLogger('global');
-log.setLevel('ALL');
-
-log.info("server starting...");
+}
 
 function createWayBboxQuery(key, value, left, bottom, right, top) {
     return {
@@ -117,9 +118,11 @@ function connectionError(err, res) {
 }
 
 function db_connect(res, callback) {
-    pg.connect(connectionString, function(err, client) {
+    pg.connect(config['connectionString'], function(err, client) {
         if(err) {
             log.error('message');
+            console.log(config['connectionString']);
+            console.log(err);
             res.writeHead(404,{});
             res.end();
         } else {
@@ -207,7 +210,8 @@ myRoutes = clutch.route404([
     //['GET /api/relation\\[(\\w+)=(\\w+)\\](\\[bbox=(\\d),(\\d),(\\d),(\\d)\\])$',relationBboxHandler],
 ]);
 
-
-var http = require('http');
+log.setLevel('ALL');
+log.info("server starting...");
+opts.parse(options, true);
 http.createServer(myRoutes).listen(config.port, config.host);
 log.info("Started server at " + config.host + ":" + config.port );

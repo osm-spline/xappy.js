@@ -24,7 +24,7 @@ exports.createNode = function (row) {
                 .att('v',escape(temp[x+1]));
     }
     return builder.toString({ pretty: true });
-}
+};
 
 exports.createWay = function (row) {
     var way = builder.begin('way')
@@ -39,14 +39,12 @@ exports.createWay = function (row) {
                 .att('k',escape(temp[x]))
                 .att('v',escape(temp[x+1]));
     }
-
     var temp = row.nodes.replace("{","").replace("}","").split(",");
-    for(var x=0;x<temp.length;x++) {
-        way.ele('nd')
-            .att('ref',temp[x]);
+    for(var i=0;i<temp.length;i++) {
+        way.ele('nd').att('ref',temp[i]);
     }
     return builder.toString({pretty:'true'});
-}
+};
 
 function toISO8601(date) {
     //2007-03-31T00:09:22+01:00
