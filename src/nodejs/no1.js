@@ -2,26 +2,34 @@
 var clutch = require('clutch');
 var pg = require('pg');
 var builder = require('xmlbuilder');
-var config = require('./config.json');
+
+
 
 
 // load config
+var config = require('./config.json');
 process.argv.forEach(
         function (val,index, array){
             if(val=="-c"){
                 path = array[index+1];
-                console.log(path[0]);
                 if( path[0] != '/'){
                     path = __dirname + '/' + path;
                 }
                 config = require(path);
             }
         });
-
 var connectionString = config['connectionString'];
 
-console.log("server starting...");
-console.log("Connection String: " + connectionString);
+
+
+//set up logger
+var log4js = require('log4js')(); //note the need to call the function
+//log4js.addAppender(log4js.fileAppender('osm-xapi.log'), 'cheese');
+
+var logger = log4js.getLogger('global');
+logger.setLevel('ALL');
+
+logger.info("server starting...");
 
 function toISO8601(date) {
 	//2007-03-31T00:09:22+01:00
@@ -268,4 +276,4 @@ myRoutes = clutch.route404([
 
 var http = require('http');
 http.createServer(myRoutes).listen(config.port, config.host);
-console.log("Started server at " + config.host + ":" + config.port );
+logger.info("Started server at " + config.host + ":" + config.port );
