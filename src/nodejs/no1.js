@@ -23,7 +23,11 @@ var log4js = require('log4js')(); //note the need to call the function
 var logger = log4js.getLogger('global');
 logger.setLevel('ALL');
 
-logger.info("server starting...");
+
+var log = log4js.getLogger('global');
+log.setLevel('ALL');
+
+log.info("server starting...");
 
 function toISO8601(date) {
     //2007-03-31T00:09:22+01:00
@@ -67,14 +71,14 @@ function nodeWorldHandler(req, res, key, value) {
 }
 
 function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
-    console.log("nodeBboxHandler");
+    log.error("nodeBboxHandler");
     db_connect(res, function(client) {
- 	console.log(createNodeBboxQuery(key, value, left, bottom, right, top));
+ 	log.info(createNodeBboxQuery(key, value, left, bottom, right, top));
 	var success = false;
 	var query = client.query(createNodeBboxQuery(key, value, left, bottom, right, top));
 
 	query.on('error', function(err) {
-	    console.log(err);
+	    log.error(err);
 	    res.writeHead(404,{});
 	    res.end('\n');
 	});
@@ -105,7 +109,7 @@ function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
 }
 
 function createXmlNode(row) {
-    console.log(row);
+    log.debug(row);
     var node = builder.begin('node')
         .att('id', row.id)
         .att('timestamp', toISO8601(row.tstamp))
@@ -150,18 +154,18 @@ function wayWorldHandler(req, res, key, value) {
 }
 
 function connectionError(err, res) {
-    console.log(err);
-    console.log("foobar");
+    log.error(err);
+    log.fatal("connectionError not implemented");
 }
 
 function db_connect(res, callback) {
     pg.connect(connectionString, function(err, client) {
 	if(err) {
-	    console.log(err['message']);
+	    log.error('message');
 	    res.writeHead(404,{});
 	    res.end();
 	} else {
-      	    console.log("db connection was successfull");
+      	    log.info("db connection was successfull");
 	    callback(client);
 	}
     });
@@ -175,7 +179,7 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
 	var query = client.query(createWayBboxQuery(key, value, left, bottom, right, top));
 
 	query.on('error', function(err) {
-	    console.log(err);
+	    log.error(err);
 	    res.writeHead(404,{});
 	    res.end();
 	});
@@ -248,4 +252,4 @@ myRoutes = clutch.route404([
 
 var http = require('http');
 http.createServer(myRoutes).listen(config.port, config.host);
-logger.info("Started server at " + config.host + ":" + config.port );
+log.info("Started server at " + config.host + ":" + config.port );
