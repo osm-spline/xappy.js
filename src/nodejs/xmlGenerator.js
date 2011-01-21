@@ -2,7 +2,7 @@ var builder = require('xmlbuilder');
 //set up logger
 var log4js = require('log4js')(); //note the need to call the function
 //log4js.addAppender(log4js.fileAppender('osm-xapi.log'), 'cheese');
- 
+
 var log = log4js.getLogger('xmlGenerator');
 log.setLevel('ALL');
 
@@ -37,13 +37,13 @@ exports.createWay = function (row) {
         for(var x=0;x<temp.length;x=x+2)
             way.ele('tag')
                 .att('k',escape(temp[x]))
-        .att('v',escape(temp[x+1]));
+                .att('v',escape(temp[x+1]));
     }
 
     var temp = row.nodes.replace("{","").replace("}","").split(",");
     for(var x=0;x<temp.length;x++) {
         way.ele('nd')
-        .att('ref',temp[x]);
+            .att('ref',temp[x]);
     }
     return builder.toString({pretty:'true'});
 }
@@ -67,5 +67,5 @@ function toISO8601(date) {
         ':',
         pad_two(date.getUTCSeconds()),
         '+01:00'	//FIX ME
-    ].join('');
+            ].join('');
 }
