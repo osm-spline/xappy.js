@@ -47,8 +47,8 @@ function nodeWorldHandler(req, res, key, value) {
 function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
     log.error("nodeBboxHandler");
     db_connect(res, function(client) {
-     log.info(createNodeBboxQuery(key, value, left, bottom, right, top));
-    var success = false;
+        log.info(createNodeBboxQuery(key, value, left, bottom, right, top));
+        var success = false;
     var query = client.query(createNodeBboxQuery(key, value, left, bottom, right, top));
 
     query.on('error', function(err) {
@@ -71,17 +71,17 @@ function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
         }
     });
 
-	query.on('row', function(row) {
-	    if(!success) {
-		success = true;
-		res.writeHead(200, {'Content-Type': 'text/plain'});
-		res.write("<xml>");
+    query.on('row', function(row) {
+        if(!success) {
+            success = true;
+            res.writeHead(200, {'Content-Type': 'text/plain'});
+		    res.write("<xml>");
 	    }
 	    res.write(xmlGenerator.createNode(row));
-	});
     });
-    });
+});
 }
+
 function wayWorldHandler(req, res, key, value) {
     res.writeHead(200, {'Content-Type': 'text/plain'});
 }
@@ -157,7 +157,6 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
 		//console.log(createNodesForWayQuery(row.nodes));
 	    }
             res.write(xmlGenerator.createWay(row));
-	});
     });
     });
 }
