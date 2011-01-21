@@ -1,10 +1,12 @@
+var config = require('./config.json');
+
 var builder = require('xmlbuilder');
 //set up logger
 var log4js = require('log4js')(); //note the need to call the function
 //log4js.addAppender(log4js.fileAppender('osm-xapi.log'), 'cheese');
 
 var log = log4js.getLogger('xmlGenerator');
-log.setLevel('ALL');
+log.setLevel(config.logLevel);
 
 
 exports.createNode = function (row) {
