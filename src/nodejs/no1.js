@@ -197,26 +197,7 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
 		    res.end();
 		});
 		subquery.on('row', function(row) {
-<<<<<<< HEAD
-		    log.debug(row);
-		    var node = builder.begin('node')
-			.att('id', row.id)
-			.att('timetamp', toISO8601(row.tstamp))
-			.att('version', row.version)
-			.att('changeset', row.changeset_id)
-			.att('lat', row.lat)
-			.att('lon', row.lon);
-		    if(row.tags != '{}') {
-			var temp = row.tags.replace("{","").replace("}","").split(",");
-			for(var x=0;x<temp.length;x=x+2)
-			    node.ele('tag')
-			    .att('k',escape(temp[x]))
-			    .att('v',escape(temp[x+1]));
-		    }
-		    res.write(builder.toString({pretty:'true'}));
-=======
 		    res.write(createXmlFromRow(row));
->>>>>>> be4bf1e3bc92921c502508072cd75196238a3fca
 		});
 
 		//console.log(createNodesForWayQuery(row.nodes));
