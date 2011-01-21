@@ -72,9 +72,7 @@ function nodeWorldHandler(req, res, key, value) {
 }
 
 function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
-    log.error("nodeBboxHandler");
     db_connect(res, function(client) {
-        log.info(createNodeBboxQuery(key, value, left, bottom, right, top));
         var success = false;
         var query = client.query(createNodeBboxQuery(key, value, left, bottom, right, top));
 
