@@ -253,4 +253,5 @@ myRoutes = clutch.route404([
 
 
 var http = require('http');
-http.createServer(myRoutes).listen(8080, 'localhost');
+http.createServer(myRoutes).listen(config.port, config.host);
+console.log("Started server at " + config.host + ":" + config.port );
