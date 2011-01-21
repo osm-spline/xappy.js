@@ -78,8 +78,8 @@ function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
         var query = client.query(createNodeBboxQuery(key, value, left, bottom, right, top));
 
         query.on('error', function(err) {
-            log.error(err);
-            res.writeHead(404,{});
+            log.error(err.message);
+            res.writeHead(503,{});
             res.end('\n');
         });
 
