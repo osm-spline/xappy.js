@@ -5,14 +5,14 @@ var xmlGenerator = require('./xmlGenerator.js');
 // load config
 var config = require('./config.json');
 process.argv.forEach(function (val,index, array){
-        if(val=="-c"){
+    if(val=="-c"){
         path = array[index+1];
         if( path[0] != '/'){
-        path = __dirname + '/' + path;
+            path = __dirname + '/' + path;
         }
         config = require(path);
-        }
-        });
+    }
+});
 var connectionString = config['connectionString'];
 
 //set up logger
@@ -74,38 +74,38 @@ function nodeWorldHandler(req, res, key, value) {
 function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
     log.error("nodeBboxHandler");
     db_connect(res, function(client) {
-            log.info(createNodeBboxQuery(key, value, left, bottom, right, top));
-            var success = false;
-            var query = client.query(createNodeBboxQuery(key, value, left, bottom, right, top));
+        log.info(createNodeBboxQuery(key, value, left, bottom, right, top));
+        var success = false;
+        var query = client.query(createNodeBboxQuery(key, value, left, bottom, right, top));
 
-            query.on('error', function(err) {
-                log.error(err);
-                res.writeHead(404,{});
-                res.end('\n');
-                });
+        query.on('error', function(err) {
+            log.error(err);
+            res.writeHead(404,{});
+            res.end('\n');
+        });
 
-            query.on('end', function() {
-                //console.log("end event\n");
-                if(success) {
+        query.on('end', function() {
+            //console.log("end event\n");
+            if(success) {
                 res.write("</xml>");
                 res.end();
-                }
-                else {
+            }
+            else {
                 //empty response
                 res.writeHead(404,{});
                 res.end();
                 //perhaps write 404? is error also raised?
-                }
-                });
+            }
+        });
 
-            query.on('row', function(row) {
-                    if(!success) {
-                    success = true;
-                    res.writeHead(200, {'Content-Type': 'text/plain'});
-                    res.write("<xml>");
-                    }
-                    res.write(xmlGenerator.createNode(row));
-                    });
+        query.on('row', function(row) {
+            if(!success) {
+                success = true;
+                res.writeHead(200, {'Content-Type': 'text/plain'});
+                res.write("<xml>");
+            }
+            res.write(xmlGenerator.createNode(row));
+        });
     });
 }
 
@@ -120,71 +120,71 @@ function connectionError(err, res) {
 
 function db_connect(res, callback) {
     pg.connect(connectionString, function(err, client) {
-            if(err) {
+        if(err) {
             log.error('message');
             res.writeHead(404,{});
             res.end();
-            } else {
+        } else {
             log.info("db connection was successfull");
             callback(client);
-            }
-            });
+        }
+    });
 }
 
 function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
     db_connect(res, function(client) {
-            var count = 0;
-            var success = false;
-            //console.log(createWayBboxQuery(key, value, left, bottom, right, top));
-            var query = client.query(createWayBboxQuery(key, value, left, bottom, right, top));
+        var count = 0;
+        var success = false;
+        //console.log(createWayBboxQuery(key, value, left, bottom, right, top));
+        var query = client.query(createWayBboxQuery(key, value, left, bottom, right, top));
 
-            query.on('error', function(err) {
-                log.error(err);
-                res.writeHead(404,{});
-                res.end();
-                });
+        query.on('error', function(err) {
+            log.error(err);
+            res.writeHead(404,{});
+            res.end();
+        });
 
-            query.on('end', function() {
-                if(success) {
+        query.on('end', function() {
+            if(success) {
                 if(count == 0) {
-                res.write("</xml>");
-                res.end();
+                    res.write("</xml>");
+                    res.end();
                 }
                 //res.write("</xml>");
                 //res.end();    //problem!!!
-                }
-                else {
+            }
+            else {
                 res.writeHead(404,{});
                 res.end();
                 //perhaps write 404?
-                }
+            }
+        });
+
+        query.on('row', function(row) {
+            if(!success) {
+                success = true;
+                res.writeHead(200, {'Content-Type': 'text/plain'});
+                res.write("<xml>");
+            }
+            //console.log(row);
+            if(row.nodes != '{}') {
+                count++;
+                var subquery = client.query(createNodesForWayQuery(row.nodes));
+                subquery.on('error',function(err) {});
+                subquery.on('end', function() {
+                    count--;
+                    if(count==0)
+                        res.write("</xml>");
+                    res.end();
+                });
+                subquery.on('row', function(row) {
+                    res.write(xmlGenerator.createNode(row));
                 });
 
-            query.on('row', function(row) {
-                    if(!success) {
-                    success = true;
-                    res.writeHead(200, {'Content-Type': 'text/plain'});
-                    res.write("<xml>");
-                    }
-                    //console.log(row);
-                    if(row.nodes != '{}') {
-                    count++;
-                    var subquery = client.query(createNodesForWayQuery(row.nodes));
-                    subquery.on('error',function(err) {});
-                    subquery.on('end', function() {
-                        count--;
-                        if(count==0)
-                        res.write("</xml>");
-                        res.end();
-                        });
-                    subquery.on('row', function(row) {
-                        res.write(xmlGenerator.createNode(row));
-                        });
-
-                    //console.log(createNodesForWayQuery(row.nodes));
-                    }
-                    res.write(xmlGenerator.createWay(row));
-            });
+                //console.log(createNodesForWayQuery(row.nodes));
+            }
+            res.write(xmlGenerator.createWay(row));
+        });
     });
 }
 
@@ -198,16 +198,16 @@ function relationBboxHandler(req, res, key, value, left, bottom, right, top) {
 }
 
 myRoutes = clutch.route404([
-        //['GET /api/(\\w+)(\\[bbox=(\\d,\\d,\\d,\\d)\\])*\\[(\\w+)=(\\w+)\\]$', helloSomeone],
-        ['GET /api/node\\[(\\w+)=(\\w+)\\]$',nodeWorldHandler],
-        //['GET /api/node\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+(\\.\\d+)?),(\\d+),(\\d+),(\\d+)\\]$',nodeBboxHandler],
-        ['GET /api/node\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?)\\]$',nodeBboxHandler],
-        //['GET /api/node\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+\\.\\d+),(\\d+),(\\d+),(\\d+)\\]$',nodeBboxHandler],
-        ['GET /api/way\\[(\\w+)=(\\w+)\\]$',wayWorldHandler],
-        ['GET /api/way\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?)\\]$',wayBboxHandler],
-        ['GET /api/relation\\[(\\w+)=(\\w+)\\]$',relationWorldHandler],
-        //['GET /api/relation\\[(\\w+)=(\\w+)\\](\\[bbox=(\\d),(\\d),(\\d),(\\d)\\])$',relationBboxHandler],
-        ]);
+    //['GET /api/(\\w+)(\\[bbox=(\\d,\\d,\\d,\\d)\\])*\\[(\\w+)=(\\w+)\\]$', helloSomeone],
+    ['GET /api/node\\[(\\w+)=(\\w+)\\]$',nodeWorldHandler],
+    //['GET /api/node\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+(\\.\\d+)?),(\\d+),(\\d+),(\\d+)\\]$',nodeBboxHandler],
+    ['GET /api/node\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?)\\]$',nodeBboxHandler],
+    //['GET /api/node\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+\\.\\d+),(\\d+),(\\d+),(\\d+)\\]$',nodeBboxHandler],
+    ['GET /api/way\\[(\\w+)=(\\w+)\\]$',wayWorldHandler],
+    ['GET /api/way\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?)\\]$',wayBboxHandler],
+    ['GET /api/relation\\[(\\w+)=(\\w+)\\]$',relationWorldHandler],
+    //['GET /api/relation\\[(\\w+)=(\\w+)\\](\\[bbox=(\\d),(\\d),(\\d),(\\d)\\])$',relationBboxHandler],
+]);
 
 
 var http = require('http');
