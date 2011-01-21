@@ -119,8 +119,8 @@ function connectionError(err, res) {
 function db_connect(res, callback) {
     pg.connect(connectionString, function(err, client) {
         if(err) {
-            log.error('message');
-            res.writeHead(404,{});
+            log.error(err.message);
+            res.writeHead(500,{});
             res.end();
         } else {
             log.info("db connection was successfull");
