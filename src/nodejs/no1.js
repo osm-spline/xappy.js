@@ -1,9 +1,13 @@
 
 var clutch = require('clutch');
-var pg = require('pg')
-var builder = require('xmlbuilder')
+var pg = require('pg');
+var builder = require('xmlbuilder');
+var config = require('./config.json');
 
-var connectionString = "pg://user:password@host/database";
+
+var connectionString = config['connectionString'];
+console.log("server starting...");
+console.log("Connection String: " + connectionString);
 
 function toISO8601(date) {
 	//2007-03-31T00:09:22+01:00
