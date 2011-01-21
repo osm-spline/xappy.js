@@ -1,0 +1,1 @@
+exports.connectionString = "pg://user:password@host/database";
