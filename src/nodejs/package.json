@@ -7,5 +7,6 @@
   { "pg" : "*"
   , "clutch" : "*"
   , "xmlbuilder" : "*"
+  , "log4js" : "*"
   }
 }
