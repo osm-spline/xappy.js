@@ -5,21 +5,7 @@ var builder = require('xmlbuilder');
 var config = require('./config.json');
 
 
-// load config
-process.argv.forEach(
-        function (val,index, array){
-            if(val=="-c"){
-                path = array[index+1];
-                console.log(path[0]);
-                if( path[0] != '/'){
-                    path = __dirname + '/' + path;
-                }
-                config = require(path);
-            }
-        });
-
 var connectionString = config['connectionString'];
-
 console.log("server starting...");
 console.log("Connection String: " + connectionString);
 
@@ -67,8 +53,8 @@ function nodeWorldHandler(req, res, key, value) {
 }
 function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
 	console.log("nodeBboxHandler");
-	db_connect(res, function() {
- 			//console.log(createNodeBboxQuery(key, value, left, bottom, right, top));
+	db_connect(res, function(client) {
+ 			console.log(createNodeBboxQuery(key, value, left, bottom, right, top));
 			var success = false;
 			var query = client.query(createNodeBboxQuery(key, value, left, bottom, right, top));
 			
@@ -83,7 +69,7 @@ function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
 				//console.log("end event\n");
 				if(success) {
 					res.write("</xml>");
-    				res.end();
+      				res.end();
 				}
 				else {
 					//empty response
@@ -139,13 +125,14 @@ function db_connect(res, callback) {
 			res.writeHead(404,{});
 			res.end();
 		} else {
-			callback();
+      		console.log("db connection was successfull");
+			callback(client);
 		}
 	});
 }
 
 function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
-	db_connect(res, function() {
+	db_connect(res, function(client) {
            	var count = 0;
 			var success = false;
 			//console.log(createWayBboxQuery(key, value, left, bottom, right, top));
