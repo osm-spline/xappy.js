@@ -1,1 +1,3 @@
 exports.connectionString = "pg://user:password@host/database";
+exports.host = 'localhost';
+exports.port = 8080;
