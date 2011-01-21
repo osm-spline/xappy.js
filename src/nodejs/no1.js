@@ -99,12 +99,12 @@ function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
 		res.writeHead(200, {'Content-Type': 'text/plain'});
 		res.write("<xml>");
 	    }
-	    res.write(createXmlFromRow(row));
+	    res.write(createXmlNode(row));
 	});
     });
 }
 
-function createXmlFromRow(row) {
+function createXmlNode(row) {
     console.log(row);
     var node = builder.begin('node')
         .att('id', row.id)
@@ -121,6 +121,28 @@ function createXmlFromRow(row) {
                 .att('v',escape(temp[x+1]));
     }
     return builder.toString({ pretty: true });
+}
+
+function createXmlWay(row) {
+    var way = builder.begin('way')
+        .att('id', row.id)
+        .att('timestamp', toISO8601(row.tstamp))
+        .att('version', row.version)
+        .att('changeset', row.changeset_id);
+    if(row.tags != '{}') {
+        var temp = row.tags.replace("{","").replace("}","").split(",");
+        for(var x=0;x<temp.length;x=x+2)
+            way.ele('tag')
+                .att('k',escape(temp[x]))
+		.att('v',escape(temp[x+1]));
+    }
+
+    var temp = row.nodes.replace("{","").replace("}","").split(",");
+    for(var x=0;x<temp.length;x++) {
+        way.ele('nd')
+	    .att('ref',temp[x]);
+    }
+    return builder.toString({pretty:'true'});
 }
 
 function wayWorldHandler(req, res, key, value) {
@@ -192,31 +214,12 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
 		    res.end();
 		});
 		subquery.on('row', function(row) {
-		    res.write(createXmlFromRow(row));
+		    res.write(createXmlNode(row));
 		});
 
 		//console.log(createNodesForWayQuery(row.nodes));
 	    }
-
-	    var way = builder.begin('way')
-		.att('id', row.id)
-		.att('timetamp', toISO8601(row.tstamp))
-		.att('version', row.version)
-		.att('changeset', row.changeset_id);
-	    if(row.tags != '{}') {
-		var temp = row.tags.replace("{","").replace("}","").split(",");
-		for(var x=0;x<temp.length;x=x+2)
-		    way.ele('tag')
-		    .att('k',escape(temp[x]))
-		    .att('v',escape(temp[x+1]));
-	    }
-
-	    var temp = row.nodes.replace("{","").replace("}","").split(",");
-	    for(var x=0;x<temp.length;x++)
-		way.ele('nd')
-		.att('ref',temp[x]);
-
-	    res.write(builder.toString({pretty:'true'}));
+            res.write(createXmlWay(row));
 	});
     });
 }
