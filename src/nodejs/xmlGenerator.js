@@ -8,50 +8,29 @@ var log4js = require('log4js')(); //note the need to call the function
 var log = log4js.getLogger('xmlGenerator');
 log.setLevel(config.logLevel);
 
-function toISO8601(date) {
-    //2007-03-31T00:09:22+01:00
-    var pad_two = function(n) {
-        return (n < 10 ? '0' : '') + n;
-    };
+exports.createNode = function (node) {
+    log.debug(node);
+    var xmlNode = builder.begin('node')
+        .att('id', node.id)
+        .att('timestamp', node.timestamp)
+        .att('version', node.version)
+        .att('changeset', node.changeset)
+        .att('lat', node.lat)
+        .att('lon', node.lon);
 
-    return [
-        date.getUTCFullYear(),
-        '-',
-        pad_two(date.getUTCMonth() + 1),
-        '-',
-        pad_two(date.getUTCDate()),
-        'T',
-        pad_two(date.getUTCHours()),
-        ':',
-        pad_two(date.getUTCMinutes()),
-        ':',
-        pad_two(date.getUTCSeconds()),
-        '+01:00'	//FIX ME
-            ].join('');
-}
-
-exports.createNode = function (row) {
-    log.debug(row);
-    var node = builder.begin('node')
-        .att('id', row.id)
-        .att('timestamp', toISO8601(row.tstamp))
-        .att('version', row.version)
-        .att('changeset', row.changeset_id)
-        .att('lat', row.lat)
-        .att('lon', row.lon);
-    if(row.tags != '{}') {
-        var temp = row.tags.replace("{","").replace("}","").split(",");
-        for(var x=0;x<temp.length;x=x+2){
-            node.ele('tag')
-                .att('k',escape(temp[x]))
-                .att('v',escape(temp[x+1]));
+    if(node.tags) {
+        var tags = node.tags;
+        for(var x=0;x<tags.length;x=x+2){
+            xmlNode.ele('tag')
+                .att('k',escape(tags[x]))
+                .att('v',escape(tags[x+1]));
         }
     }
     return builder.toString({ pretty: true });
 };
 
+// FIXME: make this shit working
 exports.createWay = function (row) {
-    var temp;
     var way = builder.begin('way')
         .att('id', row.id)
         .att('timestamp', toISO8601(row.tstamp))

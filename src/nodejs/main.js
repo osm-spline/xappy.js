@@ -43,11 +43,24 @@ function rowToNode(row){
         'version': row.version,
         'changeset': row.changeset_id,
         'lat' : row.lat,
-        'lon' : row.lon
-    }
+        'lon' : row.lon,
+    };
+
+    if(row.tags != '{}') {
+        node.tags = [];
+        // FIXME: something doesnt work at all
+        temp = row.tags.replace("{","").replace("}","").split(",");
+        for(var x=0;x<temp.length;x=x+2){
+            node.tags.push({
+                'k' : temp[x],
+                'v' : temp[x+1]
+            });
+        }   
+    }   
     return node;
 }
 
+//FIXME: parsing of ways is meesed up
 function rowToWay(row){
     var way = {
         'id' : row.id,
@@ -55,6 +68,17 @@ function rowToWay(row){
         'version' : row.version,
         'changeset' : row.changeset_id
     };
+    if(row.tags != '{}') {
+        node.tags = [];
+        // FIXME: something doesnt work at all
+        temp = row.tags.replace("{","").replace("}","").split(",");
+        for(var x=0;x<temp.length;x=x+2){
+            node.tags.push({
+                'k' : temp[x],
+                'v' : temp[x+1]
+            });
+        }   
+    }   
     return way;
 }
 
