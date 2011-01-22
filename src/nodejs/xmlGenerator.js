@@ -11,20 +11,19 @@ log.setLevel(config.logLevel);
 exports.createNode = function (node) {
     log.debug(node);
     var xmlNode = builder.begin('node')
-        .att('id', node.id)
-        .att('timestamp', node.timestamp)
-        .att('version', node.version)
-        .att('changeset', node.changeset)
-        .att('lat', node.lat)
-        .att('lon', node.lon);
+    .att('id', node.id)
+    .att('timestamp', node.timestamp)
+    .att('version', node.version)
+    .att('changeset', node.changeset)
+    .att('lat', node.lat)
+    .att('lon', node.lon);
 
     if(node.tags) {
-        var tags = node.tags;
-        for(var x=0;x<tags.length;x=x+2){
+        node.tags.forEach(function(tuple){
             xmlNode.ele('tag')
-                .att('k',escape(tags[x]))
-                .att('v',escape(tags[x+1]));
-        }
+            .att('k',escape(tuple.key))
+            .att('v',escape(tuple.value));
+        });
     }
     return builder.toString({ pretty: true });
 };

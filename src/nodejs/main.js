@@ -48,12 +48,11 @@ function rowToNode(row){
 
     if(row.tags != '{}') {
         node.tags = [];
-        // FIXME: something doesnt work at all
         temp = row.tags.replace("{","").replace("}","").split(",");
         for(var x=0;x<temp.length;x=x+2){
             node.tags.push({
-                'k' : temp[x],
-                'v' : temp[x+1]
+                'key' : temp[x],
+                'value' : temp[x+1]
             });
         }   
     }   
