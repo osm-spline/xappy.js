@@ -4,8 +4,61 @@ var pg = require('pg');
 var xmlGenerator = require('./xmlGenerator.js');
 var opts = require('opts');
 var config = require('./config.json');
+var osmRes = require('./response');
 var log4js = require('log4js')(); 
 var log = log4js.getLogger('global');
+
+
+
+
+
+// #################### MAY be put to different module later
+
+function toISO8601(date) {
+    //2007-03-31T00:09:22+01:00
+    var pad_two = function(n) {
+        return (n < 10 ? '0' : '') + n;
+    };
+
+    return [
+        date.getUTCFullYear(),
+        '-',
+        pad_two(date.getUTCMonth() + 1),
+        '-',
+        pad_two(date.getUTCDate()),
+        'T',
+        pad_two(date.getUTCHours()),
+        ':',
+        pad_two(date.getUTCMinutes()),
+        ':',
+        pad_two(date.getUTCSeconds()),
+        '+01:00'    //FIX ME
+            ].join('');
+}
+
+function rowToNode(row){
+    var node = {
+        'id' : row.id,
+        'timestamp': toISO8601(row.tstamp),
+        'version': row.version,
+        'changeset': row.changeset_id,
+        'lat' : row.lat,
+        'lon' : row.lon
+    }
+    return node;
+}
+
+function rowToWay(row){
+    var way = {
+        'id' : row.id,
+        'timestamp' : toISO8601(row.tstamp),
+        'version' : row.version,
+        'changeset' : row.changeset_id
+    };
+    return way;
+}
+
+// #################### MAY be put to different module later
 
 function loadCustomConfig(path) {
         log.info("reading custom config: " + path);
@@ -71,7 +124,7 @@ function createNodesForWayQuery(nodes) {
 function dbConnect(res, callback) {
     pg.connect(config.connectionString, function(err, client) {
         if(err) {
-            log.error('message');
+            log.error(err.message);
             console.log(config.connectionString);
             console.log(err);
             res.writeHead(404,{});
@@ -89,37 +142,23 @@ function nodeWorldHandler(req, res, key, value) {
 }
 
 function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
+    res = osmRes.mkXmlRes(res);
+    
     dbConnect(res, function(client) {
         var success = false;
         var query = client.query(createNodeBboxQuery(key, value, left, bottom, right, top));
 
         query.on('error', function(err) {
-            log.error(err.message);
-            res.writeHead(503,{});
-            res.end('\n');
+            res.endWith500();
         });
 
         query.on('end', function() {
-            //console.log("end event\n");
-            if(success) {
-                res.write("</xml>");
-                res.end();
-            }
-            else {
-                //empty response
-                res.writeHead(404,{});
-                res.end();
-                //perhaps write 404? is error also raised?
-            }
+            res.atEnd();
         });
 
         query.on('row', function(row) {
-            if(!success) {
-                success = true;
-                res.writeHead(200, {'Content-Type': 'text/plain'});
-                res.write("<xml>");
-            }
-            res.write(xmlGenerator.createNode(row));
+            var pojo = rowToNode(row);    
+            res.putNode(pojo);
         });
     });
 }
@@ -142,34 +181,16 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
         var query = client.query(createWayBboxQuery(key, value, left, bottom, right, top));
 
         query.on('error', function(err) {
-            log.error(err);
-            res.writeHead(404,{});
-            res.end();
+            res.endWith500();
         });
 
         query.on('end', function() {
-            if(success) {
-                if(count === 0) {
-                    res.write("</xml>");
-                    res.end();
-                }
-                //res.write("</xml>");
-                //res.end();    //problem!!!
-            }
-            else {
-                res.writeHead(404,{});
-                res.end();
-                //perhaps write 404?
+            if(count === 0) {
+                res.atEnd();
             }
         });
 
         query.on('row', function(row) {
-            if(!success) {
-                success = true;
-                res.writeHead(200, {'Content-Type': 'text/plain'});
-                res.write("<xml>");
-            }
-            //console.log(row);
             if(row.nodes != '{}') {
                 count++;
                 var subquery = client.query(createNodesForWayQuery(row.nodes));
@@ -177,17 +198,14 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
                 subquery.on('end', function() {
                     count--;
                     if(count === 0){
-                        res.write("</xml>");
-                        res.end();
+                        res.atEnd();
                     }
                 });
                 subquery.on('row', function(row) {
-                    res.write(xmlGenerator.createNode(row));
+                    res.putNode(rowToNode(row));
                 });
-
-                //console.log(createNodesForWayQuery(row.nodes));
             }
-            res.write(xmlGenerator.createWay(row));
+            res.putRow(rowToWay(row));
         });
     });
 }
