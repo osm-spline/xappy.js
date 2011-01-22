@@ -254,7 +254,7 @@ myRoutes = clutch.route404([
     //['GET /api/relation\\[(\\w+)=(\\w+)\\](\\[bbox=(\\d),(\\d),(\\d),(\\d)\\])$',relationBboxHandler],
 ]);
 
-log.setLevel('ALL');
+log.setLevel(config.logLevel);
 log.info("server starting...");
 opts.parse(options, true);
 http.createServer(myRoutes).listen(config.port, config.host);
