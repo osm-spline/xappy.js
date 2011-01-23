@@ -1,16 +1,13 @@
 var clutch = require('clutch');
 var http = require('http');
+var fs = require('fs');
 var pg = require('pg');
 var xmlGenerator = require('./xmlGenerator.js');
 var opts = require('opts');
-var config = require('./config.json');
 var osmRes = require('./response');
 var log4js = require('log4js')(); 
 var log = log4js.getLogger('global');
-
-
-
-
+var config;
 
 // #################### MAY be put to different module later
 
@@ -43,7 +40,7 @@ function rowToNode(row){
         'version': row.version,
         'changeset': row.changeset_id,
         'lat' : row.lat,
-        'lon' : row.lon,
+        'lon' : row.lon
     };
 
     if(row.tags != '{}') {
@@ -83,24 +80,13 @@ function rowToWay(row){
 
 // #################### MAY be put to different module later
 
-function loadCustomConfig(path) {
-        log.info("reading custom config: " + path);
-        if( path[0] != '/'){
-            path = __dirname + '/' + path;
-        }
-        log.info(path);
-        config = require(path);
-}
-
 var options = [
-      { short       : 'c' ,
-        long        : 'config' ,
-        description : 'Select configuration file' ,
-        value       : true ,
-        callback    : function(value) { loadCustomConfig(value); }
+      { short       : 'c',
+        long        : 'config',
+        description : 'Select configuration file',
+        value       : true
       }
 ];
-
 
 function createWayBboxQuery(key, value, left, bottom, right, top) {
     return {
@@ -254,8 +240,28 @@ myRoutes = clutch.route404([
     //['GET /api/relation\\[(\\w+)=(\\w+)\\](\\[bbox=(\\d),(\\d),(\\d),(\\d)\\])$',relationBboxHandler],
 ]);
 
-log.setLevel(config.logLevel);
-log.info("server starting...");
+function getConfig(configPath, callback) {
+    if( configPath[0] != '/'){
+            configPath = __dirname + '/' + configPath;
+    }
+    fs.readFile(configPath, function(err, data) {
+        if (err) {
+            throw err;
+        }
+        callback(JSON.parse(data));
+    });
+}
+
+function init(newConfig) {
+    config = newConfig;
+    log.setLevel(config.logLevel);
+    log.info("server starting...");
+    log.info("loaded config from " + configPath);
+    http.createServer(myRoutes).listen(config.port, config.host);
+    log.info("Started server at " + config.host + ":" + config.port );   
+}
+
 opts.parse(options, true);
-http.createServer(myRoutes).listen(config.port, config.host);
-log.info("Started server at " + config.host + ":" + config.port );
+configPath = opts.get('config') || "config.json";
+console.log("loading config " + configPath);
+config = getConfig(configPath, init);

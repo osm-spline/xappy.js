@@ -1,4 +1,7 @@
-exports.connectionString = "pg://user:password@host/database";
-exports.host = 'localhost';
-exports.port = 8080;
-exports.logLevel = 'ERROR';
+{
+    "connectionString": "pg://user:password@host/database",
+    "host":  "localhost",
+    "port": 8080,
+    "logLevel": "ERROR"
+}
+
