@@ -1,7 +1,7 @@
 var assert = require('assert');
-//var test = require('');
+var test = require('../parse.js');
 //TODO function does not exist yet
-var toTest = new function(id) { return id; };
+var toTest = test.urlToXpathObj;
 
 
 // test all simple objects { node, way, relation }
