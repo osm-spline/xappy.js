@@ -41,7 +41,7 @@ exports.mkXmlRes = function (res){
     }   
     res.atEnd = function(){
         if(!this.started){
-            this.atStart(pojo);
+            this.atStart();
         }   
         this.write('</xml>');
         this.end();
