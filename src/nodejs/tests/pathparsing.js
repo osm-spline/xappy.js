@@ -54,7 +54,7 @@ module.exports =
     test.ok(true);
     var simpleRelationStringTrail = "/relation/";
     var expected = { object: "relation" };
-    assert.deepEqual(toTest(simpleRelationStringTrail), expectedi);
+    assert.deepEqual(toTest(simpleRelationStringTrail), expected);
     test.finish();
   }
 
@@ -78,20 +78,20 @@ module.exports =
  , 'tag with two values': function(test) {
     test.ok(true);
     var nodeWithTwoValues = "/node[tag=foo|bar]";
-    var expected = { object: "node", tag: { key:["key"], value:["foo", "bar"]}};
+    var expected = { object: "node", tag: { key:["tag"], value:["foo", "bar"]}};
     assert.deepEqual(toTest(nodeWithTwoValues), expected);
     test.finish();
   }
    , 'tag with two keys': function(test) {
    test.ok(true);
-   var nodeWithTwoKeys = "/node[foo,bar=value]";
+   var nodeWithTwoKeys = "/node[foo|bar=value]";
    var expected = { object: "node", tag: { key:["foo", "bar"], value:["value"]}};
    assert.deepEqual(toTest(nodeWithTwoKeys), expected);
    test.finish();
   }
    , 'tags with cross product': function(test) {
     test.ok(true);
-    var tagCrossProduct = "/node[key1,key2=value1,value2]";
+    var tagCrossProduct = "/node[key1|key2=value1|value2]";
     var expected = { object: "node", tag: {key:["key1", "key2"], value:["value1", "value2"]}};
     assert.deepEqual(toTest(tagCrossProduct), expected);
     test.finish();
