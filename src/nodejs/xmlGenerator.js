@@ -1,3 +1,5 @@
+var config;
+
 var builder = require('xmlbuilder');
 //set up logger
 var log4js = require('log4js')(); //note the need to call the function
@@ -48,3 +50,17 @@ exports.createWay = function (row) {
     return builder.toString({pretty:'true'});
 };
 
+//header for xml response with information about xapi instance...
+exports.createHeader = function createHeader() {
+    var header = "<?xml version='1.0' standalone='no'?>";
+    var tmp = builder.begin('osm')
+        .att('version',config.version)
+        .att('generator',config.generator)
+        .att('xmlns:xapi',config.namespace)
+        .att('xapi:uri','')
+        .att('xapi:planetDate','')
+        .att('xapi:copyright',config.copyright)
+        .att('xapi:instance',config.instance);
+    header = header + tmp.toString();
+    return header.substr(0,header.length-2) + " >";
+}

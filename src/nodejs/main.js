@@ -254,6 +254,7 @@ function getConfig(configPath, callback) {
 
 function init(newConfig) {
     config = newConfig;
+    xmlGenerator.config = config;
     log.setLevel(config.logLevel);
     log.info("server starting...");
     log.info("loaded config from " + configPath);

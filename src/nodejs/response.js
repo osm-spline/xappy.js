@@ -35,7 +35,7 @@ exports.mkXmlRes = function (res){
     res.atStart = function (){ 
         if(!this.started){
             this.writeHead(200);
-            this.write('<xml>');
+            this.write(xmlGen.createHeader());
             this.started = true;
         }   
     }   
@@ -43,7 +43,7 @@ exports.mkXmlRes = function (res){
         if(!this.started){
             this.atStart(pojo);
         }   
-        this.write('</xml>');
+        this.write('</osm>');
         this.end();
     }   
     res.putWay = function (pojo){
