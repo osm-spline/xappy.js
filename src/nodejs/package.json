@@ -10,4 +10,7 @@
   , "log4js" : "*"
   , "opts" : "*"
   }
+, "dependencies" :
+  { "async_testing" : "*"
+  }
 }
