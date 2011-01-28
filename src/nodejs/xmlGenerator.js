@@ -54,13 +54,13 @@ exports.createWay = function (row) {
 exports.createHeader = function createHeader() {
     var header = "<?xml version='1.0' standalone='no'?>";
     var tmp = builder.begin('osm')
-        .att('version',config.version)
-        .att('generator',config.generator)
-        .att('xmlns:xapi',config.namespace)
+        .att('version',this.config.version)
+        .att('generator',this.config.generator)
+        .att('xmlns:xapi',this.config.namespace)
         .att('xapi:uri','')
         .att('xapi:planetDate','')
-        .att('xapi:copyright',config.copyright)
-        .att('xapi:instance',config.instance);
+        .att('xapi:copyright',this.config.copyright)
+        .att('xapi:instance',this.config.instance);
     header = header + tmp.toString();
     return header.substr(0,header.length-2) + " >";
 }
