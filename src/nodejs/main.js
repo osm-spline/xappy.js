@@ -5,7 +5,7 @@ var pg = require('pg');
 var xmlGenerator = require('./xmlGenerator.js');
 var opts = require('opts');
 var osmRes = require('./response');
-var log4js = require('log4js')(); 
+var log4js = require('log4js')();
 var log = log4js.getLogger('global');
 var config;
 
@@ -51,8 +51,8 @@ function rowToNode(row){
                 'key' : temp[x],
                 'value' : temp[x+1]
             });
-        }   
-    }   
+        }
+    }
     return node;
 }
 
@@ -73,8 +73,8 @@ function rowToWay(row){
                 'k' : temp[x],
                 'v' : temp[x+1]
             });
-        }   
-    }   
+        }
+    }
     return way;
 }
 
@@ -98,7 +98,7 @@ function createWayBboxQuery(key, value, left, bottom, right, top) {
               '        st_setsrid(st_makepoint($3, $4), 4326), ' +
               '        st_setsrid(st_makepoint($5, $6), 4326) ' +
               '    ), 4326) ' +
-              ')', 
+              ')',
         values: [key, value, left, bottom, right, top],
         name: 'way bbox query'
     };
@@ -152,7 +152,7 @@ function nodeWorldHandler(req, res, key, value) {
 
 function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
     res = osmRes.mkXmlRes(res);
-    
+
     dbConnect(res, function(client) {
         var success = false;
         var query = client.query(createNodeBboxQuery(key, value, left, bottom, right, top));
@@ -166,7 +166,7 @@ function nodeBboxHandler(req, res, key, value, left, bottom, right, top) {
         });
 
         query.on('row', function(row) {
-            var pojo = rowToNode(row);    
+            var pojo = rowToNode(row);
             res.putNode(pojo);
         });
     });
@@ -259,7 +259,7 @@ function init(newConfig) {
     log.info("server starting...");
     log.info("loaded config from " + configPath);
     http.createServer(myRoutes).listen(config.port, config.host);
-    log.info("Started server at " + config.host + ":" + config.port );   
+    log.info("Started server at " + config.host + ":" + config.port );
 }
 
 opts.parse(options, true);
