@@ -80,70 +80,6 @@ function rowToWay(row){
 
 // #################### MAY be put to different module later
 
-
-// #################### my little clutch replacments
-
-
-var urlToXpathObj = function urlToXpathObj(url){
-
-    // FIXME: more validaiton
-    // filter stars in keys
-    // filter no enough arguments
-
-    var parseKeyList = function(string){
-        result = /(.+)(:?\|(.+))/.exec(string);
-        result.shift();
-        return result;
-    }
-
-    var parseBboxList = function(string){
-
-        result = /(.+)(:?,(.+)){3}/.exec(string):
-
-        if(result.length != 4){
-            throw "error";
-        }
-
-        result.shift();
-
-        return {
-            'left' : result[0];
-            'bottom' : result[1];
-            'right' : result[2];
-            'top' : result[3];
-    }
-
-    var xp = {};
-
-    result = /\/(*|node|way|relation)(:?\[(.*)=(.*)\])*/.exec(url);
-
-    xp.object=result[1];
-
-    for(i=2;i<=result.length();i++){
-        if(result[i]==="bbox"){
-            xp.bbox = parseBboxValues(result[i+1]);
-        } else {
-            xp.tag ={};
-            xp.tag.keys = parseKeyList(result[i]);
-            xp.tag.values = parseKeyList(result[i+1]);
-        }
-        i++;
-    }
-}
-
-
-
-
-
-
-
-// ################## end my little clutch replacments
-
-
-
-
-
-
 var options = [
       { short       : 'c',
         long        : 'config',
@@ -152,47 +88,95 @@ var options = [
       }
 ];
 
-function createWayBboxQuery(key, value, left, bottom, right, top) {
-    return {
-        text: 'SELECT id,tstamp,version,changeset_id,nodes,user_id,hstore_to_array(tags) as tags ' +
-              'FROM ways ' +
-              'WHERE ( ' +
-              '    tags @> hstore($1, $2) AND ' +
-              '    linestring && st_setsrid(st_makebox2d( ' +
-              '        st_setsrid(st_makepoint($3, $4), 4326), ' +
-              '        st_setsrid(st_makepoint($5, $6), 4326) ' +
-              '    ), 4326) ' +
-              ')',
-        values: [key, value, left, bottom, right, top],
-        name: 'way bbox query'
-    };
+//
+// {
+// object = node/way/relation/* ,
+// bbox = { left : 1.0 , right : 1.0 , top : 1.0, bottom : 1.0 }
+// tag = { key : [ ], value [ ] } 
+// }
+
+
+function buildMainQuery(reqJso){
+
+    var id = 0;
+    var replacements = Array();
+    
+    var selectMap = {
+        'node' : 'id,user_id,tstamp,version,changeset_id,hstore_to_array(tags) as tags, ' + 
+                    'X(geom) as lat, Y(geom) as lon',
+        'way' :  'id,tstamp,version,changeset_id,nodes,user_id,hstore_to_array(tags) as tags ',
+        'relation' : '' //FIXME: plz
+    }   
+    
+    // FIXME: help me i am not side effect free
+    function buildTagsQuery(map){
+
+        tagQueries = new Array();
+
+        for(tagkey in map){
+            tagQueries.push("tags @> hastore($" + id++  +  ",$" + id++ + ")");
+            replacements.push(tagkey);
+            replacements.push(map[tagkey]);
+        }
+
+        return tagQueries.join(" OR  \n");
+    }
+
+    // FIXME: help me i am not side effect free
+    function buildBbox(object,bbox){
+        
+        var colName = {
+            node : 'geom',
+            way : 'linestring',
+            relation : '' // FIXME: whats my name
+        }
+
+        bboxQueryStr =  colName[object] + ' && st_setsrid(st_makebox2d( ' +
+              '        st_setsrid(st_makepoint($' + id++ + ', $' + id++ + '), 4326), ' +
+              '        st_setsrid(st_makepoint($' + id++ + ', $' + id++ + '), 4326) ' +
+              '    ), 4326) ';
+        
+        for( direction in bbox ) {
+            replacments.push(bbox[direction]);
+        }
+
+        return bboxQueryStr;
+    }
+
+    function explodeTags(keys,values){
+        var map = {};
+        for(key in keys) {
+            for(value in values) {
+                map[key]=value;
+            }
+        }
+        return map;
+    }
+    
+    query = "SELECT " + selectMap[object] + " FROM " + object + "s";
+    
+    whereClauses = Array();
+
+    if(reqJson.bbox != undefined){
+        whereClauses.push(buildBbox(reqJson.bbox));
+    }
+    
+    if(reqJson.tags != undefined){
+        tags = explodeTags(tags.keys,tags.values);
+        whereClauses.push(buildTagsQuery(tags));
+    }
+
+    if(whereClauses.length > 0) {
+        whereClauses.join(' AND ');
+        query += ' WHERE (' + whereClauses + ')';
+    }
+
+    query += ';'
+
+    return query;
 }
 
-function createNodeBboxQuery(key, value, left, bottom, right, top) {
-    return {
-        text: 'SELECT id,user_id,tstamp,version,changeset_id,hstore_to_array(tags) as tags, X(geom) as lat, Y(geom) as lon ' +
-              'FROM nodes ' +
-              'WHERE ( ' +
-              '    tags @> hstore($1, $2) AND ' +
-              '    geom && st_setsrid(st_makebox2d( ' +
-              '        st_setsrid(st_makepoint($3, $4), 4326), ' +
-              '        st_setsrid(st_makepoint($5, $6), 4326) ' +
-              '    ), 4326) ' +
-              ')',
-        values: [key, value, left, bottom, right, top],
-        name: 'node bbox query'
-    };
-}
 
-function createNodesForWayQuery(nodes) {
-    return {
-        text: 'SELECT id,tstamp,version,changeset_id,hstore_to_array(tags) as tags, X(geom) as lat, Y(geom) as lon ' +
-              'FROM nodes ' +
-              'WHERE (id = ANY($1))',
-        values: [nodes],
-        name: 'nodes for way'
-    };
-}
 
 function dbConnect(res, callback) {
     pg.connect(config.connectionString, function(err, client) {
