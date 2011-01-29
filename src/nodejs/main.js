@@ -98,7 +98,7 @@ var urlToXpathObj = function urlToXpathObj(url){
 
     var parseBboxList = function(string){
 
-        result = /(.+)(:?,(.+)){3}/.exec(string):
+        result = /(.+)(:?,(.+)){3}/.exec(string);
 
         if(result.length != 4){
             throw "error";
@@ -107,10 +107,11 @@ var urlToXpathObj = function urlToXpathObj(url){
         result.shift();
 
         return {
-            'left' : result[0];
-            'bottom' : result[1];
-            'right' : result[2];
-            'top' : result[3];
+            'left' : result[0],
+            'bottom' : result[1],
+            'right' : result[2],
+            'top' : result[3]
+        };
     }
 
     var xp = {};
