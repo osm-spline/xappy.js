@@ -7,6 +7,7 @@ var opts = require('opts');
 var osmRes = require('./response');
 var log4js = require('log4js')();
 var log = log4js.getLogger('global');
+var parser = require('./parse');
 var config;
 
 // #################### MAY be put to different module later
@@ -65,11 +66,11 @@ function rowToWay(row){
         'changeset' : row.changeset_id
     };
     if(row.tags != '{}') {
-        node.tags = [];
+        way.tags = [];
         // FIXME: something doesnt work at all
         temp = row.tags.replace("{","").replace("}","").split(",");
         for(var x=0;x<temp.length;x=x+2){
-            node.tags.push({
+            way.tags.push({
                 'k' : temp[x],
                 'v' : temp[x+1]
             });
@@ -98,7 +99,7 @@ var options = [
 
 function buildMainQuery(reqJso){
 
-    var id = 0;
+    var id = 1;
     var replacements = Array();
     
     var selectMap = {
@@ -114,7 +115,7 @@ function buildMainQuery(reqJso){
         tagQueries = new Array();
 
         for(tagkey in map){
-            tagQueries.push("tags @> hastore($" + id++  +  ",$" + id++ + ")");
+            tagQueries.push("tags @> hstore($" + id++  +  ",$" + id++ + ")");
             replacements.push(tagkey);
             replacements.push(map[tagkey]);
         }
@@ -124,7 +125,7 @@ function buildMainQuery(reqJso){
 
     // FIXME: help me i am not side effect free
     function buildBbox(object,bbox){
-        
+       
         var colName = {
             node : 'geom',
             way : 'linestring',
@@ -132,12 +133,12 @@ function buildMainQuery(reqJso){
         }
 
         bboxQueryStr =  colName[object] + ' && st_setsrid(st_makebox2d( ' +
-              '        st_setsrid(st_makepoint($' + id++ + ', $' + id++ + '), 4326), ' +
-              '        st_setsrid(st_makepoint($' + id++ + ', $' + id++ + '), 4326) ' +
-              '    ), 4326) ';
+              ' st_setsrid(st_makepoint($' + id++ + ', $' + id++ + '), 4326), ' +
+              ' st_setsrid(st_makepoint($' + id++ + ', $' + id++ + '), 4326) ' +
+              ' ), 4326) ';
         
         for( direction in bbox ) {
-            replacments.push(bbox[direction]);
+            replacements.push(bbox[direction]);
         }
 
         return bboxQueryStr;
@@ -147,33 +148,37 @@ function buildMainQuery(reqJso){
         var map = {};
         for(key in keys) {
             for(value in values) {
-                map[key]=value;
+                map[keys[key]]=values[value]; // FIXME: das ist scheiße
             }
         }
         return map;
     }
     
-    query = "SELECT " + selectMap[object] + " FROM " + object + "s";
+    query = "SELECT " + selectMap[reqJso.object] + " FROM " + reqJso.object + "s";
     
     whereClauses = Array();
 
-    if(reqJson.bbox != undefined){
-        whereClauses.push(buildBbox(reqJson.bbox));
+    if(reqJso.bbox != undefined){
+        whereClauses.push(buildBbox(reqJso.object,reqJso.bbox));
     }
     
-    if(reqJson.tags != undefined){
-        tags = explodeTags(tags.keys,tags.values);
+    // FIXME: rename tag to tags key to keys value to values
+    if(reqJso.tag != undefined){
+        tags = explodeTags(reqJso.tag.key,reqJso.tag.value);
         whereClauses.push(buildTagsQuery(tags));
     }
 
     if(whereClauses.length > 0) {
-        whereClauses.join(' AND ');
-        query += ' WHERE (' + whereClauses + ')';
+        query += ' WHERE (' + whereClauses.join(' AND ') + ')';
     }
 
     query += ';'
 
-    return query;
+    return {
+        text:query,
+        values:replacements,
+        name: query
+        };
 }
 
 
@@ -234,7 +239,7 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
     dbConnect(res, function(client) {
         var count = 0;
         var success = false;
-        //console.log(createWayBboxQuery(key, value, left, bottom, right, top));
+        console.log(createWayBboxQuery(key, value, left, bottom, right, top));
         var query = client.query(createWayBboxQuery(key, value, left, bottom, right, top));
 
         query.on('error', function(err) {
@@ -267,26 +272,46 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
     });
 }
 
-function relationWorldHandler(req, res, key, value) {
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end(' key:' +key +' value:'+value+'!\n');
+
+function myFunction(req,res){
+
+    res.writeHead(200);
+
+    var reqObj = parser.urlToXpathObj(req.url);
+    
+    var queryDict = buildMainQuery(reqObj);
+    
+    var resXml = osmRes.mkXmlRes(res);
+    
+
+    console.log(JSON.stringify(queryDict));
+    console.log("??????????????????????????????");
+    console.log(JSON.stringify(reqObj));
+    dbConnect(resXml, function(client) {
+        var success = false;
+        var query = client.query(queryDict);
+
+        query.on('error', function(err) {
+            res.endWith500();
+        });
+
+        query.on('end', function() {
+            console.log(" EEEND ");           
+            res.atEnd();
+        });
+
+        query.on('row', function(row) {
+            //console.log(JSON.stringify(row));           
+            if(reqObj.object == "node") {
+                var pojo = rowToNode(row);
+                res.putNode(pojo);
+            }
+            else if(reqObj.object == "way") {
+                var pojo = rowToWay(row);
+                res.putWay(pojo);}
+        });
+    });
 }
-
-function relationBboxHandler(req, res, key, value, left, bottom, right, top) {
-
-}
-
-myRoutes = clutch.route404([
-    //['GET /api/(\\w+)(\\[bbox=(\\d,\\d,\\d,\\d)\\])*\\[(\\w+)=(\\w+)\\]$', helloSomeone],
-    ['GET /api/node\\[(\\w+)=(\\w+)\\]$',nodeWorldHandler],
-    //['GET /api/node\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+(\\.\\d+)?),(\\d+),(\\d+),(\\d+)\\]$',nodeBboxHandler],
-    ['GET /api/node\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?)\\]$',nodeBboxHandler],
-    //['GET /api/node\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+\\.\\d+),(\\d+),(\\d+),(\\d+)\\]$',nodeBboxHandler],
-    ['GET /api/way\\[(\\w+)=(\\w+)\\]$',wayWorldHandler],
-    ['GET /api/way\\[(\\w+)=(\\w+)\\]\\[bbox=(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?),(\\d+(?:\\.\\d+)?)\\]$',wayBboxHandler],
-    ['GET /api/relation\\[(\\w+)=(\\w+)\\]$',relationWorldHandler]
-    //['GET /api/relation\\[(\\w+)=(\\w+)\\](\\[bbox=(\\d),(\\d),(\\d),(\\d)\\])$',relationBboxHandler],
-]);
 
 function getConfig(configPath, callback) {
     if( configPath[0] != '/'){
@@ -306,7 +331,7 @@ function init(newConfig) {
     log.setLevel(config.logLevel);
     log.info("server starting...");
     log.info("loaded config from " + configPath);
-    http.createServer(myRoutes).listen(config.port, config.host);
+    http.createServer(myFunction).listen(config.port, config.host);
     log.info("Started server at " + config.host + ":" + config.port );
 }
 
