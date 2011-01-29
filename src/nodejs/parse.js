@@ -1,48 +1,131 @@
-exports.urlToXpathObj = function urlToXpathObj(url){
 
-    // FIXMEresult.shift(): more validaiton
-    // filter stars in keys
-    // filter no enough arguments
 
-    var parseKeyList = function(string){
-        result = /(.+)(:?\|(.+))/.exec(string);
-        result.shift();
-        return result;
-    }   
+var parser = function(){
 
-    var parseBboxList = function(string){
+    var offset =0;
+    var expr ="";
 
-        result = /(.+)(:?,(.+)){3}/.exec(string);
+    var keys = [];
+    var values = [];
+    var bbox= {};
+    var object = "";
 
-        if(result.length != 4){ 
-            throw "error";
-        }   
+    var check = function(char){
+        if (expr.charAt(offset) != char) {
+            throw "Unexpected char " + expr[offset] +  " at " + offset + " expected: " + char;
+        }
+        offset ++;
+    }
+    
+    var parsePredicate = function(){
+        check('[');
+        parseInnerPredicate();
+        check(']');
+    }
 
-        result.shift();
-
-        return {
-            'left' : result[0],
-            'bottom' : result[1],
-            'right' : result[2],
-            'top' : result[3]
-        }  
-    } 
-        
-    var xp = {}; 
-
-    result = /\/(*|node|way|relation)(:?\[(.*)=(.*)\])*/.exec(url);
-
-    xp.object=result[1];
-
-    for(i=2;i<=result.length;i++){
-        if(result[i]==="bbox"){
-            xp.bbox = parseBboxValues(result[i+1]);
+    var parseInnerPredicate = function(){
+        tmpKeys=[];
+        parseKeyValue(tmpKeys,'=');
+        check('=');
+        if(tmpKeys.length==1 && tmpKeys[0] == "bbox"){
+            parseBboxValues();
         } else {
-            xp.tag ={};
-            xp.tag.keys = parseKeyList(result[i]);
-            xp.tag.values = parseKeyList(result[i+1]); 
-        }   
-        i++;
-    }   
+            keys = tmpKeys;
+            parseKeyValue(values,']');
+        }
+    }
+
+    var parseBboxValues = function(){
+        bbox.left = parseBboxFloat();
+        check(',');
+        bbox.bottom = parseBboxFloat();
+        check(',');
+        bbox.right = parseBboxFloat();
+        check(',');
+        bbox.top = parseBboxFloat();
+    }
+
+    var parseBboxFloat = function(){
+        var floatStr = "";
+        while(expr[offset]!=',' &&  expr[offset]!=']' && offset < expr.length){
+            floatStr += expr[offset];
+            offset ++;
+        }
+        return parseFloat(floatStr);
+    }
+
+    var parseKeyValue = function(list,delim){
+        var word = "";
+        while(expr[offset]!=delim && offset < expr.length){
+            if(expr[offset]=='|'){
+                list.push(word);
+                word="";
+                offset ++;
+                continue;
+            }
+            // jump escaped chars
+            if(expr[offset]=='\\'){
+                word += expr[offset];
+                offset ++;
+            }
+            word += expr[offset];
+            offset ++;
+        }
+        list.push(word);
+
+    }
+
+    this.parse = function(exprLocal){
+        expr = exprLocal;
+        offset = 0;
+        object = "";
+
+
+
+        check('/');
+
+        for(;expr[offset]!='[' && offset<expr.length;offset++){
+            if(expr[offset] == '/' && offset == expr.length-1){
+                offset ++;
+                break;
+            }
+            object += expr[offset];
+        }
+
+        if (object != "*" && object != "way" && object != "node" && object != "relation"){
+            throw "invalid identifier: "  + object;
+        }
+
+
+        for(var i=0; i<3 && offset < expr.length;i++) {
+            parsePredicate();
+        }
+        if (offset < expr.length){
+
+            throw "string longer than excepected";
+        }
+
+        var result = {
+            object : object
+        };
+
+        if(bbox.left != undefined){
+            result.bbox = bbox;
+        }
+
+        if(keys.length > 0){
+
+            result.tag = { 
+                key : keys,
+                value : values
+            }
+        }
+        return result; 
+    }
 }
 
+
+exports.urlToXpathObj = function urlToXpathObj(url){
+    var parse = new parser();
+    return parse.parse(url);
+}

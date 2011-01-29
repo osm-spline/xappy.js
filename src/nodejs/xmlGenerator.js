@@ -30,23 +30,24 @@ exports.createNode = function (node) {
 
 // FIXME: make this shit working
 exports.createWay = function (row) {
-    var way = builder.begin('way')
+    var xmlWay = builder.begin('way')
         .att('id', row.id)
-        .att('timestamp', toISO8601(row.tstamp))
+        .att('timestamp', row.timestamp)
         .att('version', row.version)
-        .att('changeset', row.changeset_id);
-    if(row.tags != '{}') {
-        temp = row.tags.replace("{","").replace("}","").split(",");
-        for(var x=0;x<temp.length;x=x+2){
-            way.ele('tag')
-                .att('k',escape(temp[x]))
-                .att('v',escape(temp[x+1]));
-        }
+        .att('changeset', row.changeset);
+        
+    if(row.tags) {
+        row.tags.forEach(function(tuple){
+            xmlWay.ele('tag')
+            .att('k',escape(tuple.key))
+            .att('v',escape(tuple.value));
+        });
     }
-    temp = row.nodes.replace("{","").replace("}","").split(",");
-    for(var i=0;i<temp.length;i++) {
-        way.ele('nd').att('ref',temp[i]);
-    }
+        
+    //temp = row.nodes.replace("{","").replace("}","").split(",");
+    //for(var i=0;i<temp.length;i++) {
+    //    way.ele('nd').att('ref',temp[i]);
+    //}
     return builder.toString({pretty:'true'});
 };
 
