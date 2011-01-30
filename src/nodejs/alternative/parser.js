@@ -96,49 +96,55 @@ exports.parser = parser = (function(){
         
         
         var savedPos1 = pos;
-        var result7 = parse_object(context);
-        if (result7 !== null) {
-          var result8 = parse_predicate(context);
-          if (result8 !== null) {
-            var result9 = parse_predicate(context);
-            if (result9 !== null) {
-              var result6 = [result7, result8, result9];
+        var result9 = parse_object(context);
+        if (result9 !== null) {
+          var result10 = parse_predicate(context);
+          if (result10 !== null) {
+            var result11 = parse_predicate(context);
+            if (result11 !== null) {
+              var result8 = [result9, result10, result11];
             } else {
-              var result6 = null;
+              var result8 = null;
               pos = savedPos1;
             }
           } else {
-            var result6 = null;
+            var result8 = null;
             pos = savedPos1;
           }
         } else {
-          var result6 = null;
+          var result8 = null;
           pos = savedPos1;
         }
-        var result5 = result6 !== null
-          ? (function(object, p1, p2) { var result = {object:object}; if(p1.tags != undefined) {result.tags= p1.tags} else if(p1.bbox != undefined) {result.bbox=p1.bbox;} if(p2.tags != undefined) {result.tags= p2.tags} else if(p2.bbox != undefined) {result.bbox=p2.bbox;} return result;})(result6[0], result6[1], result6[2])
+        var result7 = result8 !== null
+          ? (function(object, p1, p2) { var result = {object:object}; if(p1.tags != undefined) {result.tags= p1.tags} else if(p1.bbox != undefined) {result.bbox=p1.bbox;} if(p2.tags != undefined) {result.tags= p2.tags} else if(p2.bbox != undefined) {result.bbox=p2.bbox;} return result;})(result8[0], result8[1], result8[2])
           : null;
-        if (result5 !== null) {
-          var result0 = result5;
+        if (result7 !== null) {
+          var result0 = result7;
         } else {
           var savedPos0 = pos;
-          var result3 = parse_object(context);
-          if (result3 !== null) {
-            var result4 = parse_predicate(context);
-            if (result4 !== null) {
-              var result2 = [result3, result4];
+          var result5 = parse_object(context);
+          if (result5 !== null) {
+            var result6 = parse_predicate(context);
+            if (result6 !== null) {
+              var result4 = [result5, result6];
             } else {
-              var result2 = null;
+              var result4 = null;
               pos = savedPos0;
             }
           } else {
-            var result2 = null;
+            var result4 = null;
             pos = savedPos0;
           }
-          if (result2 !== null) {
-            var result0 = result2;
+          var result3 = result4 !== null
+            ? (function(object, p) {var result={}; result.object=object; if(p.tags != undefined) {result.tags=p.tags} else {result.bbox=p.bbox} return result})(result4[0], result4[1])
+            : null;
+          if (result3 !== null) {
+            var result0 = result3;
           } else {
-            var result1 = parse_object(context);
+            var result2 = parse_object(context);
+            var result1 = result2 !== null
+              ? (function(object) { return {object:object}})(result2)
+              : null;
             if (result1 !== null) {
               var result0 = result1;
             } else {

@@ -3,7 +3,7 @@
  * "2*(3+4)". The parser generated from this grammar then computes their value.
  */
 
-url = object:object p1:predicate p2:predicate { var result = {object:object}; if(p1.tags != undefined) {result.tags= p1.tags} else if(p1.bbox != undefined) {result.bbox=p1.bbox;} if(p2.tags != undefined) {result.tags= p2.tags} else if(p2.bbox != undefined) {result.bbox=p2.bbox;} return result;}/ object predicate / object
+url = object:object p1:predicate p2:predicate { var result = {object:object}; if(p1.tags != undefined) {result.tags= p1.tags} else if(p1.bbox != undefined) {result.bbox=p1.bbox;} if(p2.tags != undefined) {result.tags= p2.tags} else if(p2.bbox != undefined) {result.bbox=p2.bbox;} return result;}/ object:object p:predicate {var result={}; result.object=object; if(p.tags != undefined) {result.tags=p.tags} else {result.bbox=p.bbox} return result} / object:object { return {object:object}}
 
 object = v:"node" {return v} / v:"way"  {return v} / v:"relation" {return v} / v:"*" {return v}
 
