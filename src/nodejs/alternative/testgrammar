@@ -1,0 +1,28 @@
+/*
+ * Classic example grammar, which recognizes simple arithmetic expressions like
+ * "2*(3+4)". The parser generated from this grammar then computes their value.
+ */
+
+url = object:object p1:predicate p2:predicate { var result = {object:object}; if(p1.tags != undefined) {result.tags= p1.tags} else if(p1.bbox != undefined) {result.bbox=p1.bbox;} if(p2.tags != undefined) {result.tags= p2.tags} else if(p2.bbox != undefined) {result.bbox=p2.bbox;} return result;}/ object predicate / object
+
+object = v:"node" {return v} / v:"way"  {return v} / v:"relation" {return v} / v:"*" {return v}
+
+
+
+predicate = bboxpredicate / v:tagpredicate {return {tags:v}}/ childpredicate 
+
+tagpredicate = "["keys:keys"="values:values"]" {return {keys:keys, values:values}}
+
+childpredicate = "not(nd)"
+bboxpredicate = "[bbox=" left:float "," top:float","right:float","bottom:float"]" { return {bbox:{left:left,top:top,right:right,bottom:bottom}}}
+
+keys = key:key keys:("|" keys)+ { var result = new Array(); result.push(key); return result.concat(keys[0][1])} / key:key { var result = new Array(); result.push(key); return result}
+
+values = value:value values:("|" values)+ { var result = new Array(); result.push(value); return result.concat(values[0][1])} / value:value { var result = new Array(); result.push(value); return result}
+
+key = key:letter+ {return key.join("")}
+value = value:letter+ {return value.join("")}
+letter = "\\*" {return "*"} / "\\[" {return "["} / "\\]" {return "]" } / "\\\\" {return "\\"} / "\\|" {return "|" } / [^*|=\\\][]
+
+//add negative values
+float = m:"-"?digits:[0-9]+"."digits2:[0-9]+ { result = parseInt(digits.join(""))+parseFloat("0."+digits2.join("")); if(m == "-") {result=result*-1}; return result} / m:"-"?digits:[0-9]+ { result =  parseInt(digits.join("")); if(m == "-") {result = result*-1}; return result}
