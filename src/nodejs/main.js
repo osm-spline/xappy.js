@@ -43,21 +43,18 @@ function rowToNode(row){
         'lat' : row.lat,
         'lon' : row.lon
     };
-
-    if(row.tags != '{}') {
-        node.tags = [];
-        temp = row.tags.replace("{","").replace("}","").split(",");
-        for(var x=0;x<temp.length;x=x+2){
+    node.tags = []
+    if(row.tags.length != 0) {
+        for(var i=0;i<row.tags.length;i=i+2) {
             node.tags.push({
-                'key' : temp[x],
-                'value' : temp[x+1]
-            });
+                'key'   :   row.tags[i],
+                'value' :   row.tags[i+1]
+            })
         }
     }
     return node;
 }
 
-//FIXME: parsing of ways is meesed up
 function rowToWay(row){
     var way = {
         'id' : row.id,
@@ -65,17 +62,16 @@ function rowToWay(row){
         'version' : row.version,
         'changeset' : row.changeset_id
     };
-    if(row.tags != '{}') {
-        way.tags = [];
-        // FIXME: something doesnt work at all
-        temp = row.tags.replace("{","").replace("}","").split(",");
-        for(var x=0;x<temp.length;x=x+2){
+    way.tags = []
+    if(row.tags.length != 0) {
+        for(var i=0;i<row.tags.length;i=i+2) {
             way.tags.push({
-                'k' : temp[x],
-                'v' : temp[x+1]
-            });
+                'key'   :   row.tags[i],
+                'value' :   row.tags[i+1]
+            })
         }
     }
+    //TODO return nodes of way
     return way;
 }
 
