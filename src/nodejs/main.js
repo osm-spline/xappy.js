@@ -171,9 +171,10 @@ function buildMainQuery(reqJso){
     query += ';'
 
     return {
-        text:query,
-        values:replacements,
-        name: query
+        text    :   query,
+        values  :   replacements,
+        name    :   query,
+        binary  :   true
         };
 }
 
