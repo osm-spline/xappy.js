@@ -1,9 +1,6 @@
 [submodule "src/nodejs/tests/node-async-testing"]
 	path = src/nodejs/tests/node-async-testing
 	url = https://github.com/bentomas/node-async-testing.git
-[submodule "nave"]
-	path = nave
-	url = https://github.com/isaacs/nave.git
 [submodule "nvm"]
 	path = nvm
 	url = https://github.com/creationix/nvm.git
