@@ -1,6 +1,6 @@
 if (module == require.main) {
-  async_testing = require('./node-async-testing/lib/async_testing');
-  return async_testing.run(process.ARGV);
+  async_testing = require('async_testing');
+  return async_testing.run(__filename, process.ARGV);
 }
 var assert = require('assert');
 
