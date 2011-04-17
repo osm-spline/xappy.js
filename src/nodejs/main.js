@@ -43,21 +43,18 @@ function rowToNode(row){
         'lat' : row.lat,
         'lon' : row.lon
     };
-
-    if(row.tags != '{}') {
-        node.tags = [];
-        temp = row.tags.replace("{","").replace("}","").split(",");
-        for(var x=0;x<temp.length;x=x+2){
+    node.tags = []
+    if(row.tags.length != 0) {
+        for(var i=0;i<row.tags.length;i=i+2) {
             node.tags.push({
-                'key' : temp[x],
-                'value' : temp[x+1]
-            });
+                'key'   :   row.tags[i],
+                'value' :   row.tags[i+1]
+            })
         }
     }
     return node;
 }
 
-//FIXME: parsing of ways is meesed up
 function rowToWay(row){
     var way = {
         'id' : row.id,
@@ -65,17 +62,16 @@ function rowToWay(row){
         'version' : row.version,
         'changeset' : row.changeset_id
     };
-    if(row.tags != '{}') {
-        way.tags = [];
-        // FIXME: something doesnt work at all
-        temp = row.tags.replace("{","").replace("}","").split(",");
-        for(var x=0;x<temp.length;x=x+2){
+    way.tags = []
+    if(row.tags.length != 0) {
+        for(var i=0;i<row.tags.length;i=i+2) {
             way.tags.push({
-                'k' : temp[x],
-                'v' : temp[x+1]
-            });
+                'key'   :   row.tags[i],
+                'value' :   row.tags[i+1]
+            })
         }
     }
+    //TODO return nodes of way
     return way;
 }
 
@@ -93,7 +89,7 @@ var options = [
 // {
 // object = node/way/relation/* ,
 // bbox = { left : 1.0 , right : 1.0 , top : 1.0, bottom : 1.0 }
-// tag = { key : [ ], value [ ] } 
+// tag = { key : [ ], value [ ] }
 // }
 
 
@@ -101,14 +97,14 @@ function buildMainQuery(reqJso){
 
     var id = 1;
     var replacements = Array();
-    
+
     var selectMap = {
-        'node' : 'id,user_id,tstamp,version,changeset_id,hstore_to_array(tags) as tags, ' + 
+        'node' : 'id,user_id,tstamp,version,changeset_id,hstore_to_array(tags) as tags, ' +
                     'X(geom) as lat, Y(geom) as lon',
         'way' :  'id,tstamp,version,changeset_id,nodes,user_id,hstore_to_array(tags) as tags ',
         'relation' : '' //FIXME: plz
-    }   
-    
+    }
+
     // FIXME: help me i am not side effect free
     function buildTagsQuery(map){
 
@@ -125,7 +121,7 @@ function buildMainQuery(reqJso){
 
     // FIXME: help me i am not side effect free
     function buildBbox(object,bbox){
-       
+
         var colName = {
             node : 'geom',
             way : 'linestring',
@@ -136,7 +132,7 @@ function buildMainQuery(reqJso){
               ' st_setsrid(st_makepoint($' + id++ + ', $' + id++ + '), 4326), ' +
               ' st_setsrid(st_makepoint($' + id++ + ', $' + id++ + '), 4326) ' +
               ' ), 4326) ';
-        
+
         for( direction in bbox ) {
             replacements.push(bbox[direction]);
         }
@@ -153,15 +149,15 @@ function buildMainQuery(reqJso){
         }
         return map;
     }
-    
+
     query = "SELECT " + selectMap[reqJso.object] + " FROM " + reqJso.object + "s";
-    
+
     whereClauses = Array();
 
     if(reqJso.bbox != undefined){
         whereClauses.push(buildBbox(reqJso.object,reqJso.bbox));
     }
-    
+
     // FIXME: rename tag to tags key to keys value to values
     if(reqJso.tag != undefined){
         tags = explodeTags(reqJso.tag.key,reqJso.tag.value);
@@ -175,9 +171,10 @@ function buildMainQuery(reqJso){
     query += ';'
 
     return {
-        text:query,
-        values:replacements,
-        name: query
+        text    :   query,
+        values  :   replacements,
+        name    :   query,
+        binary  :   true
         };
 }
 
@@ -278,11 +275,11 @@ function myFunction(req,res){
     res.writeHead(200);
 
     var reqObj = parser.urlToXpathObj(req.url);
-    
+
     var queryDict = buildMainQuery(reqObj);
-    
+
     var resXml = osmRes.mkXmlRes(res);
-    
+
 
     console.log(JSON.stringify(queryDict));
     console.log("??????????????????????????????");
@@ -296,12 +293,12 @@ function myFunction(req,res){
         });
 
         query.on('end', function() {
-            console.log(" EEEND ");           
+            console.log(" EEEND ");
             res.atEnd();
         });
 
         query.on('row', function(row) {
-            //console.log(JSON.stringify(row));           
+            //console.log(JSON.stringify(row));
             if(reqObj.object == "node") {
                 var pojo = rowToNode(row);
                 res.putNode(pojo);

@@ -1,5 +1,5 @@
 if (module == require.main) {
-  return require('./node-async-testing/lib/async_testing').run(process.ARGV);
+  return require('async_testing').run(__filename, process.ARGV);
 }
 
 module.exports = {

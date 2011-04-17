@@ -5,7 +5,7 @@ osm@spline Xapi
 Contact
 ============
 http://osm.spline.de
-mailing list: osm@lists.spline.de
+mailing list: osm@lists.spline.de or xapi@lists.spline.de
 irc: irc://irc.freenode.net/#spline
 
 Aim
@@ -40,10 +40,18 @@ your local directory. If you don't trust us read the bootstrap.sh. If you have
 node and npm installed you can just use "npm link src/nodejs/" to install all 
 the dependencies.
 
+Dependencies
+=============
+
+For dependencies checkout the package.json file. One special case is the node-postgres
+lib. Use a patched version: https://github.com/AlexanderS/node-postgres
+
+If you try the libxml branch make sure you have installed libxml for developers.
+
 Database setup
 =============
 
-We use postgres 9.* with postgis 1.5. Postgres 9.0 is used becaus we need some
+We use postgres 9.* with postgis 1.5. Postgres 9.0 is used because we need some
 functions on hstores and postgis 1.5 is used for fancy geometry things.
 
 To setup a database you first need a runing postgres 9.0 instance. I hope you know
@@ -90,40 +98,8 @@ Import data from xml with:
 
 	osmosis --read-xml file="planet.osm.bz2" --wp host="localhost" password="TopSecretPassword" user="insertUserNameHere" database="osm"
 
-Before or after import you may want to create a index or two. Examples below:
+Before or after import you may want to create a indexes. Examples below:
 	CREATE INDEX idx_nodes_tags ON nodes USING GIN(tags);	
 	CREATE INDEX idx_nodes_tags ON nodes USING GIST(tags);
 	CREATE INDEX idx_ways_tags ON ways USING GIN(tags);
 	CREATE INDEX idx_ways_tags ON ways USING GIST(tags);
-
-database shema (out dated)
-================
-
-We keep data in a highly specioaliced shema, that allows us to prevent tables
-growing to big. And supports our requests at maximum speed. 
-
-|  CREATE TABLE <tagname>:<tagvalue> (
-|       {bigint id}
-|       {longitude float4},
-|       {latitude float4},
-|       {object varchar}
-|  ) PRIMARY KEY id;
-
-Implmentation
-=============
-
-Teilprobleme:
-..............
-
-1. Database import
-
-mögliche Technologien:
-* Osmosis- plugin
-* selbst in python (Protobuf consumer, async pgsql schreiber)
-
-
-2. Web API
-..............
-
-mögliche Technologien:
-* node.js
