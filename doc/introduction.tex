@@ -1,0 +1,153 @@
+\documentclass{beamer}
+%packages
+\usepackage[latin1]{inputenc}
+\usepackage{minted}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{urlcolor=red,colorlinks}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\newminted{xml}{fontsize=\tiny}
+\usetheme{Warsaw}
+\title[OSM-Projekt - What is...]{OSM-Projekt - An introduction into OpenStreetMap}
+\author{Philipp Borgers}
+\institute{Institute for Computer Science, Free University Berlin}
+\date{15.4.2011}
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Introduction}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Community}
+    \begin{itemize}
+        \item \href{http://wiki.openstreetmap.org/wiki/Develop}{Developer wikipage}
+        \item \href{http://lists.openstreetmap.org/listinfo}{Mailinglists (dev@lists...)}
+        \item \href{irc://irc.oftc.net/#osm-dev}{\#osm-dev}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{data types - node}
+    \begin{itemize}
+    \item Id, Longitude, Latitude
+    \item Set of key/value pairs (tags)
+    \end{itemize}
+    \begin{xmlcode}
+    <node id="23" lat="51.5173639" lon="-0.140043" version="1" changeset="42" user="h4ck3r" 
+        uid="23" visible="true" timestamp="2007-01-28T11:40:26Z">
+       <tag k="name" v="h4ck3rs h0m3"/>
+    </node>
+    \end{xmlcode}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{data types - way}
+    \begin{itemize}
+    \item Id and common attributes
+    \item List of all node id's that make up the way
+    \item Last node == first node (optional, closed way)
+    \item A set of key/value pairs (tags)
+    \end{itemize}
+    \begin{xmlcode}
+    <way id="42" visible="true" timestamp="2009-01-19T19:07:25Z" version="42" changeset="2342"
+        user="h4ck3r" uid="23">
+        <nd ref="1"/>
+        <nd ref="2"/>
+        <nd ref="3"/>
+        <nd ref="1"/>
+        <tag k="oneway" v="yes"/>
+    </way>
+    \end{xmlcode}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{data types - relation}
+    \begin{itemize}
+        \item Id and common attributes 
+        \item A set of key/value pairs (tags)
+        \item An ordered list of primitives (members) with associated role attribute
+        \item A member consists of a type (node, way, relation), Id and a role attribute
+    \end{itemize}
+    \begin{xmlcode}
+    <relation id="23" timestamp="2008-12-21T19:31:43Z" user="h4ck3r" uid="42">
+        <member type="way" ref="2332" role="whatever"/>
+        <member type="node" ref="43" role="asdf"/>
+        <member type="relation" ref="1234" role="l33t"/>
+        <member type="way" ref="5678" role=""/>
+        <tag k="name" v="sample relation"/>
+    </relation>
+    \end{xmlcode}
+\end{frame}
+\begin{frame}[fragile]
+    \frametitle{data types - tag}
+    \begin{itemize}
+        \item A key/value pair
+        \item They are everywhere, you can't hide
+    \end{itemize}
+    \begin{xmlcode}
+    <tag k="name" v="Institut fuer Informatik"/>
+    \end{xmlcode}
+\end{frame}
+\begin{frame}[fragile]
+    \frametitle{data types - more on data types and elements}
+    \begin{itemize}
+        \item \href{http://wiki.openstreetmap.org/wiki/Data_Primitives}{Data primitives}
+        \item \href{http://wiki.openstreetmap.org/wiki/Elements}{OSM elements}
+        \item \href{http://wiki.openstreetmap.org/wiki/API\_v0.6}{OSM API 0.6}
+    \end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+    \frametitle{database - overview}
+    \begin{itemize}
+        \item bla 
+    \end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+    \frametitle{XAPI}
+    \begin{itemize}
+        \item Database frontend to retrieve node, ways and relations
+        \item XPATH like requests
+        \item Returns xml (osm xml schema)
+        \item \href{http://wiki.openstreetmap.org/wiki/Xapi}{Wiki page}
+    \end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+    \frametitle{XAPI - Request format}
+    \begin{itemize}
+        \item api/0.6/node[predicate]
+        \item api/0.6/way[-6,50,2,61]
+        \item api/0.6/relation[name=U3]
+        \item api/0.6/*[-6,50,2,61][name=U3|U4|U5]
+        \item api/0.6/*[name=*]
+        \item api/0.6/node[amenity|leisure=golf\_curse]
+        \end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+    \frametitle{XAPI - Implementations}
+    \begin{itemize}
+        \item \href{http://xapi.openstreetmap.org/scripts/}{G.TM implementation}
+        \item \href{https://github.com/iandees/xapi-servlet}{Java implementation}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+    \frametitle{Licence}
+    \begin{center}
+    \includegraphics[scale=0.25]{./cc.png}
+    \end{center}
+    \begin{center}
+    \href{http://creativecommons.org/licenses/by/3.0/}{Attribution 3.0 Unported (CC BY 3.0)}
+    \end{center}
+\end{frame}
+
+
+
+
+
+
+
+\end{document}
