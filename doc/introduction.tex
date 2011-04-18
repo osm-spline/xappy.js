@@ -4,10 +4,13 @@
 \usepackage{minted}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage[english]{babel}
+
 \hypersetup{urlcolor=red,colorlinks}
 \definecolor{bg}{rgb}{0.95,0.95,0.95}
 \newminted{xml}{fontsize=\tiny}
-\usetheme{Warsaw}
+\newminted{javascript}{fontsize=\tiny}
+\usetheme{default}
 \title[OSM-Projekt - What is...]{OSM-Projekt - An introduction into OpenStreetMap}
 \author{Philipp Borgers}
 \institute{Institute for Computer Science, Free University Berlin}
@@ -18,6 +21,12 @@
 \end{frame}
 
 \begin{frame}{Introduction}
+    \begin{itemize}
+    \item Huge database of geo data
+    \item Open Data, licenced under cc (ODbL?)
+    \item Everybody can contribute, it's like an wiki
+    \end{itemize}
+
 \end{frame}
 
 \begin{frame}[fragile]
@@ -100,18 +109,39 @@
     \end{itemize}
 \end{frame}
 \begin{frame}[fragile]
-    \frametitle{database - overview}
+    \frametitle{database - schema (tables)}
     \begin{itemize}
-        \item bla 
+        \item nodes
+        \item ways
+        \item relations
+        \item users
+        \item way\_nodes
+        \item relation\_members
     \end{itemize}
 \end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{database - nodes table}
+    \begin{tabular}{| l | c | r |}
+        \hline
+        id & bigint & not null \\ \hline
+        version & integer & not null \\ \hline
+        user\_id & integer & not null \\ \hline
+        tstamp & timestamp without time zone & not null \\ \hline
+        changeset\_id & bigint & not null \\ \hline
+        tags & hstore & \\ \hline
+        geom & geometry & \\ \hline
+    \end{tabular}
+\end{frame}
+
 \begin{frame}[fragile]
     \frametitle{XAPI}
     \begin{itemize}
-        \item Database frontend to retrieve node, ways and relations
+        \item Database frontend used to retrieve node, ways and relations
         \item XPATH like requests
         \item Returns xml (osm xml schema)
         \item \href{http://wiki.openstreetmap.org/wiki/Xapi}{Wiki page}
+        \item OSM community needs a good implementation
     \end{itemize}
 \end{frame}
 \begin{frame}[fragile]
@@ -133,6 +163,42 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]
+    \frametitle{node.js}
+    \begin{itemize}
+    \item \href{http://nodejs.org/}{node.js} is asynchronous javascript
+    \item Event based
+    \item Written on top of the \href{http://code.google.com/p/v8/}{V8 Javascript Engine} (Virtual machine)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Simple example - echo server}
+    \begin{javascriptcode}
+        var net = require('net');
+
+        var server = net.createServer(function (socket) {
+            socket.write("Echo server\r\n");
+            socket.pipe(socket);
+        });
+
+        server.listen(8124, "127.0.0.1");
+    \end{javascriptcode}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Simple example - event}
+    Listen for events
+    \begin{javascriptcode}
+        server.on('connection', function(stream) {
+            console.log('someone connected!');
+        });
+    \end{javascriptcode}
+    Emit events
+    \begin{javascriptcode}
+        server.emit('connection',socket);
+    \end{javascriptcode}
+\end{frame}
 
 \begin{frame}[fragile]
     \frametitle{Licence}
@@ -144,10 +210,13 @@
     \end{center}
 \end{frame}
 
-
-
-
-
-
+\begin{frame}[fragile]
+    \frametitle{more}
+    \begin{itemize}
+        \item \url{https://github.com/slomo/osm-spline-xapi}
+        \item \href{https://lists.spline.inf.fu-berlin.de/mailman/listinfo/xapi}{XAPI (course) mailinglist}
+        \item \url{http://osm.spline.de}
+    \end{itemize}
+\end{frame}
 
 \end{document}
