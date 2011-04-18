@@ -1,0 +1,200 @@
+\documentclass{beamer}
+%packages
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{urlcolor=red,colorlinks}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\usetheme{Rochester}
+\title[]{A sketch of an agile software process}
+\author{Yves Müller}
+\institute{Institute for Computer Science, Freie University Berlin}
+\date{15.4.2011}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Kurz und Knapp}
+    \begin{definition}[Agile software development]
+    Produce high value at low cost.
+    \end{definition}
+
+    \vspace{0.2in}
+    Bedeutung für unser Projekt
+
+    \begin{itemize}
+    \item Kosten: Zeit die wir aufbringen
+    \item Wert: Nutzen für OpenStreetMap
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Agile Softwareentwicklung: Wie geht das?}
+    
+    Puh ... Erklärung ist gar nicht so einfach, darum hier nur ein paar Stichworte.
+
+        \begin{itemize}
+            \item Planbasierende Entwicklung: Ängste, Misstrauen und Stress
+            \item Agiles Manifest
+            \item Werteverschiebung
+            \item Prinzipien
+            \item viele viele Prozessmodelle
+        \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Crystal Clear}
+     
+     Der minimale Ansatz zu einem Agilen Prozess.
+
+    \begin{block}{Prinzipien}
+          
+        \begin{itemize}
+            \item Häufige Auslieferung der Software
+            \item Passiver Wissenstransfer 
+            \item Ständige Optimierung durch Reflektion
+        \end{itemize}
+    \end{block}
+    
+    Es gibt nur zwei konkrete Methode: 
+
+        \begin{itemize}
+            \item Retrosperktive Treffen
+            \item Iterationen (bei uns 3 Stück)
+        \end{itemize}
+
+    Andere werden bei Bedarf hinzugezogen.
+
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Agile Werkzeuge und Methoden  in unserem Projekt}
+
+    nur eine kleine Gruppen, die ich sinnvoll fand
+
+    \begin{itemize}
+        \item Testgetrieben Entwicklung
+        \item StandUp Meeting
+        \item Plannungsspiel (die Zettelwirtschaft)
+        \item Gemeinsamer Code (Collective Ownership)
+        \item Continious Integration
+    \end{itemize}
+
+    diskutierbar, und veränderbar durch Retrosperktive
+
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Testgetriebene Entwicklung}
+    
+    Tests werden zu erst entwickelt
+
+    \begin{block}{Wie geht das?}
+        Der Code wird in folgendem Zyklus entwickelt.
+        \begin{itemize}
+            \item Test schreiben
+            \item Test erfüllen (genau den Test implmentieren)
+            \item Verbessern des Codes (Refactoring)
+        \end{itemize}
+    \end{block}
+    Jede funktionale Eigenschaft und jeder Bug hat einen Test
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Testgetribene Entwicklung}
+    \begin{block}{Warum?}
+        \begin{itemize}
+            \item Entwicklung von definierten Schnittstellen
+            \item Feinentwurf auf Modulebene
+            \item Vermeidung von totem Code
+            \item Vertrauen in Korrektheit des Codes höher
+            \item ein ganz kleines bisschen Compilerersatz
+        \end{itemize}
+    \end{block}
+
+    Erfordert hohe Disziplin, bringt aber unglaubliche Vorteile.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Testgetribene Entwicklung}
+    Beim Schreiben von Tests sollte beachtet werden:
+ 
+    \begin{itemize}
+        \item nicht zu große Blöcke testen
+        \item auch auf Typen testen
+        \item wenig gegen exteren Systeme testen (nutzt Stellvertreter)
+        \item die Qualität des Programms ist nur so gut wie die Qualität der Tests
+        \item Geschwindigkeit ist auch in Test kritisch
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Standup meeting}
+    
+    \begin{block}{Was ist das?}
+        \begin{itemize}
+            \item Treffen am Anfang jeder Sitzung
+            \item max. 10 Min
+            \item alle stehen
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{Warum?}
+        \begin{itemize}
+            \item ihr könnt eure Probleme mitteilen
+            \item ihr könnt über Erfolge berichten
+            \item Fortschritt ermitteln
+        \end{itemize}
+    \end{block}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Das Plannungspiel}
+    
+    \begin{block}{Was ist das?}
+        \begin{itemize}
+            \item Treffen am Anfang einer Iteration
+            \item Diskussion über die Anforderungen
+            \item Festlegung der Ziele für die Iteration
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{Warum?}
+        \begin{itemize}
+            \item nur die Entwickler können ihre Leistungsfähigkeit einschätzen
+            \item korrekte Anforderungen sind schwer zu formalsieren
+        \end{itemize}
+    \end{block}
+
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Collective code ownership / Continious Integration}
+    
+    \begin{block}{Was ist das?}
+        \begin{itemize}
+            \item es gibt keine Modulzuständigkeiten!
+            \item jeder ist verantwortlich
+            \item der Code soll immer lauffähig sein
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{Warum?}
+        \begin{itemize}
+            \item Minimierung des Expertentums
+        \end{itemize}
+    \end{block}
+
+    Das CI kontrolliert ob der Code gut ist (= läuft) und erinnert notfalls alle an ihre Pflichten!
+\end{frame}
+
+\end{document}
