@@ -38,8 +38,15 @@ if [[ $prompt == "n" || $prompt == "N" || $prompt == "no" || $prompt == "No" ]]
     then
         exit 0;
     else
-        curl http://npmjs.org/install.sh |  sh
+        curl http://npmjs.org/install.sh | sh
 fi
 
 echo "Download all dependencies for project in $PROJECT_PATH"
 npm link $PROJECT_PATH
+
+
+echo
+echo "To use nvm source it by typing: 'NVM_DIR=$NVM_DIR . $PWD/$NVM_PATH' "
+echo "For permanent usage, add it to your ~/.bashrc"
+echo 
+echo "with 'nvm use $NODE_VERSION' you can enable nvm"
