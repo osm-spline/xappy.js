@@ -127,5 +127,5 @@ var parser = function(){
 
 exports.urlToXpathObj = function urlToXpathObj(url){
     var parse = new parser();
-    return parse.parse(url);
+    return parse.parse(unescape(url));
 }
