@@ -4,13 +4,14 @@
 , "autor" : "osm@spline <osm@lists.spline.de> (http://osm.spline.de)"
 , "files" : ["."]
 , "dependencies" :
-  { "pg" : "*"
-  , "clutch" : "*"
-  , "xmlbuilder" : "*"
-  , "log4js" : "*"
-  , "opts" : "*"
-  , "async_testing" : "*"
+    { "pg" : "*"
+    , "clutch" : "*"
+    , "xmlbuilder" : "*"
+    , "log4js" : "*"
+    , "opts" : "*"
+    }
 , "devDependencies" :
-
-  }
+    { "async_testing" : "*"
+    , "jslint" : "*"
+    }
 }
