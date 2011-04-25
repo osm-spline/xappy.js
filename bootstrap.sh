@@ -46,8 +46,9 @@ if [[ $prompt == "n" || $prompt == "N" || $prompt == "no" || $prompt == "No" ]]
 fi
 
 echo "Download all dependencies for project in $PROJECT_PATH"
-npm link $PROJECT_PATH
 
+npm link $PWD/pg
+npm link $PROJECT_PATH
 
 echo
 echo "To use nvm source it by typing: 'NVM_DIR=$NVM_DIR . $PWD/$NVM_PATH' "
