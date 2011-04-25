@@ -10,7 +10,5 @@
   , "log4js" : "*"
   , "opts" : "*"
   , "async_testing" : "*"
-, "devDependencies" :
-
   }
 }
