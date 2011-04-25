@@ -11,7 +11,7 @@ export NVM_DIR=$PWD/nodejs
 NODE_VERSION=v0.4.0
 PROJECT_PATH=src/nodejs
 
-# end config 
+# end config
 ###########################
 
 # create directory
@@ -23,12 +23,12 @@ echo $NVM_DIR
 nvm sync
 
 # install node if requested
-echo "This will build and install node.js $NODE_VERSION into '$NVM_DIR'." 
+echo "This will build and install node.js $NODE_VERSION into '$NVM_DIR'."
 read -p "Do you like to proceed? <y/N> " prompt
 if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
     then
         nvm install $NODE_VERSION
-        nvm use $NODE_VERSION 
+        nvm use $NODE_VERSION
 fi
 
 
@@ -48,5 +48,5 @@ npm link $PROJECT_PATH
 echo
 echo "To use nvm source it by typing: 'NVM_DIR=$NVM_DIR . $PWD/$NVM_PATH' "
 echo "For permanent usage, add it to your ~/.bashrc"
-echo 
+echo
 echo "with 'nvm use $NODE_VERSION' you can enable nvm"
