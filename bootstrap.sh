@@ -3,6 +3,10 @@
 ###########################
 # start config
 
+#fetch nvm and perhaps modified pg module?
+git submodule init
+git submodule update
+
 # location of nvm script
 NVM_PATH=nvm/nvm.sh
 # location where node.js will be installed
