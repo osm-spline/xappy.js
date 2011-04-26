@@ -271,43 +271,47 @@ function wayBboxHandler(req, res, key, value, left, bottom, right, top) {
 
 
 function myFunction(req,res){
-
+    // FIXIT: if send head with 200, the following endWith500() call has no effect
     res.writeHead(200);
 
-    var reqObj = parser.urlToXpathObj(req.url);
+    try {
+        var reqObj = parser.urlToXpathObj(req.url);
+        var queryDict = buildMainQuery(reqObj);
+        var resXml = osmRes.mkXmlRes(res);
 
-    var queryDict = buildMainQuery(reqObj);
+        log.debug(JSON.stringify(queryDict));
+        log.debug(JSON.stringify(reqObj));
+        dbConnect(resXml, function(client) {
+            var success = false;
+            var query = client.query(queryDict);
 
-    var resXml = osmRes.mkXmlRes(res);
+            query.on('error', function(err) {
+                log.error(err.message);
+                res.endWith500();
+            });
 
+            query.on('end', function() {
+                log.trace('end');
+                res.atEnd();
+            });
 
-    console.log(JSON.stringify(queryDict));
-    console.log("??????????????????????????????");
-    console.log(JSON.stringify(reqObj));
-    dbConnect(resXml, function(client) {
-        var success = false;
-        var query = client.query(queryDict);
+            query.on('row', function(row) {
+                log.trace('next row');
+                log.debug(JSON.stringify(row));
 
-        query.on('error', function(err) {
-            res.endWith500();
-        });
-
-        query.on('end', function() {
-            console.log(" EEEND ");
-            res.atEnd();
-        });
-
-        query.on('row', function(row) {
-            //console.log(JSON.stringify(row));
-            if(reqObj.object == "node") {
-                var pojo = rowToNode(row);
-                res.putNode(pojo);
-            }
-            else if(reqObj.object == "way") {
-                var pojo = rowToWay(row);
-                res.putWay(pojo);}
-        });
-    });
+                if(reqObj.object == "node") {
+                    var pojo = rowToNode(row);
+                    res.putNode(pojo);
+                }
+                    else if(reqObj.object == "way") {
+                    var pojo = rowToWay(row);
+                    res.putWay(pojo);}
+           });
+       });
+    }
+    catch (err) {
+        log.error(err);
+    }
 }
 
 function getConfig(configPath, callback) {
