@@ -1,3 +1,6 @@
-[submodule "src/nodejs/tests/node-async-testing"]
-	path = src/nodejs/tests/node-async-testing
-	url = https://github.com/bentomas/node-async-testing.git
+[submodule "nvm"]
+	path = nvm
+	url = https://github.com/creationix/nvm.git
+[submodule "pg"]
+	path = pg
+	url = https://github.com/AlexanderS/node-postgres.git

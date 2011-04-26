@@ -1,4 +1,5 @@
-usr/
+# local nodejs install
+/nodejs
 
 # Temp Files #
 ##############

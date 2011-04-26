@@ -1,55 +1,57 @@
-#! /bin/sh
+#! /bin/bash
 
 ###########################
 # start config
 
-PREFIX=`pwd`/usr/
-NODE_VERSION=0.3.5
+#fetch nvm and perhaps modified pg module?
+git submodule init
+git submodule update
 
-# use full for development
-DEV_TOOLS="node-dev jslint"
+# location of nvm script
+NVM_PATH=nvm/nvm.sh
+# location where node.js will be installed
+export NVM_DIR=$PWD/nodejs
 
+NODE_VERSION=v0.4.0
+PROJECT_PATH=src/nodejs
 
-# end config 
+# end config
 ###########################
 
-export PATH=${PREFIX}/bin:${PATH}
+# create directory
+mkdir -p  $NVM_DIR
+echo $NVM_DIR
 
-## Download Helper 
-# $1 - url
-# $2 - destdir
-download() {
-    mkdir -p ${PREFIX}/src
-    
-    if [ ! -f ${2} ]; then
-	echo "!! saving source to $1"
-        curl ${1} | tar -x -z -C ${PREFIX}/src
-    fi
-}
+# source nvm
+. $NVM_PATH
+nvm sync
 
-if [ ! -f ${PREFIX}/bin/node ]; then
-    # fetch and compile nodejs
-    download http://nodejs.org/dist/node-v${NODE_VERSION}.tar.gz ${PREFIX}/src/node-v${NODE_VERSION}
-
-    cd ${PREFIX}/src/node-v${NODE_VERSION} 
-    ./configure --prefix=${PREFIX}
-    make install
-    cd ${PREFIX}/..
-else 
-   echo "!! node already installed"
+# install node if requested
+echo "This will build and install node.js $NODE_VERSION into '$NVM_DIR'."
+read -p "Do you like to proceed? <y/N> " prompt
+if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
+    then
+        nvm install $NODE_VERSION
+        nvm use $NODE_VERSION
 fi
 
-if [ ! -f ${PREFIX}/bin/npm ];then
-    # fetch and compile npm
-    curl http://npmjs.org/install.sh |  sh
-else 
-   echo "!! npm already installed"
 
+# install npm if requested
+read -p "Do you like to install npm? <Y/n> " prompt
+if [[ $prompt == "n" || $prompt == "N" || $prompt == "no" || $prompt == "No" ]]
+    then
+        exit 0;
+    else
+        curl http://npmjs.org/install.sh | sh
 fi
 
-# load development code and compile dependencies
-npm link src/nodejs/
+echo "Download all dependencies for project in $PROJECT_PATH"
 
-for TOOL in $DEV_TOOLS; do
-    npm install $TOOL
-done;
+npm link $PWD/pg
+npm link $PROJECT_PATH
+
+echo
+echo "To use nvm source it by typing: 'NVM_DIR=$NVM_DIR . $PWD/$NVM_PATH' "
+echo "For permanent usage, add it to your ~/.bashrc"
+echo
+echo "with 'nvm use $NODE_VERSION' you can enable nvm"
