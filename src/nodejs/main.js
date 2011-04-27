@@ -43,13 +43,13 @@ function rowToNode(row){
         'lat' : row.lat,
         'lon' : row.lon
     };
-    node.tags = []
-    if(row.tags.length != 0) {
+    node.tags = [];
+    if(row.tags.length !== 0) {
         for(var i=0;i<row.tags.length;i=i+2) {
             node.tags.push({
                 'key'   :   row.tags[i],
                 'value' :   row.tags[i+1]
-            })
+            });
         }
     }
     return node;
@@ -62,13 +62,13 @@ function rowToWay(row){
         'version' : row.version,
         'changeset' : row.changeset_id
     };
-    way.tags = []
-    if(row.tags.length != 0) {
+    way.tags = [];
+    if(row.tags.length !== 0) {
         for(var i=0;i<row.tags.length;i=i+2) {
             way.tags.push({
                 'key'   :   row.tags[i],
                 'value' :   row.tags[i+1]
-            })
+            });
         }
     }
     //TODO return nodes of way
@@ -103,17 +103,19 @@ function buildMainQuery(reqJso){
                     'X(geom) as lat, Y(geom) as lon',
         'way' :  'id,tstamp,version,changeset_id,nodes,user_id,hstore_to_array(tags) as tags ',
         'relation' : '' //FIXME: plz
-    }
+    };
 
     // FIXME: help me i am not side effect free
     function buildTagsQuery(map){
 
-        tagQueries = new Array();
+        tagQueries = [];
 
-        for(tagkey in map){
-            tagQueries.push("tags @> hstore($" + id++  +  ",$" + id++ + ")");
-            replacements.push(tagkey);
-            replacements.push(map[tagkey]);
+        for(var tagkey in map){
+			if (map.hasOwnProperty(tagkey)) {
+				tagQueries.push("tags @> hstore($" + id++  +  ",$" + id++ + ")");
+				replacements.push(tagkey);
+				replacements.push(map[tagkey]);
+			}
         }
 
         return tagQueries.join(" OR  \n");
@@ -126,15 +128,17 @@ function buildMainQuery(reqJso){
             node : 'geom',
             way : 'linestring',
             relation : '' // FIXME: whats my name
-        }
+        };
 
         bboxQueryStr =  colName[object] + ' && st_setsrid(st_makebox2d( ' +
               ' st_setsrid(st_makepoint($' + id++ + ', $' + id++ + '), 4326), ' +
               ' st_setsrid(st_makepoint($' + id++ + ', $' + id++ + '), 4326) ' +
               ' ), 4326) ';
 
-        for( direction in bbox ) {
-            replacements.push(bbox[direction]);
+        for(var direction in bbox) {
+			if(bbox.hasOwnProperty(direction)) {
+				replacements.push(bbox[direction]);
+			}
         }
 
         return bboxQueryStr;
@@ -142,11 +146,15 @@ function buildMainQuery(reqJso){
 
     function explodeTags(keys,values){
         var map = {};
-        for(key in keys) {
-            for(value in values) {
-                map[keys[key]]=values[value]; // FIXME: das ist scheiße
+        for(var key in keys) {
+			if(keys.hasOwnProperty(key)) {
+				for(var value in values) {
+					if(values.hasOwnProperty(value)) {
+							map[keys[key]]=values[value]; // FIXME: das ist scheiße
+					}
+				}
             }
-        }
+		}
         return map;
     }
 
@@ -154,12 +162,12 @@ function buildMainQuery(reqJso){
 
     whereClauses = Array();
 
-    if(reqJso.bbox != undefined){
+    if(reqJso.bbox !== undefined){
         whereClauses.push(buildBbox(reqJso.object,reqJso.bbox));
     }
 
     // FIXME: rename tag to tags key to keys value to values
-    if(reqJso.tag != undefined){
+    if(reqJso.tag !== undefined){
         tags = explodeTags(reqJso.tag.key,reqJso.tag.value);
         whereClauses.push(buildTagsQuery(tags));
     }
@@ -168,7 +176,7 @@ function buildMainQuery(reqJso){
         query += ' WHERE (' + whereClauses.join(' AND ') + ')';
     }
 
-    query += ';'
+    query += ';';
 
     return {
         text    :   query,
