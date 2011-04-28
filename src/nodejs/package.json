@@ -5,7 +5,6 @@
 , "files" : ["."]
 , "dependencies" :
     { "pg" : "*"
-    , "clutch" : "*"
     , "xmlbuilder" : "*"
     , "log4js" : "*"
     , "opts" : "*"
