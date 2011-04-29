@@ -20,7 +20,7 @@ module.exports = {
 		var expected = {
 			nodes : '',
 			//select all members of relations that are ways and join with ways table
-			ways : 'SELECT ways.id, ways.version, ways.user_id, ways.tstamp, ways.changeset_id, hstore_to_array(ways.tags), ways.nodes FROM ways JOIN (SELECT DISTINCT * FROM relation_members WHERE member_type = \'W\') AS relation_ways ON relation_ways.member_id = id',
+			ways : 'SELECT ways.*, name AS user_name FROM (SELECT ways.id, ways.version, ways.user_id, ways.tstamp, ways.changeset_id, hstore_to_array(ways.tags), ways.nodes FROM ways JOIN (SELECT DISTINCT * FROM relation_members WHERE member_type = \'W\') AS relation_ways ON relation_ways.member_id = id) AS ways, users WHERE ways.user_id = users.id;',
 			//returns a list of members
 			relations : 'SELECT relations.id, relations.version, relations.user_id, relations.tstamp, relations.changeset_id, hstore_to_array(tags), relation_members.member_id, relation_members.member_type, relation_members.member_role FROM relations, relation_members WHERE relations.id = relation_members.relation_id;'
 		};
