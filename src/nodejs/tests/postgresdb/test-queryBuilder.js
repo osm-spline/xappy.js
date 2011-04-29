@@ -18,6 +18,12 @@ module.exports = {
 	//api/0.6/relation
 	'select relation': function(test) {
 		var expected = {
+			// select the node from every relation
+			//	SELECT * FROM nodes JOIN (SELECT DISTINCT * FROM relation_members WHERE member_type = 'N') AS relation_nodes ON relation_nodes.member_id = nodes.id;
+			// select the nodes from every way in the relation
+			// SELECT nodes.id, nodes.version, nodes.user_id, nodes.tstamp, nodes.changeset_id, hstore_to_array(tags) AS tags, X(geom) AS lat, Y(geom) AS lon FROM nodes JOIN (SELECT * FROM way_nodes JOIN (SELECT DISTINCT relation_members.member_id FROM relation_members WHERE member_type = 'W') AS foo ON foo.member_id = way_nodes.way_id) as bar ON node_id = nodes.id;
+			//
+			//
 			nodes : '',
 			//select all members of relations that are ways and join with ways table
 			ways : 'SELECT ways.*, name AS user_name FROM (SELECT ways.id, ways.version, ways.user_id, ways.tstamp, ways.changeset_id, hstore_to_array(ways.tags), ways.nodes FROM ways JOIN (SELECT DISTINCT * FROM relation_members WHERE member_type = \'W\') AS relation_ways ON relation_ways.member_id = id) AS ways, users WHERE ways.user_id = users.id;',
