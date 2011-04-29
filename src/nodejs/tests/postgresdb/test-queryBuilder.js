@@ -49,15 +49,15 @@ module.exports = {
 
 	'create bbox' : function(test) {
 		var float_str = '([-]?(0|[1,2,3,4,5,6,7,8,9]\\d*)(\\.\\d+)?)';
-		var expected = '^geom && st_setsrid\\(st_makebox2d\\(st_setsrid\\(st_makepoint\\(\\$\\d+,\\$\\d+\\),4326\\),st_setsrid\\(st_makepoint\\(\\$\\d+,\\$\\d+\\),4326\\)\\),4326\\)$';
+		var expected = '^(geom && st_setsrid\\(st_makebox2d\\(st_setsrid\\(st_makepoint\\(\\$\\d+,\\$\\d+\\),4326\\),st_setsrid\\(st_makepoint\\(\\$\\d+,\\$\\d+\\),4326\\)\\),4326\\))$';
 		//var input = 'geom && st_setsrid(st_makebox2d(st_setsrid(st_makepoint($0,$1),4326),st_setsrid(st_makepoint($3,$4),4326)),4326)';
 		//console.log(input.match(expected));
 		var myQueryObject = {
 			object : 'node',
 			bbox : {
-				left : 10.00,
-				bottom : 10.00,
-				right: 12.00,
+				left : 10.0,
+				bottom : 10.0,
+				right: 12.0,
 				top : 12
 			}
 		};
@@ -87,17 +87,41 @@ module.exports = {
 		test.ok(input.match(expected));
 		test.finish();
 	},
-
+	//api/0.6/node[name=U3|U4]
 	'create queries for nodes with tags' : function(test) {
 		var myQueryObject = {
 			object : 'node',
 			tags : [{k:'name', v:'U3'}, {k:'name',v:'U4'}]
 		};
-		var expected = 'SELECT nodes.id, nodes.version, nodes.user_id, users.name AS user_name, nodes.tstamp, nodes.changeset_id, hstore_to_array(nodes.tags), X(geom) AS lat, Y(geom) AS lon FROM nodes, users WHERE nodes.user_id = users.id AND (nodes.tags @> hstore(\'name\',\'U3\') OR nodes.tags @> hstore(\'name\',\'U4\'))';
+		//FIXME expected should be a queryPlan object with pgQueries
+		var expected = {
+			nodes : 'SELECT nodes.id, nodes.version, nodes.user_id, users.name AS user_name, nodes.tstamp, nodes.changeset_id, hstore_to_array(nodes.tags), X(geom) AS lat, Y(geom) AS lon FROM nodes, users WHERE nodes.user_id = users.id AND (nodes.tags @> hstore(\'name\',\'U3\') OR nodes.tags @> hstore(\'name\',\'U4\'))'
+		};
 		var input = require('../../postgresdb/querybuilder').createQueries(myQueryObject);
 		test.ok(input.node.match(expected));
 
 		test.finish();
+	},
+	//api/0.6/node[10.0,10.0,12.0,12]
+	'create queries for nodes with bbox' : function(test) {
+		var myQueryObject = {
+			object : 'node',
+			bbox : {
+				left : 10.0,
+				bottom : 10.0,
+				right: 12.0,
+				top : 12
+			}
+		};
+		var expected = {
+			nodes : 'SELECT nodes.id, nodes.version, nodes.user_id, users.name AS user_name, nodes.tstamp, nodes.changeset_id, hstore_to_array(nodes.tags), X(geom) AS lat, Y(geom) AS lon FROM nodes, users WHERE nodes.user_id = users.id AND (geom && st_setsrid\\(st_makebox2d\\(st_setsrid\\(st_makepoint\\(\\$\\d+,\\$\\d+\\),4326\\),st_setsrid\\(st_makepoint\\(\\$\\d+,\\$\\d+\\),4326\\)\\),4326\\))'
+		};
+		var input = require('../../postgresdb/querybuilder').createQueries(myQueryObject);
+		test.ok(input.node.match(expected));
+
+		test.finish();
+
+
 	}
 
 };
