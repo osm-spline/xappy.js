@@ -16,7 +16,7 @@ var parser = function(){
         }
         offset ++;
     }
-    
+
     var parsePredicate = function(){
         check('[');
         parseInnerPredicate();
