@@ -13,14 +13,15 @@ module.exports = {
  
    // is-it-a-valid-object tests
  'node': function(test) {
-    test.ok(true);
+    // test.ok(true);
     //var simpleNodeString = "/node";
     //var expected = { object: "node" };
 
     //necessary attributes
-    assert.deepEqual(typeof toTest.id, "number");
-    assert.deepEqual(typeof toTest.lat, "number");
-    assert.deepEqual(typeof toTest.lon, "number");
+    test.deepEqual(typeof toTest.id, "number");
+    test.deepEqual(typeof toTest.lat, "number");
+    // assert.deepEqual(typeof toTest.lat, "number");
+    test.deepEqual(typeof toTest.lon, "number");
 
     //optional attributes
     if(typeof toTest.version != "undefined"){
@@ -32,12 +33,12 @@ module.exports = {
     if(typeof toTest.changesetId != "undefined"){
         assert.deepEqual(typeof toTest.changesetId, "number");
     }
-    if(typeof toTest.tags != "undefined"){
+    /* if(typeof toTest.tags != "undefined"){
         var expected = {string , string};
         for (var x=0; x<toTest.tags.length; x++){
             assertdeeoEqual(toTest.tags[x], expected);
         }
-    }
+    }*/
     test.finish();
  }
 }
