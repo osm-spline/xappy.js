@@ -8,7 +8,9 @@ git submodule init
 git submodule update
 
 # location of nvm script
-NVM_PATH=nvm/nvm.sh
+NVM=nvm/nvm.sh
+# location where node.js will be installed
+export NVM_DIR=$PWD/nodejs
 
 NODE_VERSION=v0.4.7
 PROJECT_PATH=src/nodejs
@@ -21,7 +23,7 @@ mkdir -p  $NVM_DIR
 echo $NVM_DIR
 
 # source nvm
-. $NVM_PATH
+. $NVM
 nvm sync
 
 # install node if requested
@@ -49,7 +51,7 @@ npm link $PWD/pg
 npm link $PROJECT_PATH
 
 echo
-echo "To use nvm source it by typing: 'NVM_DIR=$NVM_DIR . $PWD/$NVM_PATH' "
+echo "To use nvm source it by typing: 'export NVM_DIR=$NVM_DIR ; . $PWD/$NVM' "
 echo "For permanent usage, add it to your ~/.bashrc"
 echo
 echo "with 'nvm use $NODE_VERSION' you can enable nvm"
