@@ -1,13 +1,10 @@
-# local nodejs install
-/nodejs
+# ignore npm modules directories
+node_modules/
 
-# Temp Files #
-##############
+# Temp Files
 *.swp
 
-
-# OS generated files #
-######################
+# OS generated files 
 *.DS_Store
 ehthumbs.db
 Icon?
