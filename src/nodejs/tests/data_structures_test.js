@@ -1,7 +1,3 @@
-if (module == require.main) {
-  async_testing = require('async_testing');
-  return async_testing.run(__filename, process.ARGV);
-}
 //var assert = require('assert');
 
 //Datei data_structure_prototypes.js does not exist yet
@@ -10,7 +6,9 @@ var test = require('../data_structure_prototypes.js');
 var toTestNode = test.node;
 var toTestWay = test.way;
 var toTestRelation = test.relation;
-var expectedTagFormat = {k:"string" , v:"string"};
+//var expectedTagFormat = {k:"string" , v:"string"};
+
+//module.exports.test = function(test)
 
 module.exports = {
  
@@ -94,6 +92,7 @@ module.exports = {
         test.notDeepEqual(typeof toTestRelation.members, "undefined");
         test.notDeepEqual(typeof toTestRelation.members[0], "undefined");
         for (var i=0; i<toTestRelation.members.length; i++){
+            //test.ok(underscore.include(["node","way","relation"],toTestRealtion.members[i].type));
             test.deepEqual(toTestRelation.members[i].type, "node" || "way" || "relation");
             test.deepEqual(typeof toTestRelation.members[i].reference, "number");
             test.deepEqual(typeof toTestRelation.members[i].role, "string");
@@ -133,3 +132,7 @@ module.exports = {
 }
 
 
+if (module == require.main) {
+  async_testing = require('async_testing');
+  return async_testing.run(__filename, process.ARGV);
+}
