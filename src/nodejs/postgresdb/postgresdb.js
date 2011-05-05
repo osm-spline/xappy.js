@@ -11,14 +11,30 @@ var PostgresDb = function(connectionString) {
 
 var rowToNode = function(row) {
     log.debug('New node: ' + JSON.stringify(row));
+
+    return {
+        id: 0,
+        lat: 0,
+        long: 0
+    };
 };
 
 var rowToWay = function(row) {
     log.debug('New way: ' + JSON.stringify(row));
+
+    return {
+        id: 0,
+        nodes: []
+    };
 };
 
 var rowToRelation = function(row) {
     log.debug('New relation: ' + JSON.stringify(row));
+
+    return {
+        id: 0,
+        members: []
+    };
 };
 
 var rowToObject = function(type, row) {
