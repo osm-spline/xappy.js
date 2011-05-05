@@ -165,11 +165,17 @@ module.exports = {
             delete first_tag.tags;
         }
 
-        return {
-            object: parsed.object,
-            bbox: first_bbox,
-            tag: first_tag
-        };
+        // only add those elements in the XapiRequest,
+        // that are really set in the request
+        var result = { object: parsed.object };
+        if (first_bbox) {
+            result.bbox = first_bbox;
+        }
+        if (first_tag) {
+            result.tag = first_tag;
+        }
+
+        return result;
     },
 
     // returns XapiRequest parsed from `expr`
