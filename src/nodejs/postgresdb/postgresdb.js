@@ -5,7 +5,8 @@ var QueryBuilder = require('./querybuilder').QueryBuilder;
 var log4js = require('log4js')();
 var log = log4js.getLogger('postgresdb');
 
-var PostgresDb = function(connectionString) {
+var PostgresDb = function(connectionString, backend) {
+    this.backend = backend || pg;
     this.connectionString = connectionString;
 };
 
@@ -68,7 +69,7 @@ PostgresDb.prototype.executeRequest = function(xapiRequest, callback) {
     var queryPlan = queryBuilder.createQueryPlan(xapiRequest);
 
     //request client connection from the pg_pool
-    pg.connect(this.connectionString, function(error, client) {
+    this.backend.connect(this.connectionString, function(error, client) {
 	if (error) {
 	    callback(error, null);
 	}
