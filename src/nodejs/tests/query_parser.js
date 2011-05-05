@@ -171,12 +171,12 @@ module.exports = {
     'parsing empty expression fails': function(test) {
         var p = parser.Parser('');
         test.throws(function() {
-            p.xpath()
+            p.xpath();
         });
         test.finish();
     },
-}
+};
 
-if (module == require.main) {
+if (module === require.main) {
     require('async_testing').run(__filename, process.ARGV);
 }

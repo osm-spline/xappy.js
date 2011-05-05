@@ -127,10 +127,12 @@ module.exports = {
                     out += this.get();
                     this.advance();
                 }
-                if (out === '') throw {
-                    name: 'parse error',
-                    message: 'empty word at ' + this.offset
-                };
+                if (out === '') { 
+                    throw {
+                        name: 'parse error',
+                        message: 'empty word at ' + this.offset
+                    };
+                }
                 return out;
             }
         };
@@ -144,30 +146,30 @@ module.exports = {
     // TODO find a better way to do this
     xapiRequest: function(parsed) {
         var detectByType = function(type) {
-            return underscore.detect(parsed.predicates, function(x) { return x.type === type });
-        }
+            return underscore.detect(parsed.predicates, function(x) { return x.type === type; });
+        };
 
         // reformat parser output as XapiRequest
         // TODO this is ugly
         var first_bbox = detectByType('bbox');
         if (first_bbox !== undefined) {
-            delete first_bbox.type
+            delete first_bbox.type;
         }
 
         var first_tag = detectByType('selection');
         if (first_tag !== undefined) {
-            delete first_tag.type
-            first_tag.value = first_tag.values
-            delete first_tag.values
-            first_tag.key = first_tag.tags
-            delete first_tag.tags
+            delete first_tag.type;
+            first_tag.value = first_tag.values;
+            delete first_tag.values;
+            first_tag.key = first_tag.tags;
+            delete first_tag.tags;
         }
 
         return {
             object: parsed.object,
             bbox: first_bbox,
             tag: first_tag
-        }
+        };
     },
 
     // returns XapiRequest parsed from `expr`
@@ -175,4 +177,4 @@ module.exports = {
         var parser = this.Parser(expr);
         return this.xapiRequest(parser.xpath());
     }
-}
+};
