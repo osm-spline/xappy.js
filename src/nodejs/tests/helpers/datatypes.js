@@ -1,14 +1,15 @@
-require('assert');
+var assert = require('assert');
+var async_testing = require('async_testing');
 
 var knownDatatypes = {
     xapiRequest : {
         type : 'costum',
         members : {
-            object : 'osmObject'
+            object : 'requestObject'
         } ,
         optionalMembers : {
-            bbox : 'osmBbox',
-            tag : 'osmTag'
+            bbox : 'requestBbox',
+            tag : 'requestTag'
         }
     },
     requestObject : {
@@ -27,10 +28,15 @@ var knownDatatypes = {
     requestTag : {
         type : 'costum',
         members: {
-            key : 'list',
-            value : 'list'
+            key : 'listString',
+            value : 'listString',
         },
+    },
+    listString : {
+        type : 'list',
+        valueType : 'string',
     }
+
 }
 
 
@@ -38,39 +44,7 @@ var knownDatatypes = {
 //export.checkQueryObject = function(obj){
 //    checkCostumType(obj,'xapiRequest');
 //}
-var checkType = function(obj,type){
-    console.log(obj + " " + type);
-    
 
-
-
-
-}
-
-
-var checkCostumType = function(obj,type){
-    
-    var members = knownDatatypes[type].members;
-    var optionalMembers = knownDatatypes[type].optionalMembers;
-
-    for ( member in members ) 
-    {   
-        //console.log("Checking member: " + member);
-        if ( ! obj.hasOwnProperty(member) || ! checkType(obj[member],members[member])) {
-            return false;
-        }
-    }
-    
-    for ( member in optionalMembers ) 
-    {   
-        //console.log("Checking optional member: " + member);
-        if (! checkType(obj[member],optionalMembers[member])) {
-            return false;
-        }
-    }
-
-    return true;
-}
 
 // ################# fire and for get tests
 
@@ -90,4 +64,67 @@ var testObj = {
     }
 }
 
-console.log(checkCostumType(testObj,'xapiRequest'));
+
+module.exports.test = function asyncTest(test){
+    var checkType = function(obj,type){
+        console.log(obj + " " + type);
+        // handle built primitiv datatypes
+        primitives = ['number','string']
+            if ( primitives[type] ) {
+                test.ok(true)
+            }
+        
+        // handle types from knownTypes array
+        if ( type.type === 'list' ) {
+            for ( element in obj ) {
+                checkType(element,type.valueType);
+            }
+        }
+
+        if ( type.type === 'enum' ) {
+            checkEnumType(obj,type);
+        }
+
+        if ( type.type === 'costum' ) {
+            checkCostumType(obj,type);
+        }
+    }
+
+    var checkEnumType = function(obj,type) {
+
+        for ( value in type.values ) {
+            return;       
+        }
+
+    }
+
+    var checkCostumType = function(obj,type){
+
+        var members = knownDatatypes[type].members;
+        var optionalMembers = knownDatatypes[type].optionalMembers;
+
+        for ( member in members ) {   
+            test.ok(obj.hasOwnProperty(member),'Object is missing non optional property ' + member);
+            checkType(obj[member],members[member]);
+        }
+
+        for ( member in optionalMembers ) {   
+            if ( obj.hasOwnProperty(member) ) {
+                checkType(obj[member],optionalMembers[member]);
+            }
+        }
+
+        return true;
+    }
+    
+    setTimeout(function() {
+    // make an assertion (these are just regular Node assertions)
+    checkType(testObj,'xapiRequest');
+    // finish the test
+    test.finish();
+  },0.001);
+}
+
+async_testing.run(__filename, process.ARGV);
+
+//console.log(checkCostumType(testObj,'xapiRequest'));

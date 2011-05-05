@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var http = require('http');
 var fs = require('fs');
 var pg = require('pg');
@@ -6,7 +7,7 @@ var opts = require('opts');
 var osmRes = require('./response');
 var log4js = require('log4js')();
 var log = log4js.getLogger('global');
-var parser = require('./parse');
+var parser = require('./query_parser');
 var config;
 
 // #################### MAY be put to different module later
@@ -282,7 +283,7 @@ function myFunction(req,res){
     res.writeHead(200);
 
     try {
-        var reqObj = parser.urlToXpathObj(req.url);
+        var reqObj = parser.parse(req.url);
         var queryDict = buildMainQuery(reqObj);
         var resXml = osmRes.mkXmlRes(res);
 
