@@ -134,7 +134,7 @@ module.exports = {
 	'create tags with one tag' : function(test) {
 		var myQueryObject = {
 			object : 'node',
-			tags : [{k:'name', v:'U3'}]
+			tags : [{k:'name', v:'U3'}] //FIXME
 		};
 		var expected = '(nodes.tags @> hstore(\'name\',\'U3\'))';
 		var input = new QueryBuilder().createTags('nodes',myQueryObject.tags);
@@ -146,7 +146,7 @@ module.exports = {
 	'create tags with multiple tags' : function(test) {
 		var myQueryObject = {
 			object : 'node',
-			tags : [{k:'name', v:'U3'}, {k:'name',v:'U4'}]
+			tags : [{k:'name', v:'U3'}, {k:'name',v:'U4'}] //FIXME
 		};
 		var expected = '(nodes.tags @> hstore(\'name\',\'U3\') OR nodes.tags @> hstore(\'name\',\'U4\'))';
 		var input = new QueryBuilder().createTags('nodes', myQueryObject.tags);
@@ -157,7 +157,7 @@ module.exports = {
 	'create queries for nodes with tags' : function(test) {
 		var myQueryObject = {
 			object : 'node',
-			tags : [{k:'name', v:'U3'}, {k:'name',v:'U4'}]
+			tags : [{k:'name', v:'U3'}, {k:'name',v:'U4'}] //FIXME
 		};
 		//FIXME expected should be a queryPlan object with pgQueries
 		var expected = {
@@ -225,7 +225,7 @@ module.exports = {
 				right: 13.0,
 				top : 53
 			},
-			tags : [{k:'amenity', v:'pub'}]
+			tags : [{k:'amenity', v:'pub'}] //FIXME
 		};
 		var expected = {
 			nodes : {
