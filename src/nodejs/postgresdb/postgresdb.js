@@ -1,17 +1,24 @@
 var pg = require('pg');
 var QueryBuilder = require('./querybuilder').QueryBuilder;
 
+// logging
+var log4js = require('log4js')();
+var log = log4js.getLogger('postgresdb');
+
 var PostgresDb = function(connectionString) {
     this.connectionString = connectionString;
 };
 
 var rowToNode = function(row) {
+    log.debug('New node: ' + JSON.stringify(row));
 };
 
 var rowToWay = function(row) {
+    log.debug('New way: ' + JSON.stringify(row));
 };
 
 var rowToRelation = function(row) {
+    log.debug('New relation: ' + JSON.stringify(row));
 };
 
 var rowToObject = function(type, row) {
@@ -21,9 +28,11 @@ var rowToObject = function(type, row) {
         relation: rowToRelation
     };
 
-    if (objects.hasOnwProperty(type)) {
-        objects[type](row);
+    if (type in objects) {
+        return objects[type](row);
     }
+
+    log.warn('Invalid row type: ' + type);
 };
 
 var handleQuery = function(client, queryPlan, type, eventEmitter) {
@@ -44,8 +53,7 @@ PostgresDb.prototype.executeRequest = function(xapiRequest, callback) {
 
     //request client connection from the pg_pool
     pg.connect(this.connectionString, function(error, client) {
-	if(error) {
-	    //TODO log error
+	if (error) {
 	    callback(error, null);
 	}
 	else {
@@ -59,9 +67,7 @@ PostgresDb.prototype.executeRequest = function(xapiRequest, callback) {
 
             var type;
             for (type in queryPlan) {
-                if (queryPlan.hasOwnProperty(type)) {
-                    handleQuerry(client, queryPlan[type], type, dbEventEmitter);
-                }
+                handleQuerry(client, queryPlan[type], type, dbEventEmitter);
             }
 
 	    callback(null, dbEventEmitter);
