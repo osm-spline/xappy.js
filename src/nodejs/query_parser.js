@@ -60,7 +60,7 @@ module.exports = {
             object: function() {
                 var type = this.word();
                 if ( ! underscore.include(['*', 'way', 'node', 'relation'], type)) {
-                    throw 'unknown element type "' + type + '" at ' + this.offset;
+                    throw 'unknown object type "' + type + '" at ' + this.offset;
                 }
                 return type;
             },
@@ -150,14 +150,18 @@ module.exports = {
         // reformat parser output as XapiRequest
         // TODO this is ugly
         var first_bbox = detectByType('bbox');
-        delete first_bbox.type
+        if (first_bbox !== undefined) {
+            delete first_bbox.type
+        }
 
         var first_tag = detectByType('selection');
-        delete first_tag.type
-        first_tag.value = first_tag.values
-        delete first_tag.values
-        first_tag.key = first_tag.tags
-        delete first_tag.tags
+        if (first_tag !== undefined) {
+            delete first_tag.type
+            first_tag.value = first_tag.values
+            delete first_tag.values
+            first_tag.key = first_tag.tags
+            delete first_tag.tags
+        }
 
         return {
             object: parsed.object,
