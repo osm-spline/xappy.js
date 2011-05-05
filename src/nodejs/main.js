@@ -7,7 +7,7 @@ var opts = require('opts');
 var osmRes = require('./response');
 var log4js = require('log4js')();
 var log = log4js.getLogger('global');
-var parser = require('./query_parser');
+var parser = require('./requestParser');
 var config;
 
 // #################### MAY be put to different module later
