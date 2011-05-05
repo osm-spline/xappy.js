@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var http = require('http');
 var fs = require('fs');
 var pg = require('pg');
