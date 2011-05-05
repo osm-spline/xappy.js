@@ -1,9 +1,9 @@
-//make this test standalone
 if (module == require.main) {
 	require('async_testing').run(__filename, process.ARGV);
 }
 
-var QueryBuilder = require('../../postgresdb/querybuilder').QueryBuilder;
+// does not work yet
+//var QueryBuilder = require('../../postgresdb/querybuilder').QueryBuilder;
 
 module.exports = {
 	//api/0.6/node

@@ -1,9 +1,15 @@
 var assert = require('assert');
-var test = require('../parse.js');
 
+// this was used for testing the old version of the parser
+// this test file has used no test framework
+// it had a different syntax
+// TODO merge into new request parser test
 
-//TODO function does not exist yet
-var toTest = test.urlToXpathObj;
+//var toTest = test.urlToXpathObj;
+//
+
+/*
+var toTest = function(input) { return input; }
 
 
 // test all simple objects { node, way, relation }
@@ -60,4 +66,4 @@ var expected = { object: "node", bbox: {left:0,bottom:0,right:0,top:0}, tag: {ke
 assert.deepEqual(toTest(nodeBboxTag), expected);
 assert.deepEqual(toTest(nodeTagBbox), expected);
 
-
+*/
