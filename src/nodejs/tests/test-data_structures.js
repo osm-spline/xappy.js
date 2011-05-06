@@ -1,7 +1,8 @@
 //var assert = require('assert');
 
 //Datei data_structure_prototypes.js does not exist yet
-var test = require('../data_structure_prototypes.js');
+//var test = require('../data_structure_prototypes.js');
+var test = "foo";
 //TODO function does not exist yet
 var toTestNode = test.node;
 var toTestWay = test.way;

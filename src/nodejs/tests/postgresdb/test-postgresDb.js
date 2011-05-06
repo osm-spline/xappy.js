@@ -3,7 +3,8 @@ if (module == require.main) {
 	require('async_testing').run(__filename, process.ARGV);
 }
 
-var PostgresDb = require('../../postgresdb/postgresdb').PostgresDb;
+// does not exist yet
+//var PostgresDb = require('../../postgresdb/postgresdb').PostgresDb;
 
 module.exports = {
 	//api/0.6/node
