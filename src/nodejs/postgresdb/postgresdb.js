@@ -1,3 +1,4 @@
+var events = require('events');
 var pg = require('pg');
 var QueryBuilder = require('./querybuilder').QueryBuilder;
 
@@ -76,7 +77,7 @@ PostgresDb.prototype.executeRequest = function(xapiRequest, callback) {
 	else {
 	    var dbEventEmitter = new events.EventEmitter();
 	    client.on('error', function(error) {
-		dbEventEmmiter.emit('error', error);
+		dbEventEmitter.emit('error', error);
 	    });
 	    client.on('drain', function() {
 		dbEventEmitter.emit('end');
@@ -84,7 +85,7 @@ PostgresDb.prototype.executeRequest = function(xapiRequest, callback) {
 
             var type;
             for (type in queryPlan) {
-                handleQuerry(client, queryPlan[type], type, dbEventEmitter);
+                handleQuery(client, queryPlan[type], type, dbEventEmitter);
             }
 
 	    callback(null, dbEventEmitter);
