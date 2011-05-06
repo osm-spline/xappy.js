@@ -11,13 +11,27 @@ var PostgresDb = function(connectionString, backend) {
     this.connectionString = connectionString;
 };
 
+var parseRowTags = function(rowTags) {
+    var tags = [];
+    var i;
+    for(i=0; i<tags.length; i++) {
+        tags.push({k:rowTags[i], v:rowTags[i+1]});
+    }
+};
+
 var rowToNode = function(row) {
     log.debug('New node: ' + JSON.stringify(row));
-
+    //TODO some values are optional e.g. version
     return {
-        id: 0,
-        lat: 0,
-        long: 0
+        id: row.id,
+        lat: row.lat,
+        lon: row.lon,
+        version: row.version,
+        uid: row.user_id,
+        user : row.user_name,
+        changesetId: row.changeset_id,
+        timestamp: row.tstamp,
+        tags : parseRowTags(row.tags)
     };
 };
 
@@ -56,11 +70,11 @@ var rowToObject = function(type, row) {
 var handleQuery = function(client, queryPlan, type, eventEmitter) {
     var query = client.query(queryPlan);
     query.on('row', function(row) {
-	eventEmitter.emit(type, rowToObject(type, row));
+        eventEmitter.emit(type, rowToObject(type, row));
     });
 
     query.on('error', function(error) {
-	eventEmitter.emit('error', error);
+        eventEmitter.emit('error', error);
     });
 };
 
@@ -71,25 +85,25 @@ PostgresDb.prototype.executeRequest = function(xapiRequest, callback) {
 
     //request client connection from the pg_pool
     this.backend.connect(this.connectionString, function(error, client) {
-	if (error) {
-	    callback(error, null);
-	}
-	else {
-	    var dbEventEmitter = new events.EventEmitter();
-	    client.on('error', function(error) {
-		dbEventEmitter.emit('error', error);
-	    });
-	    client.on('drain', function() {
-		dbEventEmitter.emit('end');
-	    });
+    if (error) {
+        callback(error, null);
+    }
+    else {
+        var dbEventEmitter = new events.EventEmitter();
+        client.on('error', function(error) {
+            dbEventEmitter.emit('error', error);
+        });
+        client.on('drain', function() {
+            dbEventEmitter.emit('end');
+        });
 
             var type;
             for (type in queryPlan) {
                 handleQuery(client, queryPlan[type], type, dbEventEmitter);
             }
 
-	    callback(null, dbEventEmitter);
-	}
+        callback(null, dbEventEmitter);
+    }
     });
 };
 
