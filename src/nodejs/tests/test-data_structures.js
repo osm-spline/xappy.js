@@ -12,7 +12,7 @@ var toTestRelation = test.relation;
 //module.exports.test = function(test)
 
 module.exports = {
- 
+
    // is-it-a-valid-object tests
 
  'testnode': function(test) {
@@ -37,7 +37,7 @@ module.exports = {
         test.deepEqual(typeof toTestNode.changesetId, "number");
     }
     if(typeof toTestNode.tags != "undefined"){
-        
+
         if (typeof toTestNode.tags[0] != "undefined"){
             for (var x=0; x<toTestNode.tags.length; x++){
                 test.deepEqual(typeof toTestNode.tags[x].k, "string");
@@ -100,7 +100,7 @@ module.exports = {
             test.notDeepEqual(toTestRelation.members[i].role, "");
         }
 
-/*  members: [ { 
+/*  members: [ {
       type: "node" | "way" | "relation",
       reference: <bigint>,
       role: <string>
