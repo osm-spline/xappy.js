@@ -19,7 +19,7 @@ var knownDatatypes = {
     way : {
         members : {
             id : 'number',
-            nodes : ['number'],
+            nodes : ['number']
         },
         attributes : {
             version : 'number',
@@ -49,7 +49,7 @@ var knownDatatypes = {
             tags : [{k : 'string', v : 'string'}]
         }
     }
-}
+};
 
 //example data---------------------------
 
@@ -60,14 +60,14 @@ var SAMPLE_NODE = {
     version : 1,
     timestamp : new Date(),
     tags : [{k : 'amenity', v : 'hospital'}]
-}
+};
 
 var SAMPLE_WAY = {
     id : 496969,
     nodes : [1,2],
     version : 2,
     tags : [{k : 'jk', v : 'bla'}]
-}
+};
 
 var SAMPLE_RELATION = {
     id : 4905,
@@ -83,7 +83,7 @@ var SAMPLE_RELATION = {
     }
     ],
         timestamp : new Date()
-}
+};
 //------------------------------------------
 
 //Datei data_structure_prototypes.js does not exist yet
@@ -176,10 +176,10 @@ module.exports = {
         if(typeof toTestWay.tags != "undefined"){
             if(typeof toTestWay.tags[0] != "undefined"){
                 for (var x=0; x<toTestWay.tags.length; x++){
-                test.deepEqual(typeof toTestWay.tags[x].k, "string", "Way tags key is not a string!");
-                test.deepEqual(typeof toTestWay.tags[x].v, "string", "Way tags value is not a string!");
-                test.notDeepEqual(toTestWay.tags[x].k, "", "Way tags key is empty!");
-                test.notDeepEqual(toTestWay.tags[x].v, "", "Way tags value is empty!");
+                    test.deepEqual(typeof toTestWay.tags[x].k, "string", "Way tags key is not a string!");
+                    test.deepEqual(typeof toTestWay.tags[x].v, "string", "Way tags value is not a string!");
+                    test.notDeepEqual(toTestWay.tags[x].k, "", "Way tags key is empty!");
+                    test.notDeepEqual(toTestWay.tags[x].v, "", "Way tags value is empty!");
                 }
             }
         }
@@ -236,7 +236,7 @@ module.exports = {
     test.finish();
     }
 
-}
+};
 
 
 if (module == require.main) {
