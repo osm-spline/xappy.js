@@ -10,8 +10,18 @@ var toTestRelation = test.relation;
 
 //module.exports.test = function(test)
 
+var knownDatatypes = {
+    node : {
+        members : {
+        id : 'number',
+        lat : 'number',
+        lon : 'number'
+        }
+    }
+}
+
 module.exports = {
- 
+
    // is-it-a-valid-object tests
 
  'testnode': function(test) {
