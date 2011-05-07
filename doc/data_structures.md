@@ -27,10 +27,12 @@ Node Object
     Node {
       id: <bigint>,
       lat: <bigint>,
-      long: <bigint>,
+      lon: <bigint>,
       version*: <bigint>,
       uid*: <bigint>,
+      user*: <string>,
       changesetId*: <bigint>,
+      timestamp*: <Date>,
       tags*: [ { key: <str>, value: <str> } ]
     }
 
@@ -43,7 +45,9 @@ Way Object
       id: <bigint>,
       version*: <bigint>,
       uid*: <bigint>,
+      user*: <string>
       changesetId*: <bigint>,
+      timestamp*: <Date>,
       nodes: [ <bigint> ],
       tags*: [ { key: <str>, value: <str> } ]
     }
@@ -57,9 +61,11 @@ Relation Object
       id: <bigint>,
       version*: <bigint>,
       uid*: <bigint>,
+      user*: <string>,
       changesetId*: <bigint>,
+      timestamp*: <Date>
       tags*: [ { key: <str>, value: <str> } ],
-      members: [ { 
+      members: [ {
           type: "node" | "way" | "relation",
           reference: <bigint>,
           role: <string>

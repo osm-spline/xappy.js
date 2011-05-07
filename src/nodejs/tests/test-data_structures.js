@@ -1,7 +1,8 @@
 //var assert = require('assert');
 
 //Datei data_structure_prototypes.js does not exist yet
-var test = require('../data_structure_prototypes.js');
+//var test = require('../data_structure_prototypes.js');
+var test = "foo";
 //TODO function does not exist yet
 var toTestNode = test.node;
 var toTestWay = test.way;
@@ -46,7 +47,7 @@ module.exports = {
         test.deepEqual(typeof toTestNode.changesetId, "number");
     }
     if(typeof toTestNode.tags != "undefined"){
-        
+
         if (typeof toTestNode.tags[0] != "undefined"){
             for (var x=0; x<toTestNode.tags.length; x++){
                 test.deepEqual(typeof toTestNode.tags[x].k, "string");
@@ -109,7 +110,7 @@ module.exports = {
             test.notDeepEqual(toTestRelation.members[i].role, "");
         }
 
-/*  members: [ { 
+/*  members: [ {
       type: "node" | "way" | "relation",
       reference: <bigint>,
       role: <string>
