@@ -11,7 +11,7 @@ var knownDatatypes = {
             uid : 'number',
             user : 'string',
             changesetId : 'number',
-            timestamp : 'date',
+            timestamp : 'Date',
             tags : [{k : 'string', v : 'string'}]
         }
     },
@@ -128,7 +128,7 @@ module.exports = {
         test.deepEqual(typeof toTestNode.changesetId, "number", "Node changesetId is not a number!");
     }
     if(typeof toTestNode.timestamp != "undefined"){
-        test.deepEqual(typeof toTestNode.timestamp, "Date", "Node timestamp is not a Date!");
+        test.notDeepEqual(toTestNode.timestamp.getDate(), "undefined", "Node timestamp is not a Date!");
     }
     if(typeof toTestNode.tags != "undefined"){
 
@@ -171,7 +171,7 @@ module.exports = {
             test.deepEqual(typeof toTestWay.changesetId, "number", "Way changesetId is not a number!");
         }
         if(typeof toTestWay.timestamp != "undefined"){
-            test.deepEqual(typeof toTestWay.timestamp, "Date", "Way timestamp is not a Date!");
+            test.notDeepEqual(toTestWay.timestamp.getDate(), "undefined", "Way timestamp is not a Date!");
         }
         if(typeof toTestWay.tags != "undefined"){
             if(typeof toTestWay.tags[0] != "undefined"){
@@ -221,8 +221,10 @@ module.exports = {
             test.deepEqual(typeof toTestRelation.changesetId, "number", "Relation changesetId is not a number!");
         }
         if(typeof toTestRelation.timestamp != "undefined"){
-            test.deepEqual(typeof toTestRelation.timestamp, "Date", "Relation timestamp is not a Date!");
+            test.notDeepEqual(toTestRelation.timestamp.getDate(), "undefined", "Relation timestamp is not a Date!");
         }
+//        test.notDeepEqual(toTestNode.timestamp.getDate(), "undefined", "Node timestamp is not a Date!");
+ 
         if(typeof toTestRelation.tags != "undefined"){
             if(typeof toTestRelation.tags[0] != "undefined"){
                 for (var x=0; x<toTestRelation.tags.length; x++){
