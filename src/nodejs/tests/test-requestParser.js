@@ -226,8 +226,6 @@ module.exports = {
         });
     },
 
-    // TODO invalid object eg not (node, way, relation)
-
     'parse node with bbox': function(test) {
         parser.parse('/node[bbox=0,51.5,0.25,51.75]', function (error,xapiRequest) {
             test.equal(error,null);
