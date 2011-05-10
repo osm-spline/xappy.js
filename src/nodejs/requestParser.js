@@ -83,31 +83,31 @@ module.exports = {
                     return this.bboxPredicate();
                 } catch (error) {
                     this.offset = stored_offset;
-                    return this.selectionPredicate();
+                    return this.tagPredicate();
                 }
             },
 
             // 'bbox='<float>','<float>','<float>','<float>
             bboxPredicate: function() {
                 this.expect('bbox=');
-                var out = { type: 'bbox' };
-                out.left = parseFloat(this.word());
+                var bbox = {};
+                bbox.left = parseFloat(this.word());
                 this.expect(',');
-                out.bottom = parseFloat(this.word());
+                bbox.bottom = parseFloat(this.word());
                 this.expect(',');
-                out.right = parseFloat(this.word());
+                bbox.right = parseFloat(this.word());
                 this.expect(',');
-                out.top = parseFloat(this.word());
-                return out;
+                bbox.top = parseFloat(this.word());
+                return bbox;
             },
 
             // <delimited>'='<delimited>
-            selectionPredicate: function() {
-                var out = { type: 'selection' };
-                out.tags = this.delimited();
+            tagPredicate: function() {
+                var tag = {};
+                tag.key = this.delimited();
                 this.expect('=');
-                out.values = this.delimited();
-                return out;
+                tag.value = this.delimited();
+                return tag;
             },
 
             // list of <word> delimited by '|' (at least one)
@@ -127,7 +127,7 @@ module.exports = {
                     out += this.get();
                     this.advance();
                 }
-                if (out === '') { 
+                if (out === '') {
                     throw {
                         name: 'parse error',
                         message: 'empty word at ' + this.offset
@@ -143,39 +143,17 @@ module.exports = {
     // the parser accepts an arbitrary list of predicates.
     // an XapiRequest however contains at most one tag and one bbox.
     // therefore, only the first tag and bbox returned by the parser are chosen.
-    // TODO find a better way to do this
     xapiRequest: function(parsed) {
-        var detectByType = function(type) {
-            return underscore.detect(parsed.predicates, function(x) { return x.type === type; });
-        };
+        // used to differentiate between tag and bbox predicates
+        var isTag = function(object) { return object.key != undefined; };
+        var isBbox = function(object) { return object.left != undefined; };
 
-        // reformat parser output as XapiRequest
-        // TODO this is ugly
-        var first_bbox = detectByType('bbox');
-        if (first_bbox !== undefined) {
-            delete first_bbox.type;
-        }
-
-        var first_tag = detectByType('selection');
-        if (first_tag !== undefined) {
-            delete first_tag.type;
-            first_tag.value = first_tag.values;
-            delete first_tag.values;
-            first_tag.key = first_tag.tags;
-            delete first_tag.tags;
-        }
-
-        // only add those elements in the XapiRequest,
-        // that are really set in the request
-        var result = { object: parsed.object };
-        if (first_bbox) {
-            result.bbox = first_bbox;
-        }
-        if (first_tag) {
-            result.tag = first_tag;
-        }
-
-        return result;
+        var request = { object: parsed.object };
+        var bbox = underscore.detect(parsed.predicates, isBbox);
+        var tag = underscore.detect(parsed.predicates, isTag);
+        if (bbox !== undefined) request.bbox = bbox;
+        if (tag !== undefined) request.tag = tag;
+        return request;
     },
 
     // returns XapiRequest parsed from `expr`
