@@ -189,7 +189,6 @@ module.exports = {
     },
 
     'parse simple way string': function(test) {
-        debugger;
         var x = parser.parse('/way');
         test.deepEqual(x, { object: 'way' });
         test.finish();
