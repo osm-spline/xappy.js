@@ -51,9 +51,9 @@ var knownDatatypes = {
     }
 };
 
------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
 
-var underscore = require('underscore');
+var _ = require('underscore')._;
 
 
     //tests that could be called by other modules
@@ -148,7 +148,7 @@ module.exports = {
         test.notDeepEqual(typeof toTestRelation.members, "undefined", "Relation has no members!");
         test.notDeepEqual(typeof toTestRelation.members[0], "undefined", "Relation has no members!");
         for (var i=0; i<toTestRelation.members.length; i++){
-            test.ok(underscore.include(["node","way","relation"],toTestRelation.members[i].type), "Relation type is neither node, nor way, nor relation!");
+            test.ok(_.include(["node","way","relation"],toTestRelation.members[i].type), "Relation type is neither node, nor way, nor relation!");
            //test.deepEqual(toTestRelation.members[i].type, "node" || "way" || "relation");
             test.deepEqual(typeof toTestRelation.members[i].reference, "number", "Relation member reference is not a number!");
             test.deepEqual(typeof toTestRelation.members[i].role, "string", "Relation member role is not a string!");
