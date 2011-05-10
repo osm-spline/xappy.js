@@ -1,4 +1,4 @@
-var parser = require('../lib/requestParser');
+var parser = require('../requestParser');
 
 // example data
 // ------------
