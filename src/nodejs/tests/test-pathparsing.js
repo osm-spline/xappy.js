@@ -4,7 +4,7 @@ if (module == require.main) {
 }
 var assert = require('assert');
 
-var test = require('../parse.js');
+var test = require('../lib/parse');
 //TODO function does not exist yet
 var toTest = test.urlToXpathObj;
 

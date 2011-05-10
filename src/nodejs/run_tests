@@ -1,1 +1,5 @@
-node_modules/async_testing/bin/node-async-test.js tests/
+#!/usr/bin/env sh
+REL_PATH="`dirname \"$0\"`" # relative
+ROOT="${REL_PATH}/.."
+
+${ROOT}/node_modules/async_testing/bin/node-async-test.js "${ROOT}/tests/"
