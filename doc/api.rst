@@ -103,7 +103,7 @@ The purpose of this module is to for a request object from the string
 representation of the url.
 
 Methods
-    parseFromUrl(<String>,<callback(xapiRequest)>)
+    parseFromUrl(<String>,<callback(error,xapiRequest)>)
 
 
 responseHandler
@@ -124,7 +124,7 @@ dataBase
 Access the database.
 
 Methods
-    executeRequest(xapiRequest,<callback(dbEventemitter)>)
+    executeRequest(xapiRequest,<callback(error,dbEventemitter)>)
 
 the returned event emitter is a object of the following shape:
 
