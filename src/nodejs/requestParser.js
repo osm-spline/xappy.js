@@ -50,7 +50,7 @@ module.exports = {
             // each function has a comment that describes, what the function parses.
             // other parser functions are denoted by angle braces.
 
-            // '/'<object>[ <predicate> ]
+            // '/'<object><predicates>
             xpath: function() {
                 this.expect('/');
                 return { object: this.object(), predicates: this.predicates() };
@@ -141,7 +141,7 @@ module.exports = {
 
     // constructs XapiRequest from the parser output.
     // the parser accepts an arbitrary list of predicates.
-    // and XapiRequest however contains at most one tag and one bbox.
+    // an XapiRequest however contains at most one tag and one bbox.
     // therefore, only the first tag and bbox returned by the parser are chosen.
     // TODO find a better way to do this
     xapiRequest: function(parsed) {
