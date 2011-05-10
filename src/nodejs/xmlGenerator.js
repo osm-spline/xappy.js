@@ -35,7 +35,7 @@ exports.createWay = function (row) {
         .att('timestamp', row.timestamp)
         .att('version', row.version)
         .att('changeset', row.changeset);
-        
+
     if(row.tags) {
         row.tags.forEach(function(tuple){
             xmlWay.ele('tag')
@@ -43,7 +43,7 @@ exports.createWay = function (row) {
             .att('v',escape(tuple.value));
         });
     }
-        
+
     //temp = row.nodes.replace("{","").replace("}","").split(",");
     //for(var i=0;i<temp.length;i++) {
     //    way.ele('nd').att('ref',temp[i]);

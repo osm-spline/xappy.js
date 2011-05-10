@@ -2,10 +2,10 @@
 Module documentation
 ====================
 
-Purpose of this document 
+Purpose of this document
 ------------------------
 
-In JS there is no way to inforce interfaces, but nodejs lets us use commonJS 
+In JS there is no way to inforce interfaces, but nodejs lets us use commonJS
 modules. So we can define an interface for them. The following is a listing of
 modules, and thier exported functions. Data types are inforced by test and will
 be supported with generators as test helpers
@@ -23,7 +23,7 @@ xapiRequest
 
 This object represents a different representation of our XPath query url. It
 will be produced by the RequestParser and be translated in to a db-query by the
-db-module. 
+db-module.
 
 ::
 
@@ -36,22 +36,24 @@ db-module.
         tag* : {    key: [ <string> ] | [] ,
                     value: [ <string> ] | []}
     }
-    
+
 Node object
 ...........
 
 OSM node representation.
 
 ::
-    
+
     {
         id: <bigint>,
         lat: <bigint>,
-        long: <bigint>,
+        lon: <bigint>,
         version*: <bigint>,
         uid*: <bigint>,
+        user*: <string>,
         changesetId*: <bigint>,
-        tags*: [ { key: <str>, value: <str> } ] 
+        timestamp*: <Date>,
+        tags*: [ { key: <str>, value: <str> } ]
     }
 
 
@@ -61,12 +63,14 @@ Way object
 OSM way representation.
 
 ::
-    
+
     {
         id: <bigint>,
         version*: <bigint>,
         uid*: <bigint>,
+        user*: <string>,
         changesetId*: <bigint>,
+        timestamp*: <Date>,
         nodes: [ <bigint> ],
         tags*: [ { key: <str>, value: <str> } ]
     }
@@ -78,14 +82,16 @@ Relation object
 OSM way representation.
 
 ::
-    
+
     {
         id: <bigint>,
         version*: <bigint>,
         uid*: <bigint>,
+        user*: name,
         changesetId*: <bigint>,
+        timestamp*: <Date>,
         tags*: [ { key: <str>, value: <str> } ],
-        members: [ { 
+        members: [ {
             type: "node" | "way" | "relation",
             reference: <bigint>,
             role: <string>
@@ -129,7 +135,7 @@ Methods
 the returned event emitter is a object of the following shape:
 
 ::
-    
+
     dbEventEmitter{
         on(<String:Event>,<callback>)
     }
@@ -138,13 +144,13 @@ the returned event emitter is a object of the following shape:
 Those events are supported, calling the function with the specified arguments.
 
 =========== =========
-Events      Arguments 
+Events      Arguments
 =========== =========
 way         way
 node        node
 relation    relation
 err         err
-end         
+end
 =========== =========
 
 

@@ -15,13 +15,13 @@ var parser = function(){
             throw "Unexpected char " + expr[offset] +  " at " + offset + " expected: " + char;
         }
         offset ++;
-    }
+    };
 
     var parsePredicate = function(){
         check('[');
         parseInnerPredicate();
         check(']');
-    }
+    };
 
     var parseInnerPredicate = function(){
         tmpKeys=[];
@@ -33,7 +33,7 @@ var parser = function(){
             keys = tmpKeys;
             parseKeyValue(values,']');
         }
-    }
+    };
 
     var parseBboxValues = function(){
         bbox.left = parseBboxFloat();
@@ -43,7 +43,7 @@ var parser = function(){
         bbox.right = parseBboxFloat();
         check(',');
         bbox.top = parseBboxFloat();
-    }
+    };
 
     var parseBboxFloat = function(){
         var floatStr = "";
@@ -52,7 +52,7 @@ var parser = function(){
             offset ++;
         }
         return parseFloat(floatStr);
-    }
+    };
 
     var parseKeyValue = function(list,delim){
         var word = "";
@@ -73,7 +73,7 @@ var parser = function(){
         }
         list.push(word);
 
-    }
+    };
 
     this.parse = function(exprLocal){
         expr = exprLocal;
@@ -109,23 +109,23 @@ var parser = function(){
             object : object
         };
 
-        if(bbox.left != undefined){
+        if(bbox.left !== undefined){
             result.bbox = bbox;
         }
 
         if(keys.length > 0){
 
-            result.tag = { 
+            result.tag = {
                 key : keys,
                 value : values
-            }
+            };
         }
-        return result; 
-    }
-}
+        return result;
+    };
+};
 
 
 exports.urlToXpathObj = function urlToXpathObj(url){
     var parse = new parser();
     return parse.parse(unescape(url));
-}
+};

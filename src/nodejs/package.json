@@ -1,16 +1,21 @@
-{ "name" : "xapi-osm-spline"
-, "version" : "0.0.1"
-, "description" : "An osm xapi implementation"
-, "autor" : "osm@spline <osm@lists.spline.de> (http://osm.spline.de)"
-, "files" : ["."]
-, "dependencies" :
-    { "pg" : "*"
-    , "xmlbuilder" : "*"
-    , "log4js" : "*"
-    , "opts" : "*"
-    }
-, "devDependencies" :
-    { "async_testing" : "*"
-    , "jslint" : "*"
+{
+    "name" : "xapi-osm-spline",
+    "version" : "0.0.1",
+    "description" : "An osm xapi implementation",
+    "autor" : "osm@spline <osm@lists.spline.de> (http://osm.spline.de)",
+    "files" : ["."],
+    "dependencies" : {
+        "pg" : "*",
+        "xmlbuilder" : "*",
+        "underscore" : "*",
+        "log4js" : "*",
+        "opts" : "*"
+    },
+    "devDependencies" : {
+        "async_testing" : "*",
+        "jslint" : "*"
+    },
+    "scripts": {
+        "test": "node_modules/async_testing/bin/node-async-test.js tests/"
     }
 }
