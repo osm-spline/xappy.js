@@ -27,7 +27,7 @@ function toISO8601(date) {
             ].join('');
 }
 
-var thisTimeStamp = toISO8601(new Date);
+var thisTimeStamp = toISO8601(new Date());
 
 // Samples
 var sample_node = {
@@ -38,7 +38,7 @@ var sample_node = {
     uid: 4,
     user: "et'ti",
     changesetId: 4,
-    timestamp: thisTimeStamp,
+    timestamp: thisTimeStamp
 };
 
 var sample_way = {
@@ -47,7 +47,7 @@ var sample_way = {
     uid: 35,
     user: "irena",
     changesetId: 7,
-    timestamp: thisTimeStamp,
+    timestamp: thisTimeStamp
 };
 
 var sample_rel = {
