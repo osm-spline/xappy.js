@@ -1,11 +1,12 @@
 //example data---------------------------
 
+var myTimestamp = new Date().getTime();
 var SAMPLE_NODE = {
     id : 135678,
     lat : 48.2111685091189,
     lon : 16.3035366605548,
     version : 1,
-    timestamp : new Date(),
+    timestamp : myTimestamp,
     tags : [{k : 'amenity', v : 'hospital'}]
 };
 
@@ -27,29 +28,35 @@ var SAMPLE_RELATION = {
         type : 'way',
         reference : 34,
         role : 'blup'
-    }
-    ],
-        timestamp : new Date()
+    }],
+    timestamp : myTimestamp,
 };
 //------------------------------------------
 
-var testfunc = require('../jsonGenerator.js');
+var jsonGen = require('../jsonGenerator.js');
 
-var toTestNode = testfunc.createNode(SAMPLE_NODE);
-var toTestWay = SAMPLE_WAY;
-var toTestRelation = SAMPLE_RELATION;
+var toTestNode = jsonGen.createNode(SAMPLE_NODE);
+var toTestWay = jsonGen.createNode(SAMPLE_WAY);
+var toTestRelation = jsonGen.createNode(SAMPLE_RELATION);
 
 module.exports = {
 
-    // is-it-a-valid-object tests
-
-    'testnode': function(test) {
+    'createNode': function(test) {
         test.ok(true);
-        var expectedJsonNode = '{"id": 135678, "lat": 48.2111685091189, "lon" : 16.3035366605548, "version": 1, "timestamp": '+new Date()+', "tags": {"k" : "amenity", "v" : "hospital"}}';
-
-        test.equal(toTestNode, expectedJsonNode, toTestNode + " != " + expectedJsonNode);
-        //necessary attributes
-        //test.deepEqual(typeof toTestNode.id, "number", "Node id is not a number!");
+        var expectedJsonNode = '{"id":135678,"lat":48.2111685091189,"lon":16.3035366605548,"version":1,"timestamp":'+myTimestamp+',"tags":[{"k":"amenity","v":"hospital"}]}';
+        test.equal(toTestNode, expectedJsonNode, "\nA: "+toTestNode + "\nB: " + expectedJsonNode);
+        test.finish();
+    },
+    'createWay': function(test) {
+        test.ok(true);
+        var expectedJsonWay = '{"id":496969,"nodes":[1,2],"version":2,"tags":[{"k":"jk","v":"bla"}]}';
+        test.equal(toTestWay, expectedJsonWay, "\nA: "+toTestWay + "\nB: " + expectedJsonWay);
+        test.finish();
+    },
+    'createRelation': function(test) {
+        test.ok(true);
+        var expectedJsonRelation = '{"id":4905,"members":[{"type":"node","reference":123,"role":"bla"},{"type":"way","reference":34,"role":"blup"}],"timestamp":'+myTimestamp+'}';
+        test.equal(toTestRelation, expectedJsonRelation, "\nA: "+toTestRelation + "\nB: " + expectedJsonRelation);
         test.finish();
     },
 

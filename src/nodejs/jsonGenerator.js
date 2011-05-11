@@ -13,8 +13,8 @@ var log = log4js.getLogger('jsonGenerator');
 
 exports.createNode = function (node) {
     log.debug(node);
-    return "xxx";
+    var x = JSON.stringify(node);
+    return x;
 };
-
 
 // vim:set ts=4 sw=4 expandtab foldmethod=marker: autofold
