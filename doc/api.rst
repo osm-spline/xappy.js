@@ -150,7 +150,7 @@ way         way
 node        node
 relation    relation
 err         err
-end
+end         -
 =========== =========
 
 
