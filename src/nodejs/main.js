@@ -30,19 +30,19 @@ var options = [
  *
  * @param req   node request object
  * @param res   node response object
- * 
+ *
  */
 var httpHandler = function(req, res) {
     // FIXIT: if send head with 200, the following endWith500() call has no effect
     res.writeHead(200);
 
-    parser.parse(req.url, function requestParserCallback(err, xapiRequestObj) {
-        
+    parser.parse(req.url, function requestParserCallback(error, xapiRequestObj) {
+
         if(error){
             log.error(error);
             res.writeHead(500);
             res.end();
-        }   
+        }
 
         database.executeRequest(xapiRequestObj, function(error, eventEmitter) {
             if(error) {
@@ -76,7 +76,7 @@ var httpHandler = function(req, res) {
 };
 
 /**
- * Function that loads config file from specified path 
+ * Function that loads config file from specified path
 *
 * @parameter configPath    either relative or absolut path
  * @parameter callback      callback with error parameter and dict containing parsed options
@@ -96,7 +96,7 @@ function getConfig(configPath, callback) {
 
 /**
  * TODO: describe please!
- * @parameter newConfig 
+ * @parameter newConfig
  */
 function init(newConfig) {
     config = newConfig;
@@ -109,7 +109,7 @@ function init(newConfig) {
     log.info('Started server at ' + config.host + ':' + config.port );
 }
 
-// parse options, results can be retrived via opts.get('name') 
+// parse options, results can be retrived via opts.get('name')
 opts.parse(options, true);
 configPath = opts.get('config') || 'config.json';
 console.log('loading config ' + configPath);
