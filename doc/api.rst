@@ -149,7 +149,7 @@ Events      Arguments
 way         way
 node        node
 relation    relation
-err         err
+error       error
 end         -
 =========== =========
 
