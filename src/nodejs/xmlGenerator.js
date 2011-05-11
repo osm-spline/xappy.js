@@ -19,7 +19,7 @@ XmlGenerator.prototype.createNode = function (node) {
     .att('id', node.id)
     .att('timestamp', node.timestamp)
     .att('version', node.version)
-    .att('changeset', node.changeset)
+    .att('changesetId', node.changesetId)
     .att('lat', node.lat)
     .att('lon', node.lon);
 
@@ -30,7 +30,7 @@ XmlGenerator.prototype.createNode = function (node) {
             .att('v',escape(tuple.value));
         });
     }
-    return builder.toString({ pretty: true });
+    return builder.toString();
 };
 
 // FIXME: make this shit working
@@ -39,7 +39,7 @@ XmlGenerator.prototype.createWay = function (row) {
         .att('id', row.id)
         .att('timestamp', row.timestamp)
         .att('version', row.version)
-        .att('changeset', row.changeset);
+        .att('changesetId', row.changesetId);
 
     if(row.tags) {
         row.tags.forEach(function(tuple){
@@ -53,7 +53,7 @@ XmlGenerator.prototype.createWay = function (row) {
     //for(var i=0;i<temp.length;i++) {
     //    way.ele('nd').att('ref',temp[i]);
     //}
-    return builder.toString({pretty:'true'});
+    return builder.toString();
 };
 
 // new
@@ -62,7 +62,7 @@ XmlGenerator.prototype.createRelation = function (row) {
          .att('id', row.id)
          .att('timestamp', row.timestamp)
          .att('version', row.version)
-         .att('changeset', row.changeset);
+         .att('changesetId', row.changesetId);
      if(row.tags) {
          row.tags.forEach(function(tuple){
              xmlWay.ele('tag')
@@ -70,7 +70,7 @@ XmlGenerator.prototype.createRelation = function (row) {
              .att('v',escape(tuple.value));
          });
      }
-     return builder.toString({pretty:'true'});
+     return builder.toString();
  };
 
 //header for xml response with information about xapi instance...
