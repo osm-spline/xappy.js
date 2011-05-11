@@ -8,7 +8,12 @@ var log4js = require('log4js')(); //note the need to call the function
 var log = log4js.getLogger('xmlGenerator');
 // TODO how to get log level from main's config?
 
-exports.createNode = function (node) {
+var XmlGenerator = function XmlGenerator() {
+}// Konstruktor(Prototyp)
+
+module.exports.XmlGenerator = XmlGenerator;
+
+XmlGenerator.prototype.createNode = function (node) {
     log.debug(node);
     var xmlNode = builder.begin('node')
     .att('id', node.id)
@@ -29,7 +34,7 @@ exports.createNode = function (node) {
 };
 
 // FIXME: make this shit working
-exports.createWay = function (row) {
+XmlGenerator.prototype.createWay = function (row) {
     var xmlWay = builder.begin('way')
         .att('id', row.id)
         .att('timestamp', row.timestamp)
@@ -51,8 +56,25 @@ exports.createWay = function (row) {
     return builder.toString({pretty:'true'});
 };
 
+// new
+XmlGenerator.prototype.createRelation = function (row) {
+    var xmlWay = builder.begin('relation')
+         .att('id', row.id)
+         .att('timestamp', row.timestamp)
+         .att('version', row.version)
+         .att('changeset', row.changeset);
+     if(row.tags) {
+         row.tags.forEach(function(tuple){
+             xmlWay.ele('tag')
+             .att('k',escape(tuple.key))
+             .att('v',escape(tuple.value));
+         });
+     }
+     return builder.toString({pretty:'true'});
+ };
+
 //header for xml response with information about xapi instance...
-exports.createHeader = function createHeader() {
+XmlGenerator.prototype.createHeader = function createHeader() {
     var header = "<?xml version='1.0' standalone='no'?>";
     var tmp = builder.begin('osm')
         .att('version',this.config.version)
