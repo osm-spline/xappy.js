@@ -109,7 +109,7 @@ The purpose of this module is to for a request object from the string
 representation of the url.
 
 Methods
-    parseFromUrl(<String>,<callback(error,xapiRequest)>)
+    parseFromUrl(<String>,<callback(err,xapiRequest)>)
 
 
 responseHandler
