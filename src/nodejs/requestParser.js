@@ -157,8 +157,13 @@ module.exports = {
     },
 
     // returns XapiRequest parsed from `expr`
-    parse: function(expr) {
-        var parser = this.Parser(decodeURI(expr));
-        return this.xapiRequest(parser.xpath());
+    parse: function(expr,callback) {
+        try {
+            var parser = this.Parser(decodeURI(expr));
+            callback(null,this.xapiRequest(parser.xpath()));
+        }
+        catch(error) {
+            callback(error,null);
+        }
     }
 };
