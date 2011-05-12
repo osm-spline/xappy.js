@@ -1,6 +1,6 @@
 [submodule "nvm"]
-	path = nvm
+	path = deps/nvm
 	url = https://github.com/creationix/nvm.git
 [submodule "pg"]
-	path = pg
+	path = deps/pg
 	url = https://github.com/AlexanderS/node-postgres.git
