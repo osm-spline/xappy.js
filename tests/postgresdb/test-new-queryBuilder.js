@@ -4,7 +4,7 @@ if (module == require.main) {
 }
 
 // does not exist yet
-var QueryBuilder = require('../../postgresdb/querybuilder').QueryBuilder;
+var QueryBuilder = require('../../lib/postgresdb/querybuilder').QueryBuilder;
 
 module.exports = {
 	//api/0.6/node

@@ -1,8 +1,8 @@
 //example data---------------------------
 
-var samples = require('./samples.js');
+var samples = require('./samples');
 
-var jsonGen = require('../jsonGenerator.js');
+var jsonGen = require('../lib/jsonGenerator');
 
 module.exports = {
 

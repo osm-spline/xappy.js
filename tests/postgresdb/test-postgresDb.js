@@ -3,7 +3,7 @@ if (module == require.main) {
 	require('async_testing').run(__filename, process.ARGV);
 }
 
-var PostgresDb = require('../../postgresdb/postgresdb').PostgresDb;
+var PostgresDb = require('../../lib/postgresdb/postgresdb').PostgresDb;
 var events = require('events');
 module.exports = {
 	'test emitter functionality of query/client': function(test) {
