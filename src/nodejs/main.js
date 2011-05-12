@@ -82,6 +82,27 @@ var options = [
         long        : 'config',
         description : 'Select configuration file',
         value       : true
+      },
+      { short       : 'l',
+        long        : 'host',
+        description : 'Select listen host',
+        value       : true
+      },
+      { short       : 'p',
+        long        : 'port',
+        description : 'Select listen port',
+        value       : true
+      },
+      { short       : 'v',
+        long        : 'loglevel',
+        //TODO: Add possible loglevels to disciption
+        description : 'Select loglevel',
+        value       : true
+      }, 
+      { short       : 's',
+        long        : 'connectionString',
+        description : 'Set the database connection string',
+        value       : true
       }
 ];
 
@@ -344,7 +365,14 @@ function init(newConfig) {
     log.info("Started server at " + config.host + ":" + config.port );
 }
 
+function getCmdLine(config) {
+    for (configKey in config) {
+        config[configKey] = opts.get(configKey) || config[configKey];
+    }
+    init(config);
+}
+
 opts.parse(options, true);
 configPath = opts.get('config') || "config.json";
 console.log("loading config " + configPath);
-config = getConfig(configPath, init);
+config = getConfig(configPath, getCmdLine);
