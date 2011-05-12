@@ -162,8 +162,11 @@ module.exports = {
     },
 
     '"parse"': function(test) {
-        test.deepEqual(parser.parse(XPATH_EXPR), XAPI_REQUEST_EXPECTED);
-        test.finish();
+        parser.parse(XPATH_EXPR, function(error, data) {
+            test.equal(error, null);
+            test.deepEqual(data, XAPI_REQUEST_EXPECTED);
+            test.finish();
+        });
     },
 
 };

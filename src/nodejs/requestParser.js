@@ -156,11 +156,15 @@ module.exports = {
         return request;
     },
 
+    parseSync: function(expr) {
+        var parser = this.Parser(decodeURI(expr));
+        return this.xapiRequest(parser.xpath());
+    },
+
     // returns XapiRequest parsed from `expr`
     parse: function(expr,callback) {
         try {
-            var parser = this.Parser(decodeURI(expr));
-            callback(null,this.xapiRequest(parser.xpath()));
+            callback(null, this.parseSync(expr));
         }
         catch(error) {
             callback(error,null);
