@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
-REL_PATH="`dirname \"$0\"`" # relative
-ROOT="${REL_PATH}/.." # use when dir structure is fixed
-#ROOT="${REL_PATH}"
+REL_PATH="`dirname \"$0\"`"
+ROOT="${REL_PATH}/.."
 
 ${ROOT}/node_modules/async_testing/bin/node-async-test.js "${ROOT}/tests/"
