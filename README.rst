@@ -35,16 +35,12 @@ for only one tag and a bounding box.
 Basic setup
 =============
 
-Just execute bootstrap.sh which will install node and everything you need into
-your local directory. If you don't trust us read the bootstrap.sh. If you have
-node and npm installed you can just use "npm link src/nodejs/" to install all 
-the dependencies.
+Just read doc/installation.md
 
 Dependencies
 =============
 
-For dependencies checkout the package.json file. One special case is the node-postgres
-lib. Use a patched version: https://github.com/AlexanderS/node-postgres
+For dependencies checkout the package.json file.
 
 If you try the libxml branch make sure you have installed libxml for developers.
 
