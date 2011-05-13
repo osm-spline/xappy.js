@@ -88,7 +88,8 @@ you run:
 Optional/still to test:
 
 ::
-	psql -d osm < pgsql_simple_schema_0.6_action.sql
+
+    psql -d osm < pgsql_simple_schema_0.6_action.sql
 	psql -d osm < pgsql_simple_schema_0.6_bbox.sql
 
 For documentation on the schema read pgsql_simple.txt.
@@ -100,6 +101,7 @@ Import data from xml with:
 Before or after import you may want to create a indexes. Examples below:
 
 ::
+
     CREATE INDEX idx_nodes_tags ON nodes USING GIN(tags);
 	CREATE INDEX idx_nodes_tags ON nodes USING GIST(tags);
 	CREATE INDEX idx_ways_tags ON ways USING GIN(tags);
