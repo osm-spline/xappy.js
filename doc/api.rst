@@ -153,4 +153,39 @@ error       error
 end         -
 =========== =========
 
+Postgres database module
+------------------------
 
+QueryBuilder
+............
+
+The QueryBuilder is responsible for creating query plans executed by the postgres database module.
+
+::
+    QueryBuilder(); //constructor?
+    createQueryPlan(xapiRequest);
+
+queryPlan
+.........
+
+The query plan is a set of prepared statements from node-postgres
+
+::
+    {
+        node : <query>,
+        way* : <query>,
+        relation*: <query>
+    }
+
+query
+.....
+
+A query is a prepared statement from node-postgres. Please check the node-postgres documentation at:
+https://github.com/brianc/node-postgres/wiki/Client
+
+::
+    {
+        name : <string>,
+        text : <string>,
+        values : []
+    }
