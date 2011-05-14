@@ -2,7 +2,7 @@ var XmlGenerator = require('../lib/xmlGenerator').XmlGenerator; // Konstruktor a
 var underscore = require('underscore');
 var async_testing = require('async_testing');
 
-var expected_xmlObj='';
+//var expected_xmlObj='';
 var xmlGenerator = new XmlGenerator();
 
 function toISO8601(date) {
@@ -34,29 +34,29 @@ var sample_node = {
     id: 4,
     lat: 4,
     lon: 4,
-    version: 4,
-    uid: 4,
-    user: "et'ti",
+ //   version: 4,
+  //  uid: 4,
+ //   user: "et'ti",
     changesetId: 4,
-    timestamp: thisTimeStamp
+ //   timestamp: thisTimeStamp
 };
 
 var sample_way = {
     id: 45,
-    version: 3,
+//    version: 3,
     uid: 35,
-    user: "irena",
-    changesetId: 7,
+//    user: "irena",
+//    changesetId: 7,
     timestamp: thisTimeStamp
 };
 
 var sample_rel = {
     id: 655,
-    version: 34,
-    uid: 45,
+//    version: 34,
+//    uid: 45,
     user: "kl",
-    changesetId: 765,
-    timestamp: thisTimeStamp
+//    changesetId: 765,
+//    timestamp: thisTimeStamp
 };
 
 

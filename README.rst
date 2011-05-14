@@ -11,10 +11,10 @@ irc: irc://irc.freenode.net/#spline
 Aim
 ============
 
-We like to rewrite some parts of the XApi needed for our own application. Our 
-aim is not get a full implementation of the Xapi, but to answer only specific 
-requests, at low latency. For this subset of Xapi we want completly cover the 
-original api. 
+We like to rewrite some parts of the XApi needed for our own application. Our
+aim is not get a full implementation of the Xapi, but to answer only specific
+requests, at low latency. For this subset of Xapi we want completly cover the
+original api.
 
 Requests
 =============
@@ -35,16 +35,12 @@ for only one tag and a bounding box.
 Basic setup
 =============
 
-Just execute bootstrap.sh which will install node and everything you need into
-your local directory. If you don't trust us read the bootstrap.sh. If you have
-node and npm installed you can just use "npm link src/nodejs/" to install all 
-the dependencies.
+Just read doc/installation.md
 
 Dependencies
 =============
 
-For dependencies checkout the package.json file. One special case is the node-postgres
-lib. Use a patched version: https://github.com/AlexanderS/node-postgres
+For dependencies checkout the package.json file.
 
 If you try the libxml branch make sure you have installed libxml for developers.
 
@@ -55,13 +51,13 @@ We use postgres 9.* with postgis 1.5. Postgres 9.0 is used because we need some
 functions on hstores and postgis 1.5 is used for fancy geometry things.
 
 To setup a database you first need a runing postgres 9.0 instance. I hope you know
-how to do this. 
+how to do this.
 
-Use 
+Use
 
 	createdb osm
 
-to create a database with name osm. Use 
+to create a database with name osm. Use
 
 	createlang plpgsql osm
 
@@ -81,16 +77,20 @@ Just do:
 
 	psql -d osm < /share/contrib/postgis-1.5/spatial_ref_sys.sql
 
-Create the actual schema for osm data. For this step you need osmosis. If your 
-osmosis build is correct there should be a directory named pacakge/scripts where
+Create the actual schema for osm data. For this step you need osmosis. If your
+osmosis build is correct there should be a directory named package/scripts where
 you run:
 
+::
 	psql -d osm < pgsql_simple_schema_0.6.sql
 	psql -d osm < pgsql_simple_schema_0.6_linestring.sql
-Optional/stil to test:
 
-	psql -d osm < pgsql_simple_schema_0.6_action.sql
-	psql -d osm < pgsql_simple_schema_0.6_bbox.sql 
+Optional/still to test:
+
+::
+
+    psql -d osm < pgsql_simple_schema_0.6_action.sql
+	psql -d osm < pgsql_simple_schema_0.6_bbox.sql
 
 For documentation on the schema read pgsql_simple.txt.
 
@@ -99,7 +99,10 @@ Import data from xml with:
 	osmosis --read-xml file="planet.osm.bz2" --wp host="localhost" password="TopSecretPassword" user="insertUserNameHere" database="osm"
 
 Before or after import you may want to create a indexes. Examples below:
-	CREATE INDEX idx_nodes_tags ON nodes USING GIN(tags);	
+
+::
+
+    CREATE INDEX idx_nodes_tags ON nodes USING GIN(tags);
 	CREATE INDEX idx_nodes_tags ON nodes USING GIST(tags);
 	CREATE INDEX idx_ways_tags ON ways USING GIN(tags);
 	CREATE INDEX idx_ways_tags ON ways USING GIST(tags);
