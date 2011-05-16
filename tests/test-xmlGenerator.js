@@ -1,44 +1,29 @@
 var XmlGenerator = require('../lib/xmlGenerator').XmlGenerator; // Konstruktor aufrufen
 var underscore = require('underscore');
 var async_testing = require('async_testing');
+var helper_xmlGenerator = require('./helpers/helper-xmlGenerator.js');
 
-//var expected_xmlObj='';
 var xmlGenerator = new XmlGenerator();
 
-function toISO8601(date) {
-    //2007-03-31T00:09:22+01:00
-    var pad_two = function(n) {
-        return (n < 10 ? '0' : '') + n;
-    };
+var thisTimeStamp = helper_xmlGenerator.thisTimeStamp;
 
-    return [
-        date.getUTCFullYear(),
-        '-',
-        pad_two(date.getUTCMonth() + 1),
-        '-',
-        pad_two(date.getUTCDate()),
-        'T',
-        pad_two(date.getUTCHours()),
-        ':',
-        pad_two(date.getUTCMinutes()),
-        ':',
-        pad_two(date.getUTCSeconds()),
-        '+01:00' //FIX ME
-            ].join('');
-}
-
-var thisTimeStamp = toISO8601(new Date());
-
-// Samples
+// Sample elements for testing
 var sample_node = {
     id: 4,
     lat: 4,
     lon: 4,
  //   version: 4,
-  //  uid: 4,
+    uid: 4,
  //   user: "et'ti",
-    changesetId: 4,
+    changesetId: 443654,
  //   timestamp: thisTimeStamp
+    tags:[{key:'key1',value:'value1'},{key:'key2',value:'value2'}]
+};
+
+var other_node ={
+    id: 2,
+    lat: 732648,
+    lon: 87633
 };
 
 var sample_way = {
@@ -47,7 +32,9 @@ var sample_way = {
     uid: 35,
 //    user: "irena",
 //    changesetId: 7,
-    timestamp: thisTimeStamp
+    timestamp: thisTimeStamp,
+    nodes:[{id:sample_node.id},{id:other_node.id}],
+    tags:[{key:'key1',value:'value1'},{key:'key2',value:'value2'}]
 };
 
 var sample_rel = {
@@ -56,35 +43,39 @@ var sample_rel = {
 //    uid: 45,
     user: "kl",
 //    changesetId: 765,
-//    timestamp: thisTimeStamp
+//    timestamp: thisTimeStamp,
+    members:[{type:'way',reference:sample_way.id,role:'role'}]
 };
 
-
-//var regexpr_id = {{}
 
 module.exports = {
 
     'test_node':function(test){
         test.ok(true);
-        var expected_xmlnode = '<node id="4" timestamp="' + thisTimeStamp + '" version="4" changesetId="4" lat="4" lon="4"/>'; // regular expression bauen
+        var expected_node = helper_xmlGenerator.expected_node(sample_node);
         var created_node = xmlGenerator.createNode(sample_node);
-        test.equal(expected_xmlnode,created_node,"\n\texpected: " + expected_xmlnode + "\n\tcreated:  " + created_node+ "\n");
+        test.equal(expected_node,created_node,"\n\texpected: " + expected_node + "\n\tcreated:  " + created_node+ "\n");
         test.finish();
     },
 
     'test_way':function(test){
-        var expected_xmlway = '<way id="45" timestamp="' + thisTimeStamp + '" version="3" changesetId="7"/>';
+        var expected_way = helper_xmlGenerator.expected_way(sample_way);
         var created_way = xmlGenerator.createWay(sample_way);
-        test.equal(expected_xmlway,created_way,"\n\texpected: " + expected_xmlway + "\n\tcreated:  " + created_way + "\n");
+        test.equal(expected_way,created_way,"\n\texpected: " + expected_way + "\n\tcreated:  " + created_way + "\n");
         test.finish();
     },
 
     'test_rel':function(test){
-        var expected_xmlrel = '<relation id="655" timestamp="' + thisTimeStamp + '" version="34" changesetId="765"/>';
+        var expected_rel = helper_xmlGenerator.expected_rel(sample_rel);
         var created_rel = xmlGenerator.createRelation(sample_rel);
-        test.equal(expected_xmlrel,created_rel,"\n\texpected: " + expected_xmlrel + "\n\tcreated:  " + created_rel + "\n");
+        test.equal(expected_rel,created_rel,"\n\texpected: " + expected_rel + "\n\tcreated:  " + created_rel + "\n");
         test.finish();
-    }
+    },
+
+//    'test_header':function(test){
+//        var created_header = xmlGenerator.createHeader(sample_header);
+//        console.log('created header: ' + created_header);
+//    }
 
 };
 
