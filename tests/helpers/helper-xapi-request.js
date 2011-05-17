@@ -61,6 +61,9 @@ module.exports={
             test.ok(totest_xapi_request.bbox.bottom >= -90, "xapi request bbox out of range");
             test.ok(totest_xapi_request.bbox.bottom <= 90, "xapi request bbox out of range");
 
+            //left must be on the left and top on the top
+            test.ok(totest_xapi_request.bbox.left < totest_xapi_request.bbox.right, "left and right of the bbox are swapped");
+            test.ok(totest_xapi_request.bbox.bottom < totest_xapi_request.bbox.top, "top and bottom of the bbox are swapped");
         };
 //	test.finish();//to be commented out ..
     },
