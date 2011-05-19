@@ -2,4 +2,4 @@
 REL_PATH="`dirname \"$0\"`" # relative
 ROOT="${REL_PATH}/.." # use when dir structure is fixed
 
-${ROOT}/lib/main.js -c "${ROOT}/etc/my-config.json"
+node ${ROOT}/lib/xapi-cli.js -c "${ROOT}/etc/my-config.json"
