@@ -18,7 +18,8 @@ module.exports = {
 			node : {
 				name : '',
 				text : 'SELECT nodes.id, nodes.version, nodes.user_id, users.name AS user_name, nodes.tstamp, nodes.changeset_id, hstore_to_array(nodes.tags) AS tags, X(nodes.geom) AS lat, Y(nodes.geom) AS lon FROM nodes, users WHERE nodes.user_id = users.id;',
-				values : []
+				values : [],
+				binary : true
 			}
 		};
 		var input = new QueryBuilder().createQueryPlan(myQueryObject);
@@ -37,7 +38,8 @@ module.exports = {
 			node : {
 				name : '',
 				text : 'SELECT DISTINCT nodes.id, nodes.version, nodes.user_id, users.name AS user_name, nodes.tstamp, nodes.changeset_id, hstore_to_array(tags), X(geom) AS lat, Y(geom) AS lon FROM nodes, way_nodes, users WHERE nodes.id = way_nodes.node_id AND nodes.user_id = users.id;',
-				values : []
+				values : [],
+				binary : true
 			}
 		};
 		var input = new QueryBuilder().createQueryPlan(myQueryObject);
@@ -56,7 +58,8 @@ module.exports = {
 			node : {
 				name : '',
 				text : 'SELECT DISTINCT nodes.id, nodes.version, nodes.user_id, users.name AS user_name, nodes.tstamp, nodes.changeset_id, hstore_to_array(tags), X(geom) AS lat, Y(geom) AS lon FROM (nodes JOIN users  ON (nodes.user_id = users.id)) LEFT OUTER JOIN way_nodes ON (nodes.id = way_nodes.node_id);',
-				values : []
+				values : [],
+				binary : true
 			}
 		};
 		var input = new QueryBuilder().createQueryPlan(myQueryObject);
@@ -76,7 +79,8 @@ module.exports = {
 			node : {
 				name : '',
 				text : 'SELECT DISTINCT nodes.id, nodes.version, nodes.user_id, users.name AS user_name, nodes.tstamp, nodes.changeset_id, hstore_to_array(tags), X(geom) AS lat, Y(geom) AS lon FROM nodes, users WHERE nodes.user_id = users.id AND NOT avals("nodes.tags"=>null) = array[null];',
-				values : []
+				values : [],
+				binary : true
 			}
 		};
 		var input = new QueryBuilder().createQueryPlan(myQueryObject);
@@ -100,7 +104,8 @@ module.exports = {
                  node : {
                          name : '',
                          text : "SELECT  id, tags, geom FROM nodes WHERE POINT(geom) @ polygon(box(point '($1, $2)', point '($3, $4)')));",
-                         values : [13, 52, 15, 54]
+                         values : [13, 52, 15, 54],
+						 binary : true
                  }
          };
          var input = new QueryBuilder().createQueryPlan(myQueryObject);
@@ -123,7 +128,8 @@ module.exports = {
 			node : {
 				name : '',
 				text : 'SELECT * FROM nodes WHERE tags @> hstore($1,$2);',
-				values : ['name', 'Illerberg']
+				values : ['name', 'Illerberg'],
+				binary : true
 			}
 		};
 		var input = new QueryBuilder().createQueryPlan(myQueryObject);
