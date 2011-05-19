@@ -2,7 +2,7 @@
     "connectionString"  :   "pg://user:password@host/database",
     "host"              :   "localhost",
     "port"              :   8080,
-    "logLevel"          :   "ERROR",
+    "loglevel"          :   "ERROR",
     "version"           :   0.6,
     "copyright"         :   "2011 OpenStreetMap contributers",
     "instance"          :   "node xapi",
