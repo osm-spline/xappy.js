@@ -1,8 +1,28 @@
 DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 
+Copyright (C) 2011 by the authors, listed in AUTHORS
+
 The contents of this project are subject to the terms of either the GNU
 Affero General Public License Version 3 only ("AGPLv3") or the Common
 Development and Distribution License("CDDL").
 
-The complete licenses can be found here: http://www.gnu.org/licenses/agpl.html
-and respectively here: http://www.sun.com/cddl/cddl.html
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version. )
+and/or the Common Development and Distribution License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License and/or the Common Development
+and Distribution License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+You should have received a copy of the Common Development and Distribution
+License along with this program. If not, see 
+<http://www.sun.com/cddl/cddl.html>.
+
