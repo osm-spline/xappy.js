@@ -7,7 +7,7 @@ var PostgresDb = require('../../lib/postgresdb/postgresdb').PostgresDb;
 var events = require('events');
 module.exports = {
 	'test emitter functionality of query/client': function(test) {
-		test.numAssertions = 2;
+   		//test.numAssertions = 2;
 		var myQueryObject = {
 			object : 'node'
 		};
@@ -18,7 +18,17 @@ module.exports = {
 								var queryEventEmitter = new events.EventEmitter();
 								setTimeout(function() {
                                     //emit row event for this query
-									queryEventEmitter.emit('row', {});
+									queryEventEmitter.emit('row', {
+                                        id: 1,
+                                        lat: 42.0,
+                                        lon: 23.0,
+                                        user_name: 'Ms. Testing',
+                                        user_id: 1234,
+                                        version: 23,
+                                        changeset_id: 234567,
+                                        tstamp: new Date(),
+
+                                    });
 								},100);
                                 setTimeout(function() {
                                     //emit drain event for this client (end of all queries)
@@ -34,7 +44,8 @@ module.exports = {
 		databaseModule.executeRequest(myQueryObject,function(error, ev){
 			console.log(ev);
 			ev.on('node', function(node) {
-				console.log(node);
+				//console.log(node);
+                require('./../helpers/helper-data-structures').testnode(test,node);
 				test.ok(true);
 			});
             ev.on('end', function() {

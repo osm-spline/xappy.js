@@ -25,13 +25,13 @@ Node Object
 [additional informations about Node](http://wiki.openstreetmap.org/wiki/Node)
 
     Node {
-      id: <bigint>,
-      lat: <bigint>,
-      lon: <bigint>,
-      version*: <bigint>,
-      uid*: <bigint>,
+      id: <number>,
+      lat: <number>,
+      lon: <number>,
+      version*: <number>,
+      uid*: <number>,
       user*: <string>,
-      changesetId*: <bigint>,
+      changesetId*: <number>,
       timestamp*: <Date>,
       tags*: [ { key: <str>, value: <str> } ]
     }
@@ -42,13 +42,13 @@ Way Object
 [additional informations about Way](http://wiki.openstreetmap.org/wiki/Ways)
 
     Way {
-      id: <bigint>,
-      version*: <bigint>,
-      uid*: <bigint>,
+      id: <number>,
+      version*: <number>,
+      uid*: <number>,
       user*: <string>
-      changesetId*: <bigint>,
+      changesetId*: <number>,
       timestamp*: <Date>,
-      nodes: [ <bigint> ],
+      nodes: [ <number> ],
       tags*: [ { key: <str>, value: <str> } ]
     }
 
@@ -58,16 +58,16 @@ Relation Object
 [additional informations about Relation](http://wiki.openstreetmap.org/wiki/Relations)
 
     Relation {
-      id: <bigint>,
-      version*: <bigint>,
-      uid*: <bigint>,
+      id: <number>,
+      version*: <number>,
+      uid*: <number>,
       user*: <string>,
-      changesetId*: <bigint>,
+      changesetId*: <number>,
       timestamp*: <Date>
       tags*: [ { key: <str>, value: <str> } ],
       members: [ {
           type: "node" | "way" | "relation",
-          reference: <bigint>,
+          reference: <number>,
           role: <string>
         } ]
     }

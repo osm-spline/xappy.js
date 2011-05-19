@@ -55,54 +55,55 @@ how to do this.
 
 Use
 
-	createdb osm
+    createdb osm
 
 to create a database with name osm. Use
 
-	createlang plpgsql osm
+    createlang plpgsql osm
 
 to add plpgsql to your database. If you want to create a database user do so:
 
-	createuser <username>
+    createuser <username>
 
 Add hstore support for your database:
 
-	psql -d osm < /share/contrib/hstore.sql
+    psql -d osm < /share/contrib/hstore.sql
 
 Add postgis support for your database:
 
-	psql -d osm < /share/contrib/postgis-1.5/postgis.sql
+    psql -d osm < /share/contrib/postgis-1.5/postgis.sql
 
 Just do:
 
-	psql -d osm < /share/contrib/postgis-1.5/spatial_ref_sys.sql
+    psql -d osm < /share/contrib/postgis-1.5/spatial_ref_sys.sql
 
 Create the actual schema for osm data. For this step you need osmosis. If your
 osmosis build is correct there should be a directory named package/scripts where
 you run:
 
 ::
-	psql -d osm < pgsql_simple_schema_0.6.sql
-	psql -d osm < pgsql_simple_schema_0.6_linestring.sql
+
+    psql -d osm < pgsql_simple_schema_0.6.sql
+    psql -d osm < pgsql_simple_schema_0.6_linestring.sql
 
 Optional/still to test:
 
 ::
 
     psql -d osm < pgsql_simple_schema_0.6_action.sql
-	psql -d osm < pgsql_simple_schema_0.6_bbox.sql
+    psql -d osm < pgsql_simple_schema_0.6_bbox.sql
 
 For documentation on the schema read pgsql_simple.txt.
 
 Import data from xml with:
 
-	osmosis --read-xml file="planet.osm.bz2" --wp host="localhost" password="TopSecretPassword" user="insertUserNameHere" database="osm"
+    osmosis --read-xml file="planet.osm.bz2" --wp host="localhost" password="TopSecretPassword" user="insertUserNameHere" database="osm"
 
 Before or after import you may want to create a indexes. Examples below:
 
 ::
 
     CREATE INDEX idx_nodes_tags ON nodes USING GIN(tags);
-	CREATE INDEX idx_nodes_tags ON nodes USING GIST(tags);
-	CREATE INDEX idx_ways_tags ON ways USING GIN(tags);
-	CREATE INDEX idx_ways_tags ON ways USING GIST(tags);
+    CREATE INDEX idx_nodes_tags ON nodes USING GIST(tags);
+    CREATE INDEX idx_ways_tags ON ways USING GIN(tags);
+    CREATE INDEX idx_ways_tags ON ways USING GIST(tags);

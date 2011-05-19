@@ -85,29 +85,27 @@ module.exports = {
 	},
 	
 	'//api/0.6/node[bbox=left,bottom,right,top]': function(test) {
-            //select all nodes whích are in the bbox
-            //queryBuilder should return an array of sql requests
-            var myQueryObject = {
-                    object : 'node',
-                    bbox : { left : 13,
-			 				 bottom : 52,
-							 right : 15,
-							 top : 54,
-	        		},
-            };
+         //select all nodes whích are in the bbox
+         //queryBuilder should return an array of sql requests
+         var myQueryObject = {
+                 object : 'node',
+                 bbox : { left : 13,
+ 				 bottom : 52,
+				 right : 15,
+				 top : 54,
+      		},
+         };
 
-            var expected = {
-                    node : {
-                            name : '',
-                            text : "SELECT  id, tags, geom FROM nodes WHERE POINT(geom) @ polygon(box(point '($1, $2)', point '($3, $4)')));",
-                            values : [13, 52, 15, 54]
-                    }
-            };
-            var input = new QueryBuilder().createQueryPlan(myQueryObject);
-		//	console.log(input);
-		//	console.log(expected);
-            test.deepEqual(input, expected, 'queryPlan with on query for all nodes');
-            test.finish();
+         var expected = {
+                 node : {
+                         name : '',
+                         text : "SELECT  id, tags, geom FROM nodes WHERE POINT(geom) @ polygon(box(point '($1, $2)', point '($3, $4)')));",
+                         values : [13, 52, 15, 54]
+                 }
+         };
+         var input = new QueryBuilder().createQueryPlan(myQueryObject);
+         test.deepEqual(input, expected, 'queryPlan with on query for all nodes');
+         test.finish();
     },
 	
 	'//api/0.6/node[@attribute=value])': function(test) {
