@@ -1,4 +1,3 @@
-//var async_testing = require('async_testing');//to be commented out ...
 var _ = require('underscore')._;
 
 var knownDatatypes = {
@@ -21,27 +20,10 @@ var knownDatatypes = {
     }
 };
 
-/*
-var testObj={
-    object:'node',
-    bbox:{
-    left:12,
-    rigth:16,
-    top:40,
-    bottom:23
-    },
-    tag:{
-    key:['name'],
-    value:['spline','cafete']
-    }
-}
-*/
-
 module.exports={
         'test_xapi_request_object': function(test,totest_xapi_request){
             test.ok(_.include (["node","way","relation","*"],totest_xapi_request.object,"Invalid format of the xapi request object"), "xapi request: invalid object");
-            //test.finish();//to be commented out ...
-        },
+         },
 
         'test_xapi_request_bbox': function(test,totest_xapi_request){
             if (typeof totest_xapi_request.bbox!=='undefined'){
@@ -65,7 +47,6 @@ module.exports={
                 test.ok(totest_xapi_request.bbox.left < totest_xapi_request.bbox.right, "left and right of the bbox are swapped");
                 test.ok(totest_xapi_request.bbox.bottom < totest_xapi_request.bbox.top, "top and bottom of the bbox are swapped");
             }
-//  test.finish();//to be commented out ..
         },
 
         'test_xapi_request_tag': function(test,totest_xapi_request){
@@ -83,9 +64,9 @@ module.exports={
                     test.notDeepEqual(totest_xapi_request.tag.value[i],"","tag.value has an empty string elem.");
                 }
             }
-//  test.finish();//to be commented out ..
         },
 
+        //calls all tests on xapi_request
         'test_xapi_request' : function(test,totest_xapi_request){
             this.test_xapi_request_object(test,totest_xapi_request);
             this.test_xapi_request_bbox(test,totest_xapi_request);
@@ -94,4 +75,4 @@ module.exports={
 
 };
 
-//async_testing.run(__filename,process.ARGV);
+
