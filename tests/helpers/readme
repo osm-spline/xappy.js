@@ -1,0 +1,7 @@
+helper1 : helper-data-structures.js
+    -> tests nodes, ways and relations
+    test for helper1: helper-test-datastructures.js
+
+helper2 : helper-xapi-request.js
+    -> tests xapiRequest format
+    test for helper2: helper-test-xapi-request.js

@@ -1,11 +1,11 @@
-var assert = require('assert');
+//var assert = require('assert');
 var async_testing = require('async_testing');
 
 var knownDatatypes = {
     xapiRequest : {
-        type : 'costum',
+        //type : 'custom',
         members : {
-            object : 'requestObject'
+            object : 'requestObject'  //May be needed to replace name
         } ,
         optionalMembers : {
             bbox : 'requestBbox',
@@ -17,7 +17,7 @@ var knownDatatypes = {
         values : [ 'node' , 'way', 'relation', '*' ]
     },
     requestBbox : {
-        type : 'costum',
+        type : 'custom',
         members : {
             left : 'number',
             right : 'number',
@@ -26,7 +26,7 @@ var knownDatatypes = {
         }
     },
     requestTag : {
-        type : 'costum',
+        type : 'custom',
         members: {
             key : 'listString',
             value : 'listString'
@@ -42,7 +42,7 @@ var knownDatatypes = {
 
 
 //export.checkQueryObject = function(obj){
-//    checkCostumType(obj,'xapiRequest');
+//    checkCustomType(obj,'xapiRequest');
 //}
 
 
@@ -64,7 +64,13 @@ var testObj = {
     }
 };
 
+module.exports = {
+    'xapiRequest incomplete' : function(test, toTestXapiRequest){
 
+    }
+}
+
+/*
 module.exports.test = function asyncTest(test){
     var checkType = function(obj,type){
         console.log(obj + " " + type);
@@ -85,8 +91,8 @@ module.exports.test = function asyncTest(test){
             checkEnumType(obj,type);
         }
 
-        if ( type.type === 'costum' ) {
-            checkCostumType(obj,type);
+        if ( type.type === 'custom' ) {
+            checkCustomType(obj,type);
         }
     };
 
@@ -98,7 +104,7 @@ module.exports.test = function asyncTest(test){
 
     };
 
-    var checkCostumType = function(obj,type){
+    var checkCustomType = function(obj,type){
 
         var members = knownDatatypes[type].members;
         var optionalMembers = knownDatatypes[type].optionalMembers;
@@ -124,7 +130,7 @@ module.exports.test = function asyncTest(test){
     test.finish();
   },0.001);
 };
+*/
+//async_testing.run(__filename, process.ARGV);
 
-async_testing.run(__filename, process.ARGV);
-
-//console.log(checkCostumType(testObj,'xapiRequest'));
+//console.log(checkCustomType(testObj,'xapiRequest'));

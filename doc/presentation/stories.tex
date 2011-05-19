@@ -1,15 +1,12 @@
 \documentclass{beamer}
 %packages
 \usepackage[latin1]{inputenc}
-\usepackage{minted}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage[english]{babel}
 
 \hypersetup{urlcolor=red,colorlinks}
 \definecolor{bg}{rgb}{0.95,0.95,0.95}
-\newminted{xml}{fontsize=\tiny}
-\newminted{javascript}{fontsize=\tiny}
 \usetheme{default}
 \title{Sprint 1 Storie review}
 \author{xapi-team}
@@ -21,7 +18,7 @@
 \end{frame}
 
 \begin{frame}{Interne Datenstrukturen}
-    
+
     \begin{block}{Tasks}
         \begin{itemize}
         \item definiere (Query- und Datenobjekte)
@@ -34,47 +31,11 @@
         \begin{itemize}
         \item Lusy
         \item Yves
-        \item Phillip
+        \item Philipp
         \item Dario
         \end{itemize}
     \end{block}
 
-\end{frame}
-
-\begin{frame}{XML and JSON Response}
-    \begin{block}{Tasks}
-        \begin{itemize}
-        \item xmlbuilder
-        \item Ausgabe node
-        \item Ausgabe way
-        \item Ausgabe relations
-        \end{itemize}
-    \end{block}
-    \begin{block}{Entwickler}
-        \begin{itemize}
-        \item Irena
-        \item Andreas
-        \item Mohammmed
-        \end{itemize}
-    \end{block}
-
-\end{frame}
-
-\begin{frame}{Parsing Zeilen aus DB}
-    \begin{block}{Tasks}
-        \begin{itemize}
-        \item Queryobj -> SQL
-        \item stubs für pg?
-        \end{itemize}
-    \end{block}
-    \begin{block}{Entwickler}
-        \begin{itemize}
-        \item Philipp
-        \item David
-        \item Mareike
-        \item Christoph
-        \end{itemize}
-    \end{block}
 \end{frame}
 
 \begin{frame}{Testframework}
@@ -95,6 +56,85 @@
 
 \end{frame}
 
+\begin{frame}{XPath Parsing}
+    \begin{block}{Tasks}
+        \begin{itemize}
+        \item Ausgabe als Anfrageobjekt
+        \end{itemize}
+    \end{block}
+    \begin{block}{Entwickler}
+        \begin{itemize}
+        \item Maximilian
+        \end{itemize}
+    \end{block}
+
+\end{frame}
+
+
+\begin{frame}{XML and JSON Response}
+    \begin{block}{Tasks}
+        \begin{itemize}
+        \item xmlbuilder
+        \item Ausgabe node
+        \item Ausgabe way
+        \item Ausgabe relations
+        \end{itemize}
+    \end{block}
+    \begin{block}{Entwickler}
+        \begin{itemize}
+        \item Irena
+        \item Andreas
+        \item Mohamed
+        \end{itemize}
+    \end{block}
+
+\end{frame}
+
+\begin{frame}{DB - Modul}
+    \begin{block}{Tasks}
+        \begin{itemize}
+        \item Query Object -> SQL
+        \item pg anbinden
+        \item EventEmitter
+        \end{itemize}
+    \end{block}
+    \begin{block}{Entwickler}
+        \begin{itemize}
+        \item Philipp
+        \item David
+        \item Mareike
+        \item Christoph
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Upstream des Postgredmodules, Context: DB}
+    \begin{block}{Entwickler}
+        \begin{itemize}
+        \item Alex
+        \end{itemize}
+    \end{block}
+
+\end{frame}
+
+\begin{frame}{Component Integration and Configuration files}
+    \begin{block}{Tasks}
+        \begin{itemize}
+        \item load config files
+        \item initialize modules
+        \item boot app
+        \end{itemize}
+    \end{block}
+    \begin{block}{Entwickler}
+        \begin{itemize}
+        \item Robin
+        \item Mark
+        \item Philipp
+        \end{itemize}
+    \end{block}
+
+\end{frame}
+
 \begin{frame}{Acceptance Test}
     \begin{block}{Tasks}
         \begin{itemize}
@@ -106,6 +146,22 @@
         \item Philipp
         \end{itemize}
     \end{block}
+\end{frame}
+
+\begin{frame}{Deployment}
+    \begin{block}{Tasks}
+        \begin{itemize}
+        \item Datenbank aufsetzen
+        \item Instanz aufsetzen
+        \end{itemize}
+    \end{block}
+    \begin{block}{Entwickler}
+        \begin{itemize}
+        \item Philipp
+        \end{itemize}
+    \end{block}
 
 \end{frame}
+
+
 \end{document}
