@@ -2,6 +2,7 @@ var XmlGenerator = require('../lib/xmlGenerator').XmlGenerator; // Konstruktor a
 var underscore = require('underscore');
 var async_testing = require('async_testing');
 var helper_xmlGenerator = require('./helpers/helper-xmlGenerator.js');
+var builder = require('xmlbuilder');
 
 var xmlGenerator = new XmlGenerator();
 
@@ -14,7 +15,7 @@ var sample_node = {
     lon: 4,
  //   version: 4,
     uid: 4,
- //   user: "et'ti",
+    user: "etti",
     changesetId: 443654,
  //   timestamp: thisTimeStamp
     tags:[{key:'key1',value:'value1'},{key:'key2',value:'value2'}]
@@ -30,7 +31,7 @@ var sample_way = {
     id: 45,
 //    version: 3,
     uid: 35,
-//    user: "irena",
+    user: "paul",
 //    changesetId: 7,
     timestamp: thisTimeStamp,
     nodes:[{id:sample_node.id},{id:other_node.id}],
@@ -46,7 +47,6 @@ var sample_rel = {
 //    timestamp: thisTimeStamp,
     members:[{type:'way',reference:sample_way.id,role:'role'}]
 };
-
 
 module.exports = {
 
@@ -72,10 +72,10 @@ module.exports = {
         test.finish();
     },
 
-//    'test_header':function(test){
-//        var created_header = xmlGenerator.createHeader(sample_header);
-//        console.log('created header: ' + created_header);
-//    }
+    'test_header':function(test){
+        var created_header = xmlGenerator.createHeader();
+        test.finish();
+    }
 
 };
 
