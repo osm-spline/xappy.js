@@ -1,5 +1,5 @@
 # ignore npm modules directories
-node_modules/
+/node_modules
 
 # Temp Files
 *.swp
