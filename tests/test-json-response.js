@@ -2,24 +2,25 @@
 
 var samples = require('./samples');
 
-var jsonGen = require('../lib/jsonGenerator');
+var jsongenerator = require('../lib/genJSON').JSONGenerator;
+var jsonGen = new jsongenerator();
 
 module.exports = {
 
     'createNode': function(test) {
-        var toTestNode = jsonGen.createJson(samples.nodes().n1);
+        var toTestNode = jsonGen.createNode('node', samples.nodes().n1);
         var expectedJsonNode = samples.nodes().n1json;
         test.equal(toTestNode, expectedJsonNode, "\nA: "+toTestNode + "\nB: " + expectedJsonNode);
         test.finish();
     },
     'createWay': function(test) {
-        var toTestWay = jsonGen.createJson(samples.ways().w1);
+        var toTestWay = jsonGen.createWay('way', samples.ways().w1);
         var expectedJsonWay = samples.ways().w1json;
         test.equal(toTestWay, expectedJsonWay, "\nA: "+toTestWay + "\nB: " + expectedJsonWay);
         test.finish();
     },
     'createRelation': function(test) {
-        var toTestRelation = jsonGen.createJson(samples.relations().r1);
+        var toTestRelation = jsonGen.createRelation('relation', samples.relations().r1);
         var expectedJsonRelation = samples.relations().r1json;
         test.equal(toTestRelation, expectedJsonRelation, "\nA: "+toTestRelation + "\nB: " + expectedJsonRelation);
         test.finish();

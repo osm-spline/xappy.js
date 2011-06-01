@@ -7,16 +7,20 @@ XapiRequest
 `XapiRequest` is the parsed Xapi Query (i.e.: `/node[bbox=0,51.5,0.25,51.75]`)
 
     XapiRequest {
-      object: "node" | "way" | "relation" | "*",
-      bbox*: { left : <number>,
-        bottom: <number>,
-        right: <number>,
-        top: <number>
-      },
-      tag*: {
-        key: [ <string> ],
-        value: [ <string> ]
-      }
+        object: "node" | "way" | "relation" | "*",
+        bbox*: { left : <number>,
+            bottom: <number>,
+            right: <number>,
+            top: <number>
+        },
+        tag*: {
+            key: [ <string> ],
+            value: [ <string> ]
+        },
+        child*: {
+            has: <boolean>,
+            attribute: "node" | "way" | "relation" | "tag"
+        }
     }
 
 Node Object

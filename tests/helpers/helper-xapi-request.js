@@ -15,8 +15,13 @@ var knownDatatypes = {
             tag: {
                 key: ['string'],
                 value: ['string']
+            },
+
+            child: {
+                has : 'boolean',
+                attribute : ['node', 'way', 'relation', 'tag']
             }
-        }
+         }
     }
 };
 
@@ -66,11 +71,26 @@ module.exports={
             }
         },
 
+        'test_xapi_request_child': function(test,totest_xapi_request){
+            if(typeof totest_xapi_request.child !== 'undefined'){
+                test.deepEqual(typeof totest_xapi_request.child.has, 'boolean', "The function of the child predicate is not a boolean");
+                test.ok(_.include (["node","way","relation","tag"],totest_xapi_request.child.attribute),"Invalid format of the xapi request child predicate");
+                if(totest_xapi_request.object == 'node'){
+                    test.ok(totest_xapi_request.child.attribute !== 'node', "Child predicate of node cannot be a node");
+                }
+
+                if(totest_xapi_request.object == 'way'){
+                    test.ok(totest_xapi_request.child.attribute !== 'way', "Child predicate of way cannot be a way");
+                }
+            }
+        },
+
         //calls all tests on xapi_request
         'test_xapi_request' : function(test,totest_xapi_request){
             this.test_xapi_request_object(test,totest_xapi_request);
             this.test_xapi_request_bbox(test,totest_xapi_request);
             this.test_xapi_request_tag(test,totest_xapi_request);
+            this.test_xapi_request_child(test,totest_xapi_request);
         }
 
 };
