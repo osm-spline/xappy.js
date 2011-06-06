@@ -150,6 +150,7 @@ way         way
 node        node
 relation    relation
 error       error
+start       -
 end         -
 =========== =========
 
