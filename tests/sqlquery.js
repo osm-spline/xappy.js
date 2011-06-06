@@ -3,10 +3,10 @@ var pg = require('pg');
 var SqlQuery = function() {
 };
 
-SqlQuery.prototype.createQuery = function(xapiRequestObject) {
-	
+SqlQuery.prototype.createQuery = function(xapiRequestObject, callback) {
+
 	var db_row;
-	
+
 	var query = {
 		name : "blub",
 		text : "SELECT n.id FROM nodes n LIMIT 1;", //"SELECT n.id, n.version, u.name FROM nodes n, users u WHERE n.user_id = u.id LIMIT 2;",
@@ -21,7 +21,7 @@ SqlQuery.prototype.createQuery = function(xapiRequestObject) {
 	});
 
 	client.connect();
-	client
+	/*client
 		.query(query)
 		.on('row', function(row) {
 			db_row = row;
@@ -29,8 +29,16 @@ SqlQuery.prototype.createQuery = function(xapiRequestObject) {
 			console.log('---');
 			client.end();
 		});
-		
+
 	return db_row;
+    */
+    client.query(query, function(error, result){
+        if(error) {
+            callback(error, null);
+        } else {
+            callback(null, result);
+        }
+    });
 };
 
 exports.SqlQuery = SqlQuery;

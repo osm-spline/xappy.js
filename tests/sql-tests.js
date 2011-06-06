@@ -27,22 +27,28 @@ module.exports = {
 				{6, 1, sladda, 291857, 2011-05-26T16:47:48+00:00, {'building': 'emblem', 'name': 'brandenburgerTor'}, 53.33, 11.52},
 				{7, 1, sladda, 291857, 2011-05-26T16:47:48+00:00, {'amenity': 'hospital', 'name': 'HeisseSchwestern'}, 48.13, 11.7}
 			},
-			
+
 			way : {
 				{}
 			},
-			
+
 			relation : {
 				{}
 			}
 			*/
 		};
-		
-		var input = new SqlQuery().createQuery(xapiRequestObject);
-		console.log('INPUT: ' + input);
-		console.log('EXPECTED: ' + expected['node']['id']);
-		test.deepEqual(input, expected, 'xapiRequestObject for all nodes');
-		test.finish();
-	},
-	
+
+		var input = new SqlQuery().createQuery(xapiRequestObject,function(error, result){
+            if(error) {
+                console.log(error);
+                test.ok(false);
+            } else {
+		        console.log('INPUT: ' + input);
+		        console.log('EXPECTED: ' + expected.node.id);
+		        test.deepEqual(input, expected, 'xapiRequestObject for all nodes');
+		        test.finish();
+            }
+        });
+	}
+
 };
