@@ -12,3 +12,6 @@ Thumbs.db
 
 # custom configs
 my-config.json
+
+# test coverage information
+/coverage.json
