@@ -20,7 +20,7 @@
  * /api/0.6/relation[not(relation)] - selects relations that do not have any relation members
  */
 // var parser = require('../lib/requestParser');
-var parser= require('./test-requestParser-main.js');
+var parser= require('./tmp-requestParser.js');
 var underscore = require('underscore');
 
 
@@ -68,7 +68,9 @@ module.exports = {
        		}
        		success++;	    
    	 });
-     	console.log('SUCCESS:' + success + '-- FAILED:' + failed);
+
+
+     //	console.log('SUCCESS:' + success + '-- FAILED:' + failed);
 	test.finish();
   }
 }
