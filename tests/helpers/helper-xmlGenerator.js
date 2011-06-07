@@ -1,6 +1,7 @@
 var XmlGenerator = require('../../lib/genXML').XmlGenerator; // Konstruktor aufrufen
 var underscore = require('underscore');
 var async_testing = require('async_testing');
+var _ = require('underscore');
 
 var xmlGenerator = new XmlGenerator();
 
@@ -37,6 +38,9 @@ var rel_members = '';
 
 
 module.exports = {
+    'toISO': function(date) {
+        return toISO8601(date);
+    },
     'expected_node': function(sample_node) {
         if (sample_node.version){
             node_version = ' version="' + sample_node.version + '"';
@@ -63,7 +67,7 @@ module.exports = {
         }
 
         if (sample_node.timestamp){
-            node_timestamp = ' timestamp="' + thisTimeStamp + '"';
+            node_timestamp = ' timestamp="' + sample_node.timestamp + '"';
         } else {
             node_timestamp = '';
         }
@@ -124,13 +128,12 @@ module.exports = {
         }
 
         if (sample_way.timestamp){
-            way_timestamp = ' timestamp="' + thisTimeStamp + '"';
+            way_timestamp = ' timestamp="' + sample_way.timestamp + '"';
         }else{
             way_timestamp = '';
         }
-
-        sample_way.nodes.forEach(function(node){ 
-                way_nodes += '<nd ref="' + node.id + '"/>';
+        _.each(sample_way.nodes, function(node){
+            way_nodes += '<nd ref="' + node + '"/>';
         });
 
         if(sample_way.tags){

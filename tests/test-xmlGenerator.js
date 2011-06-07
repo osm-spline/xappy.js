@@ -6,8 +6,7 @@ var builder = require('xmlbuilder');
 
 var xmlGenerator = new XmlGenerator();
 
-var thisTimeStamp = helper_xmlGenerator.thisTimeStamp;
-
+var date = new Date();
 // Sample elements for testing
 var sample_node = {
     id: 4,
@@ -17,7 +16,7 @@ var sample_node = {
     uid: 4,
     user: "etti",
     changesetId: 443654,
- //   timestamp: thisTimeStamp
+//   timestamp: thisTimeStamp
     tags:[{key:'key1',value:'value1'},{key:'key2',value:'value2'}]
 };
 
@@ -33,8 +32,8 @@ var sample_way = {
     uid: 35,
     user: "paul",
 //    changesetId: 7,
-    timestamp: thisTimeStamp,
-    nodes:[{id:sample_node.id},{id:other_node.id}],
+    timestamp: helper_xmlGenerator.toISO(date),
+    nodes:[1,2],
     tags:[{key:'key1',value:'value1'},{key:'key2',value:'value2'}]
 };
 
