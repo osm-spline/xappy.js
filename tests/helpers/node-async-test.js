@@ -26,11 +26,28 @@ function done(allResults) {
     process.exit(problems);
 }
 
+function reformatCoverageData(data) {
+    // reformat jscoverage data to save it with JSON.stringify
+    var validData = {};
+    for (var key in data) {
+        validData[key] = {};
+        for (var line in data[key]) {
+            if (data[key][line] != null) {
+                validData[key][line] = data[key][line];
+            }
+        }
+
+        validData[key]['source'] = data[key].source;
+    }
+
+    return validData;
+}
+
 function writeCoverage(data) {
     var filename = path.join(path.dirname(__filename),
                              '..', '..', 'coverage.json');
 
     var fp = fs.openSync(filename, 'w');
-    fs.writeSync(fp, JSON.stringify(data), null);
+    fs.writeSync(fp, JSON.stringify(reformatCoverageData(data)), null);
     fs.closeSync(fp);
 }
