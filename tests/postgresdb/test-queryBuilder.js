@@ -22,6 +22,7 @@ module.exports = {
 				binary : true
 			}
 		};
+		
 		var input = new QueryBuilder().createQueryPlan(myQueryObject);
 		test.deepEqual(input, expected, 'queryPlan with on query for all nodes');
 		test.finish();

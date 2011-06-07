@@ -4,15 +4,6 @@ var SqlQuery = function() {
 };
 
 SqlQuery.prototype.createQuery = function(xapiRequestObject, callback) {
-
-	var db_row;
-
-	var query = {
-		name : "blub",
-		text : "SELECT n.id FROM nodes n LIMIT 1;", //"SELECT n.id, n.version, u.name FROM nodes n, users u WHERE n.user_id = u.id LIMIT 2;",
-		binary : true //funktioniert nur mit dem pg-module von alex
-	};
-
 	var client = new pg.Client({
 		user : 'xapi',
 		password : '***',
@@ -21,24 +12,25 @@ SqlQuery.prototype.createQuery = function(xapiRequestObject, callback) {
 	});
 
 	client.connect();
-	/*client
-		.query(query)
+	
+	/*
+	client
+		.query(xapiRequestObject)
 		.on('row', function(row) {
-			db_row = row;
 			console.log(row);
 			console.log('---');
 			client.end();
 		});
-
-	return db_row;
     */
-    client.query(query, function(error, result){
+    client.query(xapiRequestObject, function(error, result){
         if(error) {
             callback(error, null);
         } else {
             callback(null, result);
         }
+		client.end();
     });
+
 };
 
 exports.SqlQuery = SqlQuery;
