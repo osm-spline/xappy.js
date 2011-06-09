@@ -4,7 +4,7 @@ if (module == require.main) {
 }
 
 var SqlQuery = require(__dirname + '/sqlquery').SqlQuery;
-var QueryBuilder = require('../lib/postgresdb/querybuilder').QueryBuilder;
+var QueryBuilder = require('../../lib/postgresdb/querybuilder').QueryBuilder;
 //var _ = require('underscore');
 
 module.exports = {
