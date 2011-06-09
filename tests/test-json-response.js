@@ -1,12 +1,9 @@
-//example data---------------------------
-
 var samples = require('./samples');
 
 var jsongenerator = require('../lib/genJSON').JSONGenerator;
 var jsonGen = new jsongenerator();
 
 module.exports = {
-
     'createNode': function(test) {
         var toTestNode = jsonGen.create('node', samples.nodes().n1);
         var expectedJsonNode = samples.nodes().n1json;
@@ -24,15 +21,10 @@ module.exports = {
         var expectedJsonRelation = samples.relations().r1json;
         test.equal(toTestRelation, expectedJsonRelation, "\nA: "+toTestRelation + "\nB: " + expectedJsonRelation);
         test.finish();
-    },
-
-
+    }
 };
-
 
 if (module == require.main) {
     async_testing = require('async_testing');
     return async_testing.run(__filename, process.ARGV);
 }
-
-// vim:set ts=4 sw=4 expandtab foldmethod=marker: autofold
