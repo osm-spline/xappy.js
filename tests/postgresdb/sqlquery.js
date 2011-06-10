@@ -3,7 +3,7 @@ var pg = require('pg');
 var SqlQuery = function() {
 };
 
-SqlQuery.prototype.createQuery = function(xapiRequestObject, callback) {
+SqlQuery.prototype.createQuery = function(queryPlan, callback) {
 	var client = new pg.Client({
 		user : 'xapi',
 		password : '***',
@@ -11,18 +11,15 @@ SqlQuery.prototype.createQuery = function(xapiRequestObject, callback) {
 		host : 'db.osm.spline.de' //server dns
 	});
 
+	var queryObject = {
+		name : "nodes",
+		text : queryPlan.node.text,
+		values : queryPlan.node.values,
+		binary : true //funktioniert nur mit dem pg-module von alex
+	};
+
 	client.connect();
-	
-	/*
-	client
-		.query(xapiRequestObject)
-		.on('row', function(row) {
-			console.log(row);
-			console.log('---');
-			client.end();
-		});
-    */
-    client.query(xapiRequestObject, function(error, result){
+    client.query(queryObject, function(error, result){
         if(error) {
             callback(error, null);
         } else {

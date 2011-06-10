@@ -4,26 +4,66 @@ if (module == require.main) {
 }
 
 var SqlQuery = require(__dirname + '/sqlquery').SqlQuery;
+var QueryBuilder = require('../../lib/postgresdb/querybuilder').QueryBuilder;
 //var _ = require('underscore');
 
 module.exports = {
 	//api/0.6/node
 	'//api/0.6/node': function(test) {
 		var xapiRequestObject = {
-			name : "blub",
-			text : "SELECT n.id, n.version FROM nodes n LIMIT 2;", //"SELECT n.id, n.version, u.name FROM nodes n, users u WHERE n.user_id = u.id LIMIT 2;",
-			binary : true //funktioniert nur mit dem pg-module von alex
+			name : "nodes",
+			text : "SELECT n.id, n.version, n.user_id, n.changeset_id FROM nodes n;",
+			binary : true
 		};
+		
+		var xapiQueryObject = {
+			object : 'node'
+		}
 		
 		var expected = {
 			0 : {
 				id: 1,
-				version: 1
+				version: 1,
+				user_id: 291857,
+				changeset_id: 123456
 			},
 			1 : {
 				id: 2,
-				version: 1
-			}
+				version: 1,
+				user_id: 291857,
+				changeset_id: 123456
+			},
+			2 : {
+				id: 3,
+				version: 1,
+				user_id: 291857,
+				changeset_id: 123456
+			},
+			3 : {
+				id: 4,
+				version: 1,
+				user_id: 291857,
+				changeset_id: 123456
+			},
+			4 : {
+				id: 5,
+				version: 1,
+				user_id: 291857,
+				changeset_id: 123456
+			},
+			5 : {
+				id: 6,
+				version: 1,
+				user_id: 291857,
+				changeset_id: 123456
+			},
+			6 : {
+				id: 7,
+				version: 1,
+				user_id: 291857,
+				changeset_id: 123456
+			},
+			
 		};
 			/*
 			//TODO
@@ -67,17 +107,21 @@ module.exports = {
 			    }
 			    return true;
 			};
-
-		var input = new SqlQuery().createQuery(xapiRequestObject,function(error, result){
+			
+		var queryPlan = new QueryBuilder().createQueryPlan(xapiQueryObject);
+		
+		var input = new SqlQuery().createQuery(queryPlan,function(error, result){
             if(error) {
-                console.log(error);
                 test.ok(false);
+				test.finish();
+				return;
             } else {
+				//Number of rows in result
 				var length = Object.keys(expected).length;
 				
 				//If I don't get the expected number of rows, quit.
 				if(length !== result.rows.length) {
-					console.log('WRONG LENGTH! ' + Object.keys(expected).length + " != " + result.rows.length);
+					console.log('WRONG LENGTH! ' + result.rows.length + " != " + Object.keys(expected).length + "(Expected)");
 					test.ok(false);
 					test.finish();
 					return;
@@ -90,24 +134,14 @@ module.exports = {
 					row = result.rows[i];
 					
 					for(var j = 0; j < length; j++) {
-						if(areEqual(row, expected[j])) {
-							//console.log('EQUAL: ' + i + ' & ' + j);
+						//TODO: check for more than ID?
+						if(row['id'] === expected[j]['id']) {
 							true_count++;
 							break;
-						} else {
-							//console.log('NOT EQUAL: ' + i + ' & ' + j);
 						}
 					}
-					
-					//test.deepEqual(row, expected[i], 'Nodes Query on DB');
-					//^ doesn't work, because test.deepEqual doesn't return anything
 				}
 				
-				//console.log('TRUE COUNT: ' + true_count);
-				
-				//If we find all the returned rows in the expected object: SUCCESS
-				//Possible problem: if the same row gets returned twice
-				//Possible solution: keep array of checked rows || select distinct
 				if(true_count == length) {
 					test.ok(true);
 					test.finish();
