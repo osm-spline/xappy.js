@@ -59,18 +59,11 @@ module.exports = {
 			var p= parser.Parser(xpath_expr);
             		var obj= p.xpath(); // array of json object		  
             		// object and predicates
-            		console.log('-------xpath Object:---------\n');            	
-			underscore.each(obj, function(elem){
-                		console.log(elem);
-            		});				
        		} catch (error) {
             	     failed++;
        		}
        		success++;	    
    	 });
-
-
-     //	console.log('SUCCESS:' + success + '-- FAILED:' + failed);
 	test.finish();
   }
 }

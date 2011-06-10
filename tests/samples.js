@@ -84,6 +84,3 @@ exports.relations = function() {
 
     };
 };
-
-
-// vim:set ts=4 sw=4 expandtab foldmethod=marker: autofold
