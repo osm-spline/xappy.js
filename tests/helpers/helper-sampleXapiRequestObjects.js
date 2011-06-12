@@ -39,7 +39,7 @@ module.exports = {
             bottom : 52
         }
     },
-    'node[bbox=13,52,14,53][amenity=pub]' : {
+    'node[bbox=13,52,14,53][name|name:de=Berlin|Berlin]' : {
         object : 'node',
         bbox : {
             right : 14,
@@ -49,8 +49,20 @@ module.exports = {
         },
         tag : {
             key : ['name', 'name:de'],
-            value : ['pub']
+            value : ['Berlin','Berlin']
         }
+    },
+    'node[way]' : {
+        object : 'node',
+        predicate : 'way'
+    },
+    'node[tag]' : {
+        object : 'node',
+        predicate : 'tag'
+    },
+    'node[not(way)]' : {
+        object : 'node',
+        predicate : 'not(way)'
     },
     'way' : {
         object : 'way'
