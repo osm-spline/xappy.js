@@ -1,6 +1,6 @@
 var samples = require('./samples');
 
-var jsongenerator = require('../lib/genJSON').JSONGenerator;
+var jsongenerator = require('../lib/genjson').JSONGenerator;
 var jsonGen = new jsongenerator();
 
 module.exports = {

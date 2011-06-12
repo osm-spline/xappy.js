@@ -1,5 +1,5 @@
 var _ = require('underscore');
-var sampleObjects = require('./helper-sampleXapiRequestObjects');
+var sampleObjects = require('./helper-samplexapirequestobjects');
 var xapiRequestTester = require('./helper-xapi-request.js');
 
 module.exports = {

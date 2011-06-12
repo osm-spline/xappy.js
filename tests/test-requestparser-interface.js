@@ -1,4 +1,4 @@
-var parser = require('../lib/requestParser');
+var parser = require('../lib/requestparser');
 
 module.exports = {
     'parse simple node string': function(test) {

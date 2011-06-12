@@ -3,8 +3,8 @@ if (module == require.main) {
 	require('async_testing').run(__filename, process.ARGV);
 }
 
-var nodeQueryBuilder = require('../../lib/postgresdb/nodeQueryBuilder');
-var sampleObjects = require('../helpers/helper-sampleXapiRequestObjects');
+var nodeQueryBuilder = require('../../lib/postgresdb/nodequerybuilder');
+var sampleObjects = require('../helpers/helper-samplexapirequestobjects');
 
 module.exports = {
 	'node': function(test) {

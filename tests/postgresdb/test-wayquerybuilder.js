@@ -1,5 +1,5 @@
-var wayQueryBuilder = require('../../lib/postgresdb/wayQueryBuilder');
-var sampleObjects = require('../helpers/helper-sampleXapiRequestObjects');
+var wayQueryBuilder = require('../../lib/postgresdb/wayquerybuilder');
+var sampleObjects = require('../helpers/helper-samplexapirequestobjects');
 
 module.exports = {
     'way': function(test) {
