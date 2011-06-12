@@ -23,22 +23,29 @@ module.exports = {
             value : ['pub']
         }
     },
-    'node[52,13,53,14]' : {
+    'node[name|name:de=Cologne|Koeln]' : {
         object : 'node',
-        bbox : {
-            right : 53,
-            top : 14,
-            left : 52,
-            bottom : 13
+        tag : {
+            key : ['name', 'name:de'],
+            value : ['Cologne', 'Koeln']
         }
     },
-    'node[52,13,53,14][amenity=pub]' : {
+    'node[bbox=13,52,14,53]' : {
         object : 'node',
         bbox : {
-            right : 53,
-            top : 14,
-            left : 52,
-            bottom : 13
+            right : 14,
+            top : 53,
+            left : 13,
+            bottom : 52
+        }
+    },
+    'node[bbox=13,52,14,53][amenity=pub]' : {
+        object : 'node',
+        bbox : {
+            right : 14,
+            top : 53,
+            left : 13,
+            bottom : 52
         },
         tag : {
             key : ['name', 'name:de'],
