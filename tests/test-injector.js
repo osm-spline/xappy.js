@@ -28,6 +28,16 @@ module.exports = {
         
         test.equal('t',injectors.second.require('database'),'require() broken');
         test.finish();
+    },
+    
+    'requireForwarding': function(test) {
+        var injector = require('../lib/injector.js');
+        
+        delete injector.getImplementations.http;
+
+        test.deepEqual(require('http'),injector.require('http'),
+            'injector.require is no drop in replacment');
+        test.finish();
     }
 };
 
