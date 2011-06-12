@@ -11,10 +11,10 @@
         "log4js" : ">=0.2.6",
         "opts" : "*",
         "optimist" : ">=0.2.0"
-
     },
     "devDependencies" : {
         "async_testing" : "*",
+        "sinon" : "*",
         "jslint" : "*"
     },
     "scripts": {
