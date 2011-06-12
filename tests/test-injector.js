@@ -16,17 +16,17 @@ module.exports = {
         impl = injectors.first.getImplementations();
         impl2 = injectors.second.getImplementations();
         
-        impl.database = 'test';
+        impl.test = 'test';
 
-        test.equal(impl.database,impl2.database,'Mismatch between tow injectors');
+        test.equal(impl.test,impl2.test,'Mismatch between tow injectors');
         test.finish();
     },
 
     'requireInjectorTest': function(test) {
         var injectors = createTowInjectors();
-        injectors.first.getImplementations().database = 't';
+        injectors.first.getImplementations().test = 't';
         
-        test.equal('t',injectors.second.require('database'),'require() broken');
+        test.equal('t',injectors.second.require('test'),'require() broken');
         test.finish();
     },
     

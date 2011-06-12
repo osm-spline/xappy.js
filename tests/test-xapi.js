@@ -30,6 +30,7 @@ module.exports = {
     test.ok(httpStub.called);
     test.ok(httpSpy.calledWithExactly(fakeConfig.port,fakeConfig.host));
     
+    http.createServer.restore();
     test.finish();
   },
 
@@ -37,15 +38,5 @@ module.exports = {
     test.ok(true);
     test.finish();
   },
-
-  'test C': function(test) {
-    test.ok(true);
-    test.finish();
-  },
-
-  'test D': function(test) {
-    test.ok(true);
-    test.finish();
-  }
 };
 
