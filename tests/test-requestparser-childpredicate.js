@@ -19,53 +19,231 @@
  * /api/0.6/relation[not(way)] - selects relations that do not have any way members
  * /api/0.6/relation[not(relation)] - selects relations that do not have any relation members
  */
+
 // var parser = require('../lib/requestParser');
 var parser= require('./tmp-requestparser.js');
 var underscore = require('underscore');
 
-
 // example data for child predicates
-// feature: 'child=nd|not(nd)|way|not(way)|tag|not(tag)|node|not(node)|relation|not(relation)'
-// attributes: node, way, relation, tag
-// tests
-// -----
-module.exports = {
- // author (Mohamed Keita)
- 'child element predicates': function(test) {
-	// example data for child predicates
-	// feature: 'child=nd|not(nd)|way|not(way)|tag|not(tag)|node|not(node)|relation|not(relation)'
-	// attributes: node, way, relation, tag
-	// xpath expression for child element predicates
+// Datastructure
+// child*: {
+//        has: <boolean>,
+//        attribute: "node" | "way" | "relation" | "tag"
+//    }
 
-	// test
-	var xpath_child_predicates= [  '/way[nd]',
-                               '/way[tag] ',
-                               '/way[not(nd)]',
-                               '/way[not(tag)]',
-                               '/node[way]',
-                               '/node[not(way)]',
-                               '/node[not(tag)]',
-                               '/relation[node]',
-                               '/relation[way]',
-                               '/relation[relation]',
-                               '/relation[not(node)]',
-                               '/relation[not(way)]',
-                               '/relation[not(relation)]'];
-	//
-	var success= 0 ;
-	var failed= 0 ;
-	underscore.each(xpath_child_predicates, function(xpath_expr) {
-        	try {
-			var p= parser.Parser(xpath_expr);
-            		var obj= p.xpath(); // array of json object
-            		// object and predicates
-       		} catch (error) {
-            	     failed++;
-       		}
-       		success++;
-   	 });
-	test.finish();
-  }
+// tests
+module.exports = {
+	'"Child predicate:" /way[nd]': function(test) {
+		var elem= 
+		{xpath_expr: '/way[nd]', 
+		 object: 'way',
+		 child:{has: true, attribute: 'nd'}
+		};
+		var xpath_expr= elem.xpath_expr;
+                var obj= elem.object;
+                var child= elem.child;
+                var p= parser.Parser(xpath_expr);
+                var xapi_obj= p.xpath(); // return json object (object, predicates)
+                // check each returned object
+                test.deepEqual(xapi_obj.object, obj, 'Expected Object:' + obj + ':xpath object:' + xapi_obj.object);
+                test.deepEqual(xapi_obj.predicates[0],child, 'Expected Child predicate object:'+ child + 'xpath object:' + xapi_obj.predicates[0]);
+                test.finish();
+	},
+	'"Child predicate:" /way[tag]': function(test) {
+		var elem=
+		{xpath_expr: '/way[tag]', 
+		 object: 'way', 
+		 child:{has: true, attribute: 'tag'}
+		};
+		var xpath_expr= elem.xpath_expr;
+                var obj= elem.object;
+                var child= elem.child;
+                var p= parser.Parser(xpath_expr);
+                var xapi_obj= p.xpath(); // return json object (object, predicates)
+                // check each returned object
+                test.deepEqual(xapi_obj.object, obj, 'Expected Object:' + obj + ':xpath object:' + xapi_obj.object);
+                test.deepEqual(xapi_obj.predicates[0],child, 'Expected Child predicate object:'+ child + 'xpath object:' + xapi_obj.predicates[0]);
+                test.finish();
+
+	},
+	'"Child predicate:" /way[not(nd)]': function(test) {
+		var elem=
+		{xpath_expr: '/way[not(nd)]', 
+		 object: 'way',
+		 child:{has: false, attribute: 'nd'}
+		};
+		var xpath_expr= elem.xpath_expr;
+                var obj= elem.object;
+                var child= elem.child;
+                var p= parser.Parser(xpath_expr);
+                var xapi_obj= p.xpath(); // return json object (object, predicates)
+                // check each returned object
+                test.deepEqual(xapi_obj.object, obj, 'Expected Object:' + obj + ':xpath object:' + xapi_obj.object);
+                test.deepEqual(xapi_obj.predicates[0],child, 'Expected Child predicate object:'+ child + 'xpath object:' + xapi_obj.predicates[0]);
+                test.finish();
+	
+	},
+	'"Child predicate:" /way[not(tag)]': function(test) {
+		var elem=
+		{xpath_expr: '/way[not(tag)]', 
+		 object: 'way',
+		 child:{has: false, attribute: 'tag'}
+		};
+		var xpath_expr= elem.xpath_expr;
+                var obj= elem.object;
+                var child= elem.child;
+                var p= parser.Parser(xpath_expr);
+                var xapi_obj= p.xpath(); // return json object (object, predicates)
+                // check each returned object
+                test.deepEqual(xapi_obj.object, obj, 'Expected Object:' + obj + ':xpath object:' + xapi_obj.object);
+                test.deepEqual(xapi_obj.predicates[0],child, 'Expected Child predicate object:'+ child + 'xpath object:' + xapi_obj.predicates[0]);
+                test.finish();
+	} ,
+	'"Child predicate:" /node[way]': function(test) {
+		var elem=
+		{xpath_expr: '/node[way]', 
+		 object: 'node',
+		 child:{has: true, attribute: 'way'}
+		};
+		var xpath_expr= elem.xpath_expr;
+                var obj= elem.object;
+                var child= elem.child;
+                var p= parser.Parser(xpath_expr);
+                var xapi_obj= p.xpath(); // return json object (object, predicates)
+                // check each returned object
+                test.deepEqual(xapi_obj.object, obj, 'Expected Object:' + obj + ':xpath object:' + xapi_obj.object);
+                test.deepEqual(xapi_obj.predicates[0],child, 'Expected Child predicate object:'+ child + 'xpath object:' + xapi_obj.predicates[0]);
+                test.finish();
+	},
+	'"Child predicate:" /node[not(way)]': function(test) {
+		var elem=
+		{xpath_expr: '/node[not(way)]', 
+		 object: 'node',
+		 child:{has:false, attribute: 'way'}
+		};
+		var xpath_expr= elem.xpath_expr;
+                var obj= elem.object;
+                var child= elem.child;
+                var p= parser.Parser(xpath_expr);
+                var xapi_obj= p.xpath(); // return json object (object, predicates)
+                // check each returned object
+                test.deepEqual(xapi_obj.object, obj, 'Expected Object:' + obj + ':xpath object:' + xapi_obj.object);
+                test.deepEqual(xapi_obj.predicates[0],child, 'Expected Child predicate object:'+ child + 'xpath object:' + xapi_obj.predicates[0]);
+                test.finish();
+	},
+	'"Child predicate:" /node[not(tag)]': function(test) {
+		var elem=
+		{xpath_expr: '/node[not(tag)]', 
+		 object: 'node', 
+		 child: {has: false, attribute: 'tag'}
+		};
+		var xpath_expr= elem.xpath_expr;
+                var obj= elem.object;
+                var child= elem.child;
+                var p= parser.Parser(xpath_expr);
+                var xapi_obj= p.xpath(); // return json object (object, predicates)
+                // check each returned object
+                test.deepEqual(xapi_obj.object, obj, 'Expected Object:' + obj + ':xpath object:' + xapi_obj.object);
+                test.deepEqual(xapi_obj.predicates[0],child, 'Expected Child predicate object:'+ child + 'xpath object:' + xapi_obj.predicates[0]);
+                test.finish();
+	},
+	'"Child predicate:" /relation[node]': function(test) {
+		var elem= 
+		{xpath_expr: '/relation[node]', 
+		 object: 'relation',
+		 child: {has: true, attribute: 'node'}
+		};
+		var xpath_expr= elem.xpath_expr;
+                var obj= elem.object;
+                var child= elem.child;
+                var p= parser.Parser(xpath_expr);
+                var xapi_obj= p.xpath(); // return json object (object, predicates)
+                // check each returned object
+                test.deepEqual(xapi_obj.object, obj, 'Expected Object:' + obj + ':xpath object:' + xapi_obj.object);
+                test.deepEqual(xapi_obj.predicates[0],child, 'Expected Child predicate object:'+ child + 'xpath object:' + xapi_obj.predicates[0]);
+                test.finish();
+	} ,
+	'"Child predicate:" /relation[way]': function(test) {
+		var elem=
+		{xpath_expr: '/relation[way]', 
+		 object: 'relation', 
+		 child: {has: true, attribute: 'way'}
+		};
+		var xpath_expr= elem.xpath_expr;
+                var obj= elem.object;
+                var child= elem.child;
+                var p= parser.Parser(xpath_expr);
+                var xapi_obj= p.xpath(); // return json object (object, predicates)
+                // check each returned object
+                test.deepEqual(xapi_obj.object, obj, 'Expected Object:' + obj + ':xpath object:' + xapi_obj.object);
+                test.deepEqual(xapi_obj.predicates[0],child, 'Expected Child predicate object:'+ child + 'xpath object:' + xapi_obj.predicates[0]);
+                test.finish();
+	},
+	'"Child predicate:" /relation[relation]': function(test) {
+		var elem= 
+		{xpath_expr: '/relation[relation]', 
+		 object: 'relation', 
+		 child: {has: true, attribute: 'relation'}
+		};
+		var xpath_expr= elem.xpath_expr;
+                var obj= elem.object;
+                var child= elem.child;
+                var p= parser.Parser(xpath_expr);
+                var xapi_obj= p.xpath(); // return json object (object, predicates)
+                // check each returned object
+                test.deepEqual(xapi_obj.object, obj, 'Expected Object:' + obj + ':xpath object:' + xapi_obj.object);
+                test.deepEqual(xapi_obj.predicates[0],child, 'Expected Child predicate object:'+ child + 'xpath object:' + xapi_obj.predicates[0]);
+                test.finish();
+
+	},
+	'"Child predicate:" /relation[not(node)]': function(test) {
+		var elem=
+		{xpath_expr: '/relation[not(node)]', 
+		 object: 'relation', 
+		 child: {has: false, attribute: 'node'}
+		};
+		var xpath_expr= elem.xpath_expr;
+                var obj= elem.object;
+                var child= elem.child;
+                var p= parser.Parser(xpath_expr);
+                var xapi_obj= p.xpath(); // return json object (object, predicates)
+                // check each returned object
+                test.deepEqual(xapi_obj.object, obj, 'Expected Object:' + obj + ':xpath object:' + xapi_obj.object);
+                test.deepEqual(xapi_obj.predicates[0],child, 'Expected Child predicate object:'+ child + 'xpath object:' + xapi_obj.predicates[0]);
+                test.finish();
+	},
+	'"Child predicate:" /relation[not(way)]': function(test) {
+		var elem=
+		{xpath_expr: '/relation[not(way)]', 
+		 object: 'relation', 
+		 child: {has: false, attribute: 'way'}
+		};
+		var xpath_expr= elem.xpath_expr;
+                var obj= elem.object;
+                var child= elem.child;
+                var p= parser.Parser(xpath_expr);
+                var xapi_obj= p.xpath(); // return json object (object, predicates)
+                // check each returned object
+                test.deepEqual(xapi_obj.object, obj, 'Expected Object:' + obj + ':xpath object:' + xapi_obj.object);
+                test.deepEqual(xapi_obj.predicates[0],child, 'Expected Child predicate object:'+ child + 'xpath object:' + xapi_obj.predicates[0]);
+                test.finish();
+	},
+	'"Child predicate:" /relation[not(relation)]': function(test) {
+		var elem=
+		{xpath_expr: '/relation[not(relation)]',
+		 object: 'relation',  
+		 child: {has: false, attribute: 'relation'}
+		};
+		var xpath_expr= elem.xpath_expr;
+                var obj= elem.object;
+                var child= elem.child;
+                var p= parser.Parser(xpath_expr);
+                var xapi_obj= p.xpath(); // return json object (object, predicates)
+                // check each returned object
+                test.deepEqual(xapi_obj.object, obj, 'Expected Object:' + obj + ':xpath object:' + xapi_obj.object);
+                test.deepEqual(xapi_obj.predicates[0],child, 'Expected Child predicate object:'+ child + 'xpath object:' + xapi_obj.predicates[0]);
+                test.finish();
+	}
 }
 if (module === require.main) {
     require('async_testing').run(__filename, process.ARGV);
