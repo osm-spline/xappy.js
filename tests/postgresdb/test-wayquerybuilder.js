@@ -6,13 +6,14 @@ module.exports = {
         var expected = {
              node : {
                 name : '',
-                text : "SELECT nodes.id, nodes.version, nodes.user_id, nodes.tstamp, nodes.changeset_id, hstore_to_array(nodes.tags) AS tags, users.name AS user_name, X(nodes.geom) AS lat, Y(nodes.geom) AS lon FROM nodes, users, (SELECT DISTINCT node_id FROM way_nodes) AS nodesOfWays WHERE nodesOfWays.node_id = nodes.id AND users.id = nodes.user_id;",
+                //text : "SELECT nodes.id, nodes.version, nodes.user_id, nodes.tstamp, nodes.changeset_id, hstore_to_array(nodes.tags) AS tags, users.name AS user_name, X(nodes.geom) AS lat, Y(nodes.geom) AS lon FROM nodes, users, (SELECT DISTINCT node_id FROM way_nodes) AS nodesOfWays WHERE nodesOfWays.node_id = nodes.id AND users.id = nodes.user_id;",
+                text : 'SELECT nodes.id, nodes.version, nodes.user_id, nodes.tstamp, nodes.changeset_id, hstore_to_array(nodes.tags) AS tags, X(nodes.geom) AS lat, Y(nodes.geom) AS lon, users.name AS user_name FROM nodes, users, (SELECT DISTINCT way_nodes.node_id FROM ways, way_nodes WHERE ways.id = way_nodes.way_id) AS nodesOfWays WHERE node.user_id = users.id AND nodesOfWays.node_id = nodes.id;',
                 values : [],
                 binary : true
              },
              way : {
                 name : '',
-                text : 'SELECT ways.id, ways.version, ways.user_id, ways.changeset_id, ways.tstamp, ways.nodes, hstore_to_array(ways.tags) AS tags, users.name AS user_name FROM ways, users WHERE ways.user_id = users.id;',
+                text : 'SELECT ways.id, ways.version, ways.user_id, ways.tstamp, ways.changeset_id, hstore_to_array(ways.tags) AS tags, way.nodes, users.name AS user_name FROM ways, users WHERE ways.user_id = users.id;',
                 values : [],
                 binary : true
              }
