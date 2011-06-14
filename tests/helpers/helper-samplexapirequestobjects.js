@@ -3,60 +3,60 @@ module.exports = {
         name : 'node',
         object : 'node'
     },
-    'node[amenity=pub]' : {
-        name : 'node[amenity=pub]',
+    'node[amenity=hotel]' : {
+        name : 'node[amenity=hotel]',
         object : 'node',
         tag : {
             key : ['amenity'],
-            value : ['pub']
+            value : ['hotel']
         }
     },
-    'node[amenity=pub|cafe]' : {
-        name : 'node[amenity=pub|cafe]',
+    'node[amenity=hotel|bar]' : {
+        name : 'node[amenity=hotel|bar]',
         object : 'node',
         tag : {
             key : ['amenity'],
-            value : ['pub','cafe']
+            value : ['hotel','bar']
         }
     },
-    'node[name|name:de=Berlin]' : {
-        name : 'node[name|name:de=Berlin]',
+    'node[name|name:de=BrandenburgerTor]' : {
+        name : 'node[name|name:de=BrandenburgerTor]',
         object : 'node',
         tag : {
             key : ['name', 'name:de'],
-            value : ['pub']
+            value : ['BrandenburgerTor']
         }
     },
-    'node[name|name:de=Cologne|Koeln]' : {
-        name : 'node[name|name:de=Cologne|Koeln]',
+    'node[name|name:de=Home|HomeSweetHome]' : {
+        name : 'node[name|name:de=Home|HomeSweetHome]',
         object : 'node',
         tag : {
             key : ['name', 'name:de'],
-            value : ['Cologne', 'Koeln']
+            value : ['Home', 'HomeSweetHome']
         }
     },
-    'node[bbox=13,52,14,53]' : {
-        name : 'node[bbox=13,52,14,53]',
+    'node[bbox=11,53,12,54]' : {
+        name : 'node[bbox=11,53,12,54]',
         object : 'node',
         bbox : {
-            right : 14,
-            top : 53,
-            left : 13,
-            bottom : 52
+            right : 12,
+            top : 54,
+            left : 11,
+            bottom : 53
         }
     },
-    'node[bbox=13,52,14,53][name|name:de=Berlin|Berlin]' : {
-        name : 'node[bbox=13,52,14,53][name|name:de=Berlin|Berlin]',
+    'node[bbox=11,53,12,54][name|name:de=BrandenburgerTor|BrandenburgerTor]' : {
+        name : 'node[bbox=11,53,12,54][name|name:de=BrandenburgerTor|BrandenburgerTor]',
         object : 'node',
         bbox : {
-            right : 14,
-            top : 53,
-            left : 13,
-            bottom : 52
+            right : 12,
+            top : 54,
+            left : 11,
+            bottom : 53
         },
         tag : {
             key : ['name', 'name:de'],
-            value : ['Berlin','Berlin']
+            value : ['BrandenburgerTor','BrandenburgerTor']
         }
     },
     'node[way]' : {
@@ -75,12 +75,15 @@ module.exports = {
         predicate : 'not(way)'
     },
     'way' : {
+        name : 'way',
         object : 'way'
     },
     'relation' : {
+        name : 'relation',
         object : 'relation'
     },
     '*' : {
+        name : '*',
         object : '*'
     }
 };

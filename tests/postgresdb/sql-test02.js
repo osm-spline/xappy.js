@@ -10,7 +10,7 @@ var pg = require('pg');
 var executeQuery = function(statement, callback) {
 	var client = new pg.Client({
 		user : 'xapi',
-		password : 'werhatam31.05geburtstag',
+		password : '***',
 		database : 'xapi_petra', //datenbank name
 		host : 'db.osm.spline.de' //server dns
 	});
@@ -74,6 +74,10 @@ module.exports = {
                 queryPlan = queryBuilder.createQueryPlan(sampleObject);
                 //iterate over subQueries of queryPlan
                 _.each(queryPlan, function(query) {
+                    
+                    console.log('QUERY: ' + query.text);
+                    console.log('...');
+                    
                     executeQuery(query, function(error, result) {
                         console.log('Testing: ' + sampleObject.name);
                         
