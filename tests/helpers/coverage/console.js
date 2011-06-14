@@ -5,13 +5,21 @@ fs = require('fs'),
 sys = require('sys'),
 common = require('./common'),
 contrib = require('../../../lib/contrib'),
+argv = require('optimist').argv,
 _ = require('underscore');
 
-var config = { color: true,
-               verbose: true};
-
-var coverage = common.getCoverageData();
-reportCoverage(coverage);
+function cli() {
+    if (argv.help) {
+        console.log("console.js usage");
+        console.log("  --nocolor           do not use colors in output");
+        console.log("  --verbose           print coverage statistics for every line of all files");
+        console.log("  --data              set alternativ coverage.json file");
+    }
+    else {
+        var coverage = common.getCoverageData(argv.data);
+        reportCoverage(coverage);
+    }
+}
 
 function sumCoverage(data, val) {
     return _(data).chain()
@@ -37,7 +45,7 @@ function colorize(str){
                    lcyanback: '1;46', lgrayback: '1;47' };
 
     return str.replace(/\[(\w+)\]\{([^]*?)\}/g, function(_, color, str){
-        if (config['color']) {
+        if (!argv.nocolor) {
             return '\x1B[' + colors[color] + 'm' + str + '\x1B[0m';
         }
         else {
@@ -91,7 +99,7 @@ function reportCoverage(cov) {
     print(lastSep);
 
     // print source of files with counters
-    if (config.verbose) {
+    if (argv.verbose) {
         for (var name in cov) {
             if (cov.hasOwnProperty(name)) {
                 print('\n   [bold]{' + name + '}:\n');
@@ -135,4 +143,11 @@ function printSource(file) {
 
         print(xmlDecode(file.source[line - 1]));
     }
+}
+
+if (typeof module == "object" && typeof require == "function") {
+    exports.cli = cli;
+}
+if (module === require.main) {
+    cli();
 }
