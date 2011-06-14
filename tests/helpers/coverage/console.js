@@ -8,8 +8,18 @@ contrib = require('../../../lib/contrib'),
 argv = require('optimist').argv,
 _ = require('underscore');
 
-var coverage = common.getCoverageData();
-reportCoverage(coverage);
+function cli() {
+    if (argv.help) {
+        console.log("console.js usage");
+        console.log("  --nocolor           do not use colors in output");
+        console.log("  --verbose           print coverage statistics for every line of all files");
+        console.log("  --data              set alternativ coverage.json file");
+    }
+    else {
+        var coverage = common.getCoverageData(argv.data);
+        reportCoverage(coverage);
+    }
+}
 
 function sumCoverage(data, val) {
     return _(data).chain()
@@ -133,4 +143,11 @@ function printSource(file) {
 
         print(xmlDecode(file.source[line - 1]));
     }
+}
+
+if (typeof module == "object" && typeof require == "function") {
+    exports.cli = cli;
+}
+if (module === require.main) {
+    cli();
 }

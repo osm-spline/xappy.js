@@ -6,8 +6,8 @@ function getCoverageFile() {
                      '..', '..', '..', 'coverage.json');
 }
 
-function getCoverageData() {
-    var file = getCoverageFile();
+function getCoverageData(filename) {
+    var file = filename ? filename : getCoverageFile();
     var data = fs.readFileSync(file);
     return JSON.parse(data);
 }
