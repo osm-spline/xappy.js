@@ -31,6 +31,32 @@ module.exports = {
         });
     },
 
+    'validate correct compound object' : function(test){
+        var xapiRequestInput = {
+            object : 'node',
+            bbox : {
+                left : 1.2345,
+                right : 23.4565,
+                top : 40.5679,
+                bottom : -20.3424
+            },
+            tag : {
+                key : ['bla','blup'],
+                value : ['petra']
+            },
+            child : {
+                has : false,
+                attribute : 'way'
+            }
+        };
+
+        validator.validate(xapiRequestInput, function(error, xapiRequestOut){
+                test.equal(error, null);
+                test.deepEqual(xapiRequestInput,xapiRequestOut);
+                test.finish();
+        });
+    },
+
     'validate bbox out of range' : function(test){
         var xapiRequestInput = {
             object : 'node',
@@ -71,7 +97,7 @@ module.exports = {
         });
     }
     /*
-     'validate correct compound object'
+
      'validate tag predicate with child predicate no(tags)'
      'validate tag predicate with child predicate tags'
      'validate node object with child predicate node or no(node)'
