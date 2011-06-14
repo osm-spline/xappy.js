@@ -38,7 +38,7 @@ exports.nodes = function(){
             tags: [ { key: 'key1', value: 'value1' },
                 { key: 'key2', value: 'value2' } ]
         },
-    n1json: '{"id":12312,"lat":48.2111685091189,"lon":16.3035366605548,"version":123,"uid":233321231,"user":"manfred j. mustermann","changesetId":1237691823,"timestamp":"'+myTimestamp+'","tags":[{"key":"key1","value":"value1"},{"key":"key2","value":"value2"}]}',
+            n1json: '{"id":12312,"lat":48.2111685091189,"lon":16.3035366605548,"version":123,"uid":233321231,"user":"manfred j. mustermann","changesetId":1237691823,"timestamp":"'+myTimestamp+'","tags":[{"key":"key1","value":"value1"},{"key":"key2","value":"value2"}],"type":"node"}',
     };
 
 };
@@ -58,7 +58,7 @@ exports.ways = function(){
                 {key : 'key2', value : 'value2'},
             ]
         },
-        w1json: '{"id":496969,"nodes":[1,2],"version":2,"uid":1234122,"user":"manfred j. mustermann","changesetId":1237691823,"timestamp":"'+myTimestamp+'","tags":[{"key":"key1","value":"value1"},{"key":"key2","value":"value2"}]}',
+            w1json: '{"id":496969,"nodes":[1,2],"version":2,"uid":1234122,"user":"manfred j. mustermann","changesetId":1237691823,"timestamp":"'+myTimestamp+'","tags":[{"key":"key1","value":"value1"},{"key":"key2","value":"value2"}],"type":"way"}',
     };
 };
 
@@ -79,7 +79,7 @@ exports.relations = function() {
                 {key : 'key2', value : 'value2'},
             ]
         },
-            r1json: '{"id":4905,"members":[{"type":"node","reference":123,"role":"bla"},{"type":"way","reference":34,"role":"blup"}],"version":23123,"uid":1234123,"user":"manfred j. mustermann","changesetId":1234123,"timestamp":"'+myTimestamp+'","tags":[{"key":"key1","value":"value1"},{"key":"key2","value":"value2"}]}',
+            r1json: '{"id":4905,"members":[{"type":"node","reference":123,"role":"bla"},{"type":"way","reference":34,"role":"blup"}],"version":23123,"uid":1234123,"user":"manfred j. mustermann","changesetId":1234123,"timestamp":"'+myTimestamp+'","tags":[{"key":"key1","value":"value1"},{"key":"key2","value":"value2"}],"type":"relation"}',
 
 
     };
