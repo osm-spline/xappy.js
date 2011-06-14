@@ -1,13 +1,15 @@
 var _ = require('underscore');
 var sampleObjects = require('../helpers/helper-samplexapirequestobjects');
 var sampleDBRowObjects = require('../helpers/helper-sample-db-row-objects');
-var xapiRequestTester = require('../helpers/helper-xapi-request.js');
+var xapiRequestTester = require('../helpers/helper-xapi-request');
 
 var queryBuilder = require('../../lib/postgresdb/querybuilder');
 
 var pg = require('pg');
 
 var executeQuery = function(statement, callback) {
+    //console.log("CONNECTION: "+config.connectionString);
+    
 	var client = new pg.Client({
 		user : 'xapi',
 		password : '***',
@@ -28,10 +30,10 @@ var executeQuery = function(statement, callback) {
 
 };
 
-var compareRows = function(sampleObject, result) {
-    if(sampleDBRowObjects[sampleObject.name]) {
+var compareRows = function(sampleObject, key, result) {
+    //if(sampleDBRowObjects[sampleObject.name]) {
         //compare length
-        if(result.rows.length != Object.keys(sampleDBRowObjects[sampleObject.name]).length) {
+        if(result.rows.length != Object.keys(sampleDBRowObjects[key]).length) {
             //test false
             return false;
         }
@@ -46,7 +48,7 @@ var compareRows = function(sampleObject, result) {
             
             //TODO: compare more than IDs?
             for (var j = 0; j < length; j++) {
-                if(row['id'] === sampleDBRowObjects[sampleObject.name][j]['id']) {
+                if(row['id'] === sampleDBRowObjects[key][j]['id']) {
                     true_count++;
                     break;
                 }
@@ -58,7 +60,7 @@ var compareRows = function(sampleObject, result) {
         } else {
             return false;
         }
-    }
+    //}
 }
 
 module.exports = {
@@ -66,20 +68,16 @@ module.exports = {
         var queryPlan;
         var row_equal;
         
-        _.each(sampleObjects, function(sampleObject) {
+        _.each(sampleObjects, function(sampleObject, key) {
             //console.log(sampleObject);
             //console.log('---');
             //xapiRequestTester.test_xapi_request(test, sampleObject);
             if (sampleObject.object === 'node') {
                 queryPlan = queryBuilder.createQueryPlan(sampleObject);
                 //iterate over subQueries of queryPlan
-                _.each(queryPlan, function(query) {
-                    
-                    console.log('QUERY: ' + query.text);
-                    console.log('...');
-                    
+                _.each(queryPlan, function(query) {                    
                     executeQuery(query, function(error, result) {
-                        console.log('Testing: ' + sampleObject.name);
+                        console.log('Testing: ' + key);
                         
                         if(error) {
                             console.log("Error executing: (" + JSON.stringify(sampleObject) + ")\n" + JSON.stringify(query));
@@ -87,7 +85,7 @@ module.exports = {
                             console.log(error);
                         } else {
                             //Compare retrieved rows
-                            row_equal = compareRows(sampleObject, result);
+                            row_equal = compareRows(sampleObject, key, result);
                             //undefined == no expected object defined in helper-sample-db-row-objects.js
                             console.log('Rows equal? ' + row_equal);
                             //console.log("SubQuery successful");
