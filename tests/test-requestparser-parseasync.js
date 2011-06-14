@@ -1,4 +1,4 @@
-var parse = require('../lib/requestParser').parse;
+var parse = require('../lib/requestparser').parse;
 
 module.exports = {
     'valid request, expect no error': function(test) {

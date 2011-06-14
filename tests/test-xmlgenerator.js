@@ -1,7 +1,7 @@
-var XmlGenerator = require('../lib/genXML').XmlGenerator; // Konstruktor aufrufen
+var XmlGenerator = require('../lib/genxml').XmlGenerator; // Konstruktor aufrufen
 var underscore = require('underscore');
 var async_testing = require('async_testing');
-var helper_xmlGenerator = require('./helpers/helper-xmlGenerator.js');
+var helper_xmlGenerator = require('./helpers/helper-xmlgenerator.js');
 var builder = require('xmlbuilder');
 
 var xmlGenerator = new XmlGenerator();
