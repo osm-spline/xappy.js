@@ -1,25 +1,57 @@
 var validator = require('../lib/validator');
-var helperObj = require('./helpers/helper-xapi-request.js');
+//var helperObj = require('./helpers/helper-xapi-request.js');
 
 module.exports = {
     'validate correct simple object' : function(test){
         var xapiRequestInput = {
             object : 'node'
         };
-        helperObj.test_xapi_request(test,xapiRequestInput);
+
         validator.validate(xapiRequestInput,function(error, xapiRequestOut){
                 test.equal(error, null);
                 test.deepEqual(xapiRequestInput,xapiRequestOut);
                 test.finish();
         });
+    },
+
+    'validate valid bbox' : function(test){
+        var xapiRequestInput = {
+            object : 'node',
+            bbox : {
+                left : 1.2345,
+                right : 23.4565,
+                top : 40.5679,
+                bottom : -20.3424
+            }
+        };
+        validator.validate(xapiRequestInput, function(error, xapiRequestOut){
+                test.equal(error, null);
+                test.deepEqual(xapiRequestInput,xapiRequestOut);
+                test.finish();
+        });
+    },
+
+    'validate bbox out of range' : function(test){
+        var xapiRequestInput = {
+            object : 'node',
+            bbox : {
+                left : 1.2345,
+                right : 23.4565,
+                top : 90.5679,
+                bottom : -20.3424
+            }
+        };
+
+        validator.validate(xapiRequestInput, function(error, xapiRequestOut){
+                //what should be the format of an error: (code,message)?
+                test.equal(error.code, 400);
+                test.strictEqual(error.message, "Bbox out of range. Please input values for left and right [-180,180], for top and bottom [-90,90]");
+                test.finish();
+
+        });
     }
-
-    //'validate valid bbox' : function(test){
-    //};
-
     /*
      'validate correct compound object'
-     'validate bbox out of range'
      'validate bbox swapped values'
      'validate tag predicate with child predicate no(tags)'
      'validate tag predicate with child predicate tags'
