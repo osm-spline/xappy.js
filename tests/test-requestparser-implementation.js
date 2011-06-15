@@ -191,6 +191,14 @@ module.exports = {
         });
 
         test.finish();
+    },
+
+    'tag predicates can be escaped by prefixing with backslash': function(test) {
+        var p1 = parser.Parser('route=46\|46A');
+        test.deepEqual(p1.tagPredicate(), {key: ['route'], value: ['46|46']});
+        var p2 = parser.Parser('foo\|bar\|baz=blub');
+        test.deepEqual(p2.tagPredicate(), {key: ['foo|bar|baz'], value: ['blub']});
+        test.finish();
     }
 };
 
