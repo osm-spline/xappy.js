@@ -1,7 +1,7 @@
-var XmlGenerator = require('../lib/genXML').XmlGenerator; // Konstruktor aufrufen
+var XmlGenerator = require('../lib/genxml').XmlGenerator; // Konstruktor aufrufen
 var underscore = require('underscore');
 var async_testing = require('async_testing');
-var helper_xmlGenerator = require('./helpers/helper-xmlGenerator.js');
+var helper_xmlGenerator = require('./helpers/helper-xmlgenerator.js');
 var builder = require('xmlbuilder');
 
 var xmlGenerator = new XmlGenerator();
@@ -52,21 +52,21 @@ module.exports = {
     'test_node':function(test){
         test.ok(true);
         var expected_node = helper_xmlGenerator.expected_node(sample_node);
-        var created_node = xmlGenerator.createNode('node', sample_node);
+        var created_node = xmlGenerator.create('node', sample_node);
         test.equal(expected_node,created_node,"\n\texpected: " + expected_node + "\n\tcreated:  " + created_node+ "\n");
         test.finish();
     },
 
     'test_way':function(test){
         var expected_way = helper_xmlGenerator.expected_way(sample_way);
-        var created_way = xmlGenerator.createWay('way', sample_way);
+        var created_way = xmlGenerator.create('way', sample_way);
         test.equal(expected_way,created_way,"\n\texpected: " + expected_way + "\n\tcreated:  " + created_way + "\n");
         test.finish();
     },
 
     'test_rel':function(test){
         var expected_rel = helper_xmlGenerator.expected_rel(sample_rel);
-        var created_rel = xmlGenerator.createRelation('relation', sample_rel);
+        var created_rel = xmlGenerator.create('relation', sample_rel);
         test.equal(expected_rel,created_rel,"\n\texpected: " + expected_rel + "\n\tcreated:  " + created_rel + "\n");
         test.finish();
     },

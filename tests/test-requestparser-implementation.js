@@ -1,4 +1,6 @@
-var parser = require('../lib/requestParser');
+var parser = require('../lib/requestparser');
+var underscore = require('underscore');
+var log = require('log4js')().getLogger('test-requestparser');
 
 // example data
 // ------------
@@ -10,6 +12,7 @@ var BBOX_EXPECTED = {
     right: 0.333,
     top: 0.444
 };
+
 var TAG_EXPR = 'amenity|leisure|fun=golf_course|tennis_court|pool';
 var TAG_EXPECTED = {
     key: ['amenity', 'leisure', 'fun'],
@@ -23,6 +26,19 @@ var XPATH_EXPR = '/node' + PREDICATES_EXPR;
 var XPATH_EXPECTED = {
     object: 'node',
     predicates: PREDICATES_EXPECTED
+};
+
+var CHILD_PREDICATE_TO_EXPECTED = {
+    'nd':               {has: true,     attribute: 'node'},
+    'not(nd)':          {has: false,    attribute: 'node'},
+    'tag':              {has: true,     attribute: 'tag'},
+    'not(tag)':         {has: false,    attribute: 'tag'},
+    'way':              {has: true,     attribute: 'way'},
+    'not(way)':         {has: false,    attribute: 'way'},
+    'node':             {has: true,     attribute: 'node'},
+    'not(node)':        {has: false,    attribute: 'node'},
+    'relation':         {has: true,     attribute: 'relation'},
+    'not(relation)':    {has: false,    attribute: 'relation'}
 };
 
 var XAPI_REQUEST_EXPECTED = {
@@ -169,6 +185,21 @@ module.exports = {
         });
     },
 
+    'correct child predicates are parsed': function(test) {
+        underscore.each(CHILD_PREDICATE_TO_EXPECTED, function(expected, string) {
+            test.deepEqual(parser.parseSync('/node[' + string + ']').child, expected);
+        });
+
+        test.finish();
+    },
+
+    'tag predicates can be escaped by prefixing with backslash': function(test) {
+        var p1 = parser.Parser('route=46\\|46A');
+        test.deepEqual(p1.tagPredicate(), {key: ['route'], value: ['46|46A']});
+        var p2 = parser.Parser('foo\\|bar\\|baz=blub');
+        test.deepEqual(p2.tagPredicate(), {key: ['foo|bar|baz'], value: ['blub']});
+        test.finish();
+    }
 };
 
 if (module === require.main) {

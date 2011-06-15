@@ -26,7 +26,7 @@ module.exports = {
                                         user_id: 1234,
                                         version: 23,
                                         changeset_id: 234567,
-                                        tstamp: new Date(),
+                                        tstamp: new Date()
 
                                     });
 								},100);

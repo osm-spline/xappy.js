@@ -1,4 +1,4 @@
-var parser = require('../lib/requestParser');
+var parser = require('../lib/requestparser');
 
 module.exports = {
     'parse simple node string': function(test) {
@@ -52,6 +52,15 @@ module.exports = {
                        { object: 'node',
                          bbox: {left:0,bottom:0,right:0,top:0},
                          tag: {key: ['key'], value: ['value']} });
+        test.finish();
+    },
+
+    'parse node with bbox, simple tag and child predicate': function(test) {
+        test.deepEqual(parser.parseSync('/node[bbox=0,0,0,0][key=value][not(way)]'),
+                       { object: 'node',
+                         bbox: {left:0,bottom:0,right:0,top:0},
+                         tag: {key: ['key'], value: ['value']},
+                         child: {has: false, attribute: 'way'}});
         test.finish();
     }
 };
