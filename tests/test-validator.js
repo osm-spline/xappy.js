@@ -186,11 +186,39 @@ module.exports = {
             test.deepEqual(xapiRequestOut, null);
             test.finish();
         });
-    }
+    },
+
+    'validate way object with child predicate node or no(node)' : function(test){
+    //ignore child predicates and process query
+         var xapiRequestInput = {
+            object : 'way',
+            tag : {
+                key : ['bla','blup'],
+                value : ['petra']
+            },
+            child : {
+                has : true,
+                attribute : 'node'
+            }
+        };
+
+        validator.validate(xapiRequestInput, function(error,xapiRequestOut){
+            test.deepEqual(error, null);
+            test.deepEqual(xapiRequestInput.object, xapiRequestOut.object);
+            if(xapiRequestInput.bbox !== undefined){
+                test.deepEqual(xapiRequestInput.bbox, xapiRequestOut.bbox);
+            }
+            if(xapiRequestInput.tag !== undefined){
+                test.deepEqual(xapiRequestInput.tag, xapiRequestOut.tag);
+            }
+            test.deepEqual(xapiRequestOut.child, undefined);
+            test.finish();
+        });
+     }
+
 
     /*
 
-     'validate way object with child predicate node or no(node)'
      */
 
 };
