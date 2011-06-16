@@ -8,7 +8,7 @@ module.exports = {
         };
 
         validator.validate(xapiRequestInput,function(error, xapiRequestOut){
-                test.equal(error, null);
+                test.deepEqual(error, null);
                 test.deepEqual(xapiRequestInput,xapiRequestOut);
                 test.finish();
         });
@@ -25,7 +25,7 @@ module.exports = {
             }
         };
         validator.validate(xapiRequestInput, function(error, xapiRequestOut){
-                test.equal(error, null);
+                test.deepEqual(error, null);
                 test.deepEqual(xapiRequestInput,xapiRequestOut);
                 test.finish();
         });
@@ -51,7 +51,7 @@ module.exports = {
         };
 
         validator.validate(xapiRequestInput, function(error, xapiRequestOut){
-                test.equal(error, null);
+                test.deepEqual(error, null);
                 test.deepEqual(xapiRequestInput,xapiRequestOut);
                 test.finish();
         });
@@ -95,12 +95,86 @@ module.exports = {
             test.deepEqual(xapiRequestOut, null);
             test.finish();
         });
+    },
+
+    'validate tag predicate with child predicate no(tags)' : function(test){
+        var xapiRequestInput = {
+            object : 'node',
+            tag : {
+                key : ['bla','blup'],
+                value : ['petra']
+            },
+            child : {
+                has : false,
+                attribute : 'tag'
+            }
+       };
+
+       validator.validate(xapiRequestInput, function(error,xapiRequestOut){
+            //HTTP 204 means "No content"; tag predicate with child predicate no(tags) returns no results
+            test.equal(error.code, 204);
+            test.deepEqual(xapiRequestOut, null);
+            test.finish();
+        });
+    },
+
+    'validate tag predicate with child predicate tags' : function(test){
+    //ignore child predicate, pass on the rest of the request
+        var xapiRequestInput = {
+            object : 'node',
+            tag : {
+                key : ['bla','blup'],
+                value : ['petra']
+            },
+            child : {
+                has : true,
+                attribute : 'tag'
+            }
+        };
+
+        validator.validate(xapiRequestInput, function(error,xapiRequestOut){
+            test.deepEqual(error, null);
+            test.deepEqual(xapiRequestInput.object, xapiRequestOut.object);
+            if(xapiRequestInput.bbox !== undefined){
+                test.deepEqual(xapiRequestInput.bbox, xapiRequestOut.bbox);
+            }
+            test.deepEqual(xapiRequestInput.tag, xapiRequestOut.tag);
+            test.deepEqual(xapiRequestOut.child, undefined);
+            test.finish();
+        });
+    },
+
+    'validate node object with child predicate node or no(node)' : function(test){
+    //ignore child predicate, pass on the rest of the request
+        var xapiRequestInput = {
+            object : 'node',
+            tag : {
+                key : ['bla','blup'],
+                value : ['petra']
+            },
+            child : {
+                has : true,
+                attribute : 'node'
+            }
+        };
+
+
+        validator.validate(xapiRequestInput, function(error,xapiRequestOut){
+            test.deepEqual(error, null);
+            test.deepEqual(xapiRequestInput.object, xapiRequestOut.object);
+            if(xapiRequestInput.bbox !== undefined){
+                test.deepEqual(xapiRequestInput.bbox, xapiRequestOut.bbox);
+            }
+            if(xapiRequestInput.tag !== undefined){
+                test.deepEqual(xapiRequestInput.tag, xapiRequestOut.tag);
+            }
+            test.deepEqual(xapiRequestOut.child, undefined);
+            test.finish();
+        });
     }
+
     /*
 
-     'validate tag predicate with child predicate no(tags)'
-     'validate tag predicate with child predicate tags'
-     'validate node object with child predicate node or no(node)'
      'validate way object with child predicate way or no(way)'
      'validate way object with child predicate node or no(node)'
      */
