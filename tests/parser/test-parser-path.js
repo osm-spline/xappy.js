@@ -1,6 +1,7 @@
-var parser = require('../lib/requestparser');
 var underscore = require('underscore');
-var log = require('log4js')().getLogger('test-requestparser');
+
+var parser = require('../../lib/parser/path');
+var generic = require('../../lib/parser/generic');
 
 // example data
 // ------------
@@ -28,73 +29,28 @@ var XPATH_EXPECTED = {
     predicates: PREDICATES_EXPECTED
 };
 
-var CHILD_PREDICATE_TO_EXPECTED = {
-    'nd':               {has: true,     attribute: 'node'},
-    'not(nd)':          {has: false,    attribute: 'node'},
-    'tag':              {has: true,     attribute: 'tag'},
-    'not(tag)':         {has: false,    attribute: 'tag'},
-    'way':              {has: true,     attribute: 'way'},
-    'not(way)':         {has: false,    attribute: 'way'},
-    'node':             {has: true,     attribute: 'node'},
-    'not(node)':        {has: false,    attribute: 'node'},
-    'relation':         {has: true,     attribute: 'relation'},
-    'not(relation)':    {has: false,    attribute: 'relation'}
-};
-
-var XAPI_REQUEST_EXPECTED = {
-    object: 'node',
-    bbox: BBOX_EXPECTED,
-    tag: TAG_EXPECTED
+var makeParser = function(expr) {
+    return parser.Parser(generic.GenericParser(expr));
 };
 
 // tests
 // -----
 
 module.exports = {
-    '"get"': function(test) {
-        var p = parser.Parser('abc');
-        test.equal('a', p.get());
-        p.advance();
-        test.equal('b', p.get());
-        p.advance();
-        test.equal('c', p.get());
-        test.finish();
-    },
-
-    '"expect" with single char': function(test) {
-        var p = parser.Parser('abc');
-        p.expect('a');
-        test.finish();
-    },
-
-    '"expect" with multiple chars': function(test) {
-        var p = parser.Parser('abc');
-        p.expect('abc');
-        test.finish();
-    },
-
-    '"expect" fails for unexpected char': function(test) {
-        var p = parser.Parser('abc');
-        test.throws(function() {
-            p.expect('b');
-        });
-        test.finish();
-    },
-
     '"word" ends on separator': function(test) {
-        var p = parser.Parser('abc,def');
+        var p = makeParser('abc,def');
         test.equal(p.word(), 'abc');
         test.finish();
     },
 
     '"word" ends on expression end': function(test) {
-        var p = parser.Parser('abc');
+        var p = makeParser('abc');
         test.equal(p.word(), 'abc');
         test.finish();
     },
 
     '"word" fails for empty word': function(test) {
-        var p = parser.Parser(',def');
+        var p = makeParser(',def');
         test.throws(function() {
             p.word();
         });
@@ -102,38 +58,38 @@ module.exports = {
     },
 
     '"delimited" with single word': function(test) {
-        var p = parser.Parser('abc');
+        var p = makeParser('abc');
         test.deepEqual(p.delimited(), ['abc']);
         test.finish();
     },
 
     '"delimited" with multiple words': function(test) {
-        var p = parser.Parser('abc|def|ghi');
+        var p = makeParser('abc|def|ghi');
         test.deepEqual(p.delimited(), ['abc', 'def', 'ghi']);
         test.finish();
     },
 
     '"tagPredicate"': function(test) {
-        var p = parser.Parser(TAG_EXPR);
+        var p = makeParser(TAG_EXPR);
         test.deepEqual(p.tagPredicate(), TAG_EXPECTED);
         test.finish();
     },
 
     '"bboxPredicate"': function(test) {
-        var p = parser.Parser(BBOX_EXPR);
+        var p = makeParser(BBOX_EXPR);
         test.deepEqual(p.bboxPredicate(), BBOX_EXPECTED);
         test.finish();
     },
 
     '"object" succeeds for known object': function(test) {
         var expr = 'way';
-        var p = parser.Parser(expr);
+        var p = makeParser(expr);
         test.equal(p.object(), 'way');
         test.finish();
     },
 
     '"object" fails for unknown object': function(test) {
-        var p = parser.Parser('foo');
+        var p = makeParser('foo');
         test.throws(function() {
             p.object();
         });
@@ -141,62 +97,41 @@ module.exports = {
     },
 
     '"predicate" succeeds for bbox': function(test) {
-        var p = parser.Parser(BBOX_EXPR);
+        var p = makeParser(BBOX_EXPR);
         test.deepEqual(p.predicate(), BBOX_EXPECTED);
         test.finish();
     },
 
     '"predicate" succeeds for tag': function(test) {
-        var p = parser.Parser(TAG_EXPR);
+        var p = makeParser(TAG_EXPR);
         test.deepEqual(p.predicate(), TAG_EXPECTED);
         test.finish();
     },
 
     'three "predicates"': function(test) {
-        var p = parser.Parser(PREDICATES_EXPR);
+        var p = makeParser(PREDICATES_EXPR);
         test.deepEqual(p.predicates(), PREDICATES_EXPECTED);
         test.finish();
     },
 
     '"xpath"': function(test) {
-        var p = parser.Parser(XPATH_EXPR);
+        var p = makeParser(XPATH_EXPR);
         test.deepEqual(p.xpath(), XPATH_EXPECTED);
         test.finish();
     },
 
     'parsing empty expression fails': function(test) {
-        var p = parser.Parser('');
+        var p = makeParser('');
         test.throws(function() {
             p.xpath();
         });
         test.finish();
     },
 
-    '"xapiRequest" only selects one bbox and one tag': function(test) {
-        test.deepEqual(parser.xapiRequest(XPATH_EXPECTED), XAPI_REQUEST_EXPECTED);
-        test.finish();
-    },
-
-    '"parse"': function(test) {
-        parser.parse(XPATH_EXPR, function(error, data) {
-            test.equal(error, null);
-            test.deepEqual(data, XAPI_REQUEST_EXPECTED);
-            test.finish();
-        });
-    },
-
-    'correct child predicates are parsed': function(test) {
-        underscore.each(CHILD_PREDICATE_TO_EXPECTED, function(expected, string) {
-            test.deepEqual(parser.parseSync('/node[' + string + ']').child, expected);
-        });
-
-        test.finish();
-    },
-
     'tag predicates can be escaped by prefixing with backslash': function(test) {
-        var p1 = parser.Parser('route=46\\|46A');
+        var p1 = makeParser('route=46\\|46A');
         test.deepEqual(p1.tagPredicate(), {key: ['route'], value: ['46|46A']});
-        var p2 = parser.Parser('foo\\|bar\\|baz=blub');
+        var p2 = makeParser('foo\\|bar\\|baz=blub');
         test.deepEqual(p2.tagPredicate(), {key: ['foo|bar|baz'], value: ['blub']});
         test.finish();
     }
