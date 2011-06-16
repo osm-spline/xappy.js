@@ -10,7 +10,7 @@ Give me a one-liner
 This will download and link the project.
 After executing the script jump to `Configure`
 
-    curl https://github.com/slomo/osm-spline-xapi/raw/master/scripts/install.sh | sh
+    curl https://raw.github.com/slomo/osm-spline-xapi/master/scripts/install.sh | sh
 
 Getting the Code
 ================
