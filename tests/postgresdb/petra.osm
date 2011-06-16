@@ -2,55 +2,47 @@
 <!-- TEST EXAMPLES: -->
 <!--
 
-0.	[bbox = left, bottom, right, top]  more detailed: [bbox = min_lon, min_lat, max_lon, max_lat]
+0. [bbox = left, bottom, right, top]  more detailed: [bbox = min_lon, min_lat, max_lon, max_lat]
 
-1.	[bbox = 7.0, 47.0, 14.0, 54.0]      whole germany as a bbox. Containing all nodes with ids 1 - 7
-2.  [bbox = 7.0, 47.0, 14.0, 51.0]		lower half of germany. Containing nodes 4, 5, 7
-3.  [bbox = 7.0, 51.1, 14.0, 54.0]		upper half of germany. Containing nodes 1, 2, 3, 6
-4.	[bbox = 9.5, 47.0, 14.0, 54.0]		right half of germany. Containing nodes 3, 5, 6, 7
-5.	[bbox = 7.0, 47.0, 9.49, 54.0]		left half of germany. Containing nodes 1, 2, 4
-6.	[bbox = -11.43, 49.81, 0.95, 59.0]	England. Containing no nodes.
-
+1. [bbox = 7.0, 47.0, 14.0, 54.0]       whole germany as a bbox. Containing all nodes with ids 1 - 7
+2. [bbox = 7.0, 47.0, 14.0, 51.0]       lower half of germany. Containing nodes 4, 5, 7
+3. [bbox = 7.0, 51.1, 14.0, 54.0]       upper half of germany. Containing nodes 1, 2, 3, 6
+4. [bbox = 9.5, 47.0, 14.0, 54.0]	right half of germany. Containing nodes 3, 5, 6, 7
+5. [bbox = 7.0, 47.0, 9.49, 54.0]	left half of germany. Containing nodes 1, 2, 4
+6. [bbox = -11.43, 49.81, 0.95, 59.0]	England. Containing no nodes.
 
 Example Queries: 
 
-'/api/0.6/node[bbox = 7.0, 47.0, 14.0, 54.0]' 							=>  returns nodes 1, 2, 3, 4, 5, 6, 7
-'/api/0.6/node[bbox = 7.0, 47.0, 9.49, 54.0]' 							=>  returns nodes 1, 2, 4
-'/api/0.6/node[bbox = -11.43, 49.81, 0.95, 59.0]'						=>	returns no nodes
+'/api/0.6/node[bbox = 7.0, 47.0, 14.0, 54.0]                    => returns nodes 1, 2, 3, 4, 5, 6, 7
+'/api/0.6/node[bbox = 7.0, 47.0, 9.49, 54.0]'                   => returns nodes 1, 2, 4
+'/api/0.6/node[bbox = -11.43, 49.81, 0.95, 59.0]'               => returns no nodes
 
-'/api/0.6/node[building=emblem]'										=>  returns node 6
-'/api/0.6/node[amenity=hospital]'										=>  returns node 1, 7
+'/api/0.6/node[building=emblem]'                                => returns node 6
+'/api/0.6/node[amenity=hospital]'                               => returns node 1, 7
 
-'/api/0.6/node[amenity=hospital][bbox = 7.0, 47.0, 14.0, 54.0]'         =>  returns nodes 1, 7
-'/api/0.6/node[amenity=hospital][bbox = 7.0, 47.0, 9.49, 54.0]' 		=>	returns node 1
-'/api/0.6/node[amenity=hospital][bbox = 9.5, 47.0, 14.0, 54.0]' 		=>	returns no nodes
+'/api/0.6/node[amenity=hospital][bbox = 7.0, 47.0, 14.0, 54.0]' => returns nodes 1, 7
+'/api/0.6/node[amenity=hospital][bbox = 7.0, 47.0, 9.49, 54.0]' => returns node 1
+'/api/0.6/node[amenity=hospital][bbox = 9.5, 47.0, 14.0, 54.0]' => returns no nodes
 
-'/api/0.6/node[amenity=hotel][bbox = 7.0, 47.0, 14.0, 54.0]' 			=>	returns node 3
-'/api/0.6/node[amenity=hotel][bbox = 7.0, 47.0, 14.0, 51.0]' 			=>	returns no nodes
+'/api/0.6/node[amenity=hotel][bbox = 7.0, 47.0, 14.0, 54.0]'    => returns node 3
+'/api/0.6/node[amenity=hotel][bbox = 7.0, 47.0, 14.0, 51.0]'    => returns no nodes
 
-'/api/0.6/way[bbox = 7.0, 47.0, 14.0, 54.0]'							=> returns ways 123, 456, 789
-and nodes 1, 2, 3, 5, 6, 7
+'/api/0.6/way[bbox = 7.0, 47.0, 14.0, 54.0]'                    => returns ways 123, 456, 789 and nodes 1, 2, 3, 5, 6, 7
 
-'/api/0.6/way[bbox = 7.0, 47.0, 14.0, 51.0]'							=> returns ways 123, 456
-and nodes 1, 5, 6, 7
+'/api/0.6/way[bbox = 7.0, 47.0, 14.0, 51.0]'                    => returns ways 123, 456 and nodes 1, 5, 6, 7
 
-'/api/0.6/way[bbox = 7.0, 47.0, 14.0, 54.0][name=Strandweg]'			=> returns way 789
-and nodes  2, 3
+'/api/0.6/way[bbox = 7.0, 47.0, 14.0, 54.0][name=Strandweg]'    => returns way 789 and nodes  2, 3
 
-'/api/0.6/relation[note=OstDeutschland]'								=> returns relation with id 1111 and
+'/api/0.6/relation[note=OstDeutschland]'                        => returns relation with id 1111 and
 returns nodes 1, 6 (direct members)
 and ways 123 and 789 (direct members)
 and (probably) nodes 2, 3, 7 because they are referenced by these ways 123 and 789
 
-'/api/0.6/relation[note=WestDeutschland]'								=> returns relation with id 1112 and
+'/api/0.6/relation[note=WestDeutschland]'                       => returns relation with id 1112 and
 returns nodes 2,3,4,5,7 (direct members)
 and ways 123, 456, 789 (direct members)
 and (probably) node 1 and 6, cause they are referenced by these ways
-
-
 -->
-
-
 
 <osm version='0.6' generator='xapi: OSM Extended API' 
      xmlns:xapi='http://www.informationfreeway.org/xapi/0.6'
@@ -60,8 +52,7 @@ and (probably) node 1 and 6, cause they are referenced by these ways
      xapi:instance='zappy2'>
   
 
-  <!--        NODES         -->
-
+  <!-- NODES -->
   
   <!-- Kassel - center of germany -->
   <node id='1' lat='51.415' lon='9.427' timestamp='2011-05-26T16:47:48+00:00' version='1' changeset='123456' user='sladda' uid='291857'>
@@ -92,25 +83,20 @@ and (probably) node 1 and 6, cause they are referenced by these ways
     <tag  k='name' v='Lucies'/>
   </node>
   
-  <!-- Berlin - rulz -->
+  <!-- Berlin -->
   <node id='6' lat='53.33' lon='11.52' timestamp='2011-05-26T16:47:48+00:00' version='1' changeset='123456' user='sladda' uid='291857'>
     <tag k='building' v='emblem'/>
     <tag  k='name' v='BrandenburgerTor'/>
 
   </node>
   
-  <!-- Muenchen - lol -->
+  <!-- Muenchen -->
   <node id='7' lat='48.13' lon='11.7' timestamp='2011-05-26T16:47:48+00:00' version='1' changeset='123456' user='sladda' uid='291857'>
     <tag  k='amenity' v='hospital'/>
     <tag  k='name' v='HeisseSchwestern'/>
   </node>
-  
-  
-  
 
-  <!--        WAYS          -->
-
-  
+  <!--  WAYS -->
   
   <!-- Berlin - Kassel - Munich -->
   <way id='123' timestamp='2007-07-25T01:55:35+01:00' version='3' changeset='2211' user='sladda' uid='291857'>
@@ -131,11 +117,8 @@ and (probably) node 1 and 6, cause they are referenced by these ways
     <nd ref='3'/>
     <tag k='name' v='Strandweg'/>
   </way>
-  
 
-  <!--        RELATIONS     -->
-
-  
+  <!-- RELATIONS -->
   
   <relation id="1111" visible="true" timestamp="2010-07-27T22:34:46Z" version="17" changeset="5334067" user="sladda" uid="291857">
     <tag k="note" v="OstDeutschland"/>
@@ -158,5 +141,4 @@ and (probably) node 1 and 6, cause they are referenced by these ways
     <member type="way" ref="456"/>
     <member type="way" ref="789"/>
   </relation>	
-  
 </osm>

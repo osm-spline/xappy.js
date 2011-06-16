@@ -1,20 +1,19 @@
 {
-    'connectionString' : 'pg://user:password@host/database',
-    'host' : 'localhost',
-    'port' : 8080,
-    'loglevel' : 'ERROR',
-    'version' : 0.6,
-    'copyright' : '2011 OpenStreetMap contributors',
-    'instance' : 'node xapi',
-    'generator' : 'xapi: OSM Extended API',
-    'namespace' : 'http://localhost/xapi/0.6',
-    'xmlConfig' : {
-        'version' : 0.6,
-        'copyright' : '2011 OpenStreetMap contributors',
-        'instance' : 'node xapi',
-        'generator' : 'xapi: OSM Extended API',
-        'namespace' : 'http://localhost/xapi/0.6'
-        'planetDatePath' : './etc/planetDate.txt'
+    "connectionString" : "pg://user:password@host/database",
+    "host" : "localhost",
+    "port" : 8080,
+    "loglevel" : "ERROR",
+    "version" : 0.6,
+    "copyright" : "2011 OpenStreetMap contributors",
+    "instance" : "node xapi",
+    "generator" : "xapi: OSM Extended API",
+    "namespace" : "http://localhost/xapi/0.6",
+    "xmlConfig" : {
+        "version" : 0.6,
+        "copyright" : "2011 OpenStreetMap contributors",
+        "instance" : "node xapi",
+        "generator" : "xapi: OSM Extended API",
+        "namespace" : "http://localhost/xapi/0.6",
+        "planetDate": "200803150826"
     }
 }
-

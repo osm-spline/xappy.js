@@ -105,16 +105,21 @@ module.exports = {
 
 
     'test_header' : function (test) {
-        var xmlGenerator = new XmlGenerator(config);
-
         var uri = '/api/0.6/*[amenity=hotel]';
-
-        var config = path.join(path.dirname(__filename), '..' , 'etc', 'config.json');
-        var configFile = fs.readFileSync(config, encoding = 'utf-8');
-        var planetDatePath = 
-            configFile.substring(configFile.indexOf('./etc'),configFile.lastIndexOf('\''));
-        var planetDate = fs.readFileSync(path.join(path.dirname(__filename), '..' , planetDatePath), encoding = 'utf-8');
-
+        var planetDate = '200803150826';
+        /* var absPlanetDatePath = path.resolve(config.xmlConfig.planetDatePath);
+           fs.readFile(absPlanetDatePath, function(err, planetDate) {
+               if (err) {
+                   throw err;
+               }
+           });i
+        */
+        /* var config = path.join(path.dirname(__filename), '..' , 'etc', 'config.json');
+           var configFile = fs.readFileSync(config, encoding = 'utf-8');
+           var planetDatePath = 
+               configFile.substring(configFile.indexOf('./etc'),configFile.lastIndexOf('\''));
+           var planetDate = fs.readFileSync(path.join(path.dirname(__filename), '..' , planetDatePath), encoding = 'utf-8');
+        */
         var expected_header = '<?xml version="1.0" standalone="no"?>'
             + '<osm version="0.6" generator="xapi: OSM Extended API" '
             + 'xmlns:xapi="http://www.informationfreeway.org/xapi/0.6" '
