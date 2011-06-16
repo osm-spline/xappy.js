@@ -8,10 +8,13 @@ var queryBuilder = require('../../lib/postgresdb/querybuilder');
 var pg = require('pg');
 var fs = require('fs');
 
+var configPath = '../../etc/my-config.json';
+var absConfPath = path.resolve(__dirname, configPath);
+var config = JSON.parse(fs.readFileSync(absConfPath));
+var connString = config.connectionString;
+
 var executeQuery = function(statement, callback) {
-    //console.log("CONNECTION: "+config.connectionString);   
-    var file = JSON.parse(fs.readFileSync('../../etc/my-config.json'));
-    var conStrArray = file.connectionString.split('@');
+    var conStrArray = connString.split('@');
     var password = conStrArray[0].split(':')[2];
      
 	var client = new pg.Client({
