@@ -89,6 +89,7 @@ module.exports = {
                             row_equal = compareRows(sampleObject, key, result);
                             //undefined == no expected object defined in helper-sample-db-row-objects.js
                             console.log('Rows equal? ' + row_equal);
+                            test.ok(row_equal);
                             //console.log("SubQuery successful");
                             //console.log(result);
                         }
