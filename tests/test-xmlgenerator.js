@@ -5,6 +5,7 @@ var builder = require('xmlbuilder');
 var log4js = require('log4js')();
 var log = log4js.getLogger('test-xmlgenerator');
 var fs = require('fs');
+var path = require('path');
 
 var config = {
     'version' : '0.6',
@@ -108,10 +109,11 @@ module.exports = {
 
         var uri = '/api/0.6/*[amenity=hotel]';
 
-        var configFile = fs.readFileSync('../etc/config.json', encoding = 'utf-8');
+        var config = path.join(path.dirname(__filename), '..' , 'etc', 'config.json');
+        var configFile = fs.readFileSync(config, encoding = 'utf-8');
         var planetDatePath = 
             configFile.substring(configFile.indexOf('./etc'),configFile.lastIndexOf('\''));
-        var planetDate = fs.readFileSync('../' + planetDatePath, encoding = 'utf-8');
+        var planetDate = fs.readFileSync(path.join(path.dirname(__filename), '..' , planetDatePath), encoding = 'utf-8');
 
         var expected_header = '<?xml version="1.0" standalone="no"?>'
             + '<osm version="0.6" generator="xapi: OSM Extended API" '
