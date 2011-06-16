@@ -14,6 +14,6 @@
         "instance" : "node xapi",
         "generator" : "xapi: OSM Extended API",
         "namespace" : "http://localhost/xapi/0.6",
-        "planetDatePath" : "./etc/planetDate.txt"
+        "planetDate": "200803150826"
     }
 }
