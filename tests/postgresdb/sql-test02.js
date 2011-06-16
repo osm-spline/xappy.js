@@ -7,6 +7,7 @@ var queryBuilder = require('../../lib/postgresdb/querybuilder');
 
 var pg = require('pg');
 var fs = require('fs');
+var path = require('path');
 
 var configPath = '../../etc/my-config.json';
 var absConfPath = path.resolve(__dirname, configPath);
