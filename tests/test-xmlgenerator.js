@@ -105,8 +105,6 @@ module.exports = {
 
 
     'test_header' : function (test) {
-        var xmlGenerator = new XmlGenerator(config);
-
         var uri = '/api/0.6/*[amenity=hotel]';
 
         var config = path.join(path.dirname(__filename), '..' , 'etc', 'config.json');
