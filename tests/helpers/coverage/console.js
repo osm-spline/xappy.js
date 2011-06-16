@@ -21,12 +21,6 @@ function cli() {
     }
 }
 
-function sumCoverage(data, val) {
-    return _(data).chain()
-        .filter(function(value, key) { return value == val })
-        .size().value();
-}
-
 function print(str){
     sys.print(colorize(str));
 }
@@ -71,8 +65,9 @@ function reportCoverage(cov) {
 
             // stats
             ++totalFiles;
-            totalHits += fileHits = sumCoverage(file, true);
-            totalMisses += fileMisses = sumCoverage(file, false);
+            totalHits += fileHits = common.sumCoverage(file, true);
+            totalMisses += fileMisses = common.sumCoverage(file, false);
+            debugger;
             SLOC += fileSLOC = fileHits + fileMisses;
             LOC += fileLOC = file.source.length;
             fileCoverage = (fileHits / fileSLOC) * 100;
