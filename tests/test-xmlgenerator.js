@@ -122,11 +122,11 @@ module.exports = {
         */
         var expected_header = '<?xml version="1.0" standalone="no"?>'
             + '<osm version="0.6" generator="xapi: OSM Extended API" '
-            + 'xmlns:xapi="http://www.informationfreeway.org/xapi/0.6" '
+        //    + 'xmlns:xapi="http://www.informationfreeway.org/xapi/0.6" '
             + 'xapi:uri="' + uri + '" '
             + 'xapi:planetDate="' + planetDate + '" '
-            + 'xapi:copyright="2011 OpenStreetMap contributors" '
-            + 'xapi:instance="zappy2">';
+            + 'xapi:copyright="2011 OpenStreetMap contributors">';
+        //    + 'xapi:instance="zappy2">';
         var created_header = xmlGenerator.createHeader(uri, planetDate);
         test.equal(expected_header,created_header, '\n\texpected: ' + expected_header + '\n\tcreated:  ' + created_header);
         test.finish();
