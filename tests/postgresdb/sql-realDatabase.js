@@ -92,10 +92,10 @@ module.exports = {
         // should return id 7
         var request = {object: 'node', tag: tagHospital, bbox: bottomBbox };
         testForCount(request, 1, test);
-    // },
-    // 'test for error while requesting all ways': function(test) {
-    //     var request = { object: 'way' };
-    //     testForError(request, test);
+    },
+    'test for error while requesting all ways': function(test) {
+        var request = { object: 'way' };
+        testForError(request, test);
     // },
     // 'test for error while requesting all relations': function(test) {
     //     var request = { object: 'relation' };
