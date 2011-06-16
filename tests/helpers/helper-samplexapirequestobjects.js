@@ -39,7 +39,7 @@ module.exports = {
             bottom : 53
         }
     },
-    'node[bbox=11,53,12,54][name|name:de=BrandenburgerTor|BrandenburgerTor]' : {
+    'node[bbox=11,53,12,54][name|name:de=BrandenburgerGate|BrandenburgerTor]' : {
         object : 'node',
         bbox : {
             right : 12,
@@ -49,7 +49,7 @@ module.exports = {
         },
         tag : {
             key : ['name', 'name:de'],
-            value : ['BrandenburgerTor','BrandenburgerTor']
+            value : ['BrandenburgerGate','BrandenburgerTor']
         }
     },
     'node[way]' : {

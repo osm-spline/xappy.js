@@ -77,7 +77,7 @@ module.exports = {
             id: 6
         }
     },
-    'node[bbox=11,53,12,54][name|name:de=BrandenburgerTor|BrandenburgerTor]' : {
+    'node[bbox=11,53,12,54][name|name:de=BrandenburgerGate|BrandenburgerTor]' : {
         0 : {
             id: 6
         }
