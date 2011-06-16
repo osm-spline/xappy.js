@@ -8,8 +8,6 @@ var absConfPath = path.resolve(__dirname, configPath);
 var config = JSON.parse(fs.readFileSync(absConfPath));
 var connString = config.connectionString;
 
-console.log(connString);
-
 var db = new PostgresDb(connString);
 
 // for details please read `petra.osm`
@@ -103,8 +101,6 @@ module.exports = {
     //     var request = { object: 'relation' };
     //     testForError(request, test);
     }
-
-
 };
 
 if (module == require.main) {
