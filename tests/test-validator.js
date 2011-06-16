@@ -145,7 +145,7 @@ module.exports = {
     },
 
     'validate node object with child predicate node or no(node)' : function(test){
-    //ignore child predicate, pass on the rest of the request
+    //return empty object
         var xapiRequestInput = {
             object : 'node',
             tag : {
@@ -158,24 +158,38 @@ module.exports = {
             }
         };
 
+        validator.validate(xapiRequestInput, function(error,xapiRequestOut){
+            //HTTP 204 means "No content"; tag predicate with child predicate no(tags) returns no results
+            test.equal(error.code, 204);
+            test.deepEqual(xapiRequestOut, null);
+            test.finish();
+        });
+    },
+
+    'validate way object with child predicate way or no(way)' : function(test){
+    //return empty object
+        var xapiRequestInput = {
+            object : 'way',
+            tag : {
+                key : ['bla','blup'],
+                value : ['petra']
+            },
+            child : {
+                has : true,
+                attribute : 'way'
+            }
+        };
 
         validator.validate(xapiRequestInput, function(error,xapiRequestOut){
-            test.deepEqual(error, null);
-            test.deepEqual(xapiRequestInput.object, xapiRequestOut.object);
-            if(xapiRequestInput.bbox !== undefined){
-                test.deepEqual(xapiRequestInput.bbox, xapiRequestOut.bbox);
-            }
-            if(xapiRequestInput.tag !== undefined){
-                test.deepEqual(xapiRequestInput.tag, xapiRequestOut.tag);
-            }
-            test.deepEqual(xapiRequestOut.child, undefined);
+            //HTTP 204 means "No content"; tag predicate with child predicate no(tags) returns no results
+            test.equal(error.code, 204);
+            test.deepEqual(xapiRequestOut, null);
             test.finish();
         });
     }
 
     /*
 
-     'validate way object with child predicate way or no(way)'
      'validate way object with child predicate node or no(node)'
      */
 
