@@ -78,6 +78,7 @@ module.exports = {
                 _.each(queryPlan, function(query) {                    
                     executeQuery(query, function(error, result) {
                         console.log('Testing: ' + key);
+                        //console.log('QUERY: ' + query.text);
                         
                         if(error) {
                             console.log("Error executing: (" + JSON.stringify(sampleObject) + ")\n" + JSON.stringify(query));

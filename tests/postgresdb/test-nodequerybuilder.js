@@ -23,58 +23,58 @@ module.exports = {
 		test.finish();
 	},
 
-	'node[amenity=pub]': function(test) {
+	'node[amenity=hotel]': function(test) {
         var expected = {
             node : {
                 name : '',
                 text : "SELECT nodes.id, nodes.version, nodes.user_id, users.name AS user_name, nodes.tstamp, nodes.changeset_id, hstore_to_array(nodes.tags) AS tags, X(nodes.geom) AS lat, Y(nodes.geom) AS lon FROM nodes, users WHERE (nodes.tags @> hstore($1,$2));",
-                values : ['amenity','pub'],
+                values : ['amenity','hotel'],
                 binary : true
             }
         };
-        var input = nodeQueryBuilder.createQueryPlan(sampleObjects['node[amenity=pub]']);
+        var input = nodeQueryBuilder.createQueryPlan(sampleObjects['node[amenity=hotel]']);
         test.deepEqual(input, expected, '\texpected: ' + JSON.stringify(expected) + '\n\treturned: '+ JSON.stringify(input));
         test.finish();
     },
 
-	'node[name|name:de=Cologne|Koeln]': function(test) {
+	'node[name|name:de=Home|HomeSweetHome]': function(test) {
         var expected = {
             node : {
                 name : '',
                 text : "SELECT nodes.id, nodes.version, nodes.user_id, users.name AS user_name, nodes.tstamp, nodes.changeset_id, hstore_to_array(nodes.tags) AS tags, X(nodes.geom) AS lat, Y(nodes.geom) AS lon FROM nodes, users WHERE (nodes.tags @> hstore($1,$3) OR nodes.tags @> hstore($1,$4) OR nodes.tags @> hstore($2,$3) OR nodes.tags @> hstore($2,$4));",
-                values : ['name','name:de','Cologne','Koeln'],
+                values : ['name','name:de','Home','HomeSweetHome'],
                 binary : true
             }
         };
-        var input = nodeQueryBuilder.createQueryPlan(sampleObjects['node[name|name:de=Cologne|Koeln]']);
+        var input = nodeQueryBuilder.createQueryPlan(sampleObjects['node[name|name:de=Home|HomeSweetHome]']);
         test.deepEqual(input, expected, '\texpected: ' + JSON.stringify(expected) + '\n\treturned: '+ JSON.stringify(input));
         test.finish();
     },
 
-    'node[bbox=13,52,14,53]': function(test) {
+    'node[bbox=11,53,12,54]': function(test) {
         var expected = {
             node : {
                 name : '',
                 text :"SELECT nodes.id, nodes.version, nodes.user_id, users.name AS user_name, nodes.tstamp, nodes.changeset_id, hstore_to_array(nodes.tags) AS tags, X(nodes.geom) AS lat, Y(nodes.geom) AS lon FROM nodes, users WHERE (ST_intersects(st_setsrid(nodes.geom,4326), st_setsrid(st_makebox2d(st_setsrid(st_makepoint($1, $2),4326),st_setsrid(st_makepoint($3, $4),4326)),4326)));",
-                values : [13, 52, 14, 53],
+                values : [11,53,12,54],
                 binary : true
             }
         };
-        var input = nodeQueryBuilder.createQueryPlan(sampleObjects['node[bbox=13,52,14,53]']);
+        var input = nodeQueryBuilder.createQueryPlan(sampleObjects['node[bbox=11,53,12,54]']);
         test.deepEqual(input, expected, '\texpected: ' + JSON.stringify(expected) + '\n\treturned: '+ JSON.stringify(input));
         test.finish();
     },
 
-	'node[bbox=13,52,14,53][name|name:de=Berlin|Berlin]': function(test) {
+	'node[bbox=11,53,12,54][name|name:de=BrandenburgerGate|BrandenburgerTor]': function(test) {
         var expected = {
             node : {
                 name : '',
                 text : "SELECT nodes.id, nodes.version, nodes.user_id, users.name AS user_name, nodes.tstamp, nodes.changeset_id, hstore_to_array(nodes.tags) AS tags, X(nodes.geom) AS lat, Y(nodes.geom) AS lon FROM nodes, users WHERE (ST_intersects(st_setsrid(nodes.geom,4326), st_setsrid(st_makebox2d(st_setsrid(st_makepoint($1, $2),4326),st_setsrid(st_makepoint($3, $4),4326)),4326))) AND (nodes.tags @> hstore($5,$7) OR nodes.tags @> hstore($5,$8) OR nodes.tags @> hstore($6,$7) OR nodes.tags @> hstore($6,$8));",
-                values : [13,52,14,53,'name','name:de','Berlin','Berlin'],
+                values : [11,53,12,54,'name','name:de','BrandenburgerGate','BrandenburgerTor'],
                 binary : true
             }
         };
-        var input = nodeQueryBuilder.createQueryPlan(sampleObjects['node[bbox=13,52,14,53][name|name:de=Berlin|Berlin]']);
+        var input = nodeQueryBuilder.createQueryPlan(sampleObjects['node[bbox=11,53,12,54][name|name:de=BrandenburgerGate|BrandenburgerTor]']);
         test.deepEqual(input, expected, '\texpected: ' + JSON.stringify(expected) + '\n\treturned: '+ JSON.stringify(input));
         test.finish();
     },
