@@ -7,6 +7,10 @@ var queryBuilder = require('../../lib/postgresdb/querybuilder');
 
 var pg = require('pg');
 var fs = require('fs');
+var path = require('path');
+
+var log4js = require('log4js')();
+var log = log4js.getLogger('sql-test02');
 
 var configPath = '../../etc/my-config.json';
 var absConfPath = path.resolve(__dirname, configPath);
@@ -76,18 +80,21 @@ module.exports = {
         var row_equal;
         
         // (-3) for none-node objects
-        //test.numAssertions = Object.keys(sampleObjects).length - 3;
-        
+        test.numAssertions = Object.keys(sampleObjects).length - 3;
+        var counter = 0;
         _.each(sampleObjects, function(sampleObject, key) {
+            
             //console.log(sampleObject);
             //console.log('---');
             //xapiRequestTester.test_xapi_request(test, sampleObject);
-            if (sampleObject.object === 'node') {        
+            if (sampleObject.object === 'node') {
                 queryPlan = queryBuilder.createQueryPlan(sampleObject);
                 //iterate over subQueries of queryPlan
-                _.each(queryPlan, function(query) {                
-                    executeQuery(query, function(error, result) {
-                        console.log('Testing: ' + key);
+                _.each(queryPlan, function(query) {
+                     executeQuery(query, function(error, result) {
+                        counter = counter + 1;
+                        //console.log('Testing: ' + key);
+                        log.debug('Testing: ' + key);
                         //console.log('QUERY: ' + query.text);
                         
                         if(error) {
@@ -99,16 +106,23 @@ module.exports = {
                             //Compare retrieved rows
                             row_equal = compareRows(sampleObject, key, result);
                             //undefined == no expected object defined in helper-sample-db-row-objects.js
-                            console.log('Rows equal? ' + row_equal);
+                            //console.log('Rows equal? ' + row_equal);
+                            log.debug('Rows equal? ' + row_equal);
                         }
                         
                         test.ok(row_equal);
-                        console.log('---');
+                        //console.log('---');
+                        log.debug('---');
+                        
+                        if(counter == test.numAssertions) {
+                            test.finish();
+                        }
+                            
                     });
                 });
             }
         });
-        test.finish();
+        //test.finish();
     }
 };
 
