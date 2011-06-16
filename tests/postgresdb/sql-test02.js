@@ -6,13 +6,17 @@ var xapiRequestTester = require('../helpers/helper-xapi-request');
 var queryBuilder = require('../../lib/postgresdb/querybuilder');
 
 var pg = require('pg');
+var fs = require('fs');
 
 var executeQuery = function(statement, callback) {
-    //console.log("CONNECTION: "+config.connectionString);
-    
+    //console.log("CONNECTION: "+config.connectionString);   
+    var file = JSON.parse(fs.readFileSync('../../etc/my-config.json'));
+    var conStrArray = file.connectionString.split('@');
+    var password = conStrArray[0].split(':')[2];
+     
 	var client = new pg.Client({
-		user : 'xapi',
-		password : '***',
+	    user : 'xapi',
+		password : password,
 		database : 'xapi_petra', //datenbank name
 		host : 'db.osm.spline.de' //server dns
 	});
@@ -68,20 +72,24 @@ module.exports = {
         var queryPlan;
         var row_equal;
         
+        // (-3) for none-node objects
+        //test.numAssertions = Object.keys(sampleObjects).length - 3;
+        
         _.each(sampleObjects, function(sampleObject, key) {
             //console.log(sampleObject);
             //console.log('---');
             //xapiRequestTester.test_xapi_request(test, sampleObject);
-            if (sampleObject.object === 'node') {
+            if (sampleObject.object === 'node') {        
                 queryPlan = queryBuilder.createQueryPlan(sampleObject);
                 //iterate over subQueries of queryPlan
-                _.each(queryPlan, function(query) {                    
+                _.each(queryPlan, function(query) {                
                     executeQuery(query, function(error, result) {
                         console.log('Testing: ' + key);
                         //console.log('QUERY: ' + query.text);
                         
                         if(error) {
                             console.log("Error executing: (" + JSON.stringify(sampleObject) + ")\n" + JSON.stringify(query));
+                            row_equal = false;
                             //error in subQuery
                             console.log(error);
                         } else {
@@ -89,11 +97,9 @@ module.exports = {
                             row_equal = compareRows(sampleObject, key, result);
                             //undefined == no expected object defined in helper-sample-db-row-objects.js
                             console.log('Rows equal? ' + row_equal);
-                            test.ok(row_equal);
-                            //console.log("SubQuery successful");
-                            //console.log(result);
                         }
                         
+                        test.ok(row_equal);
                         console.log('---');
                     });
                 });
