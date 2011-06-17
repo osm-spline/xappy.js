@@ -3,7 +3,7 @@
     "host" : "localhost",
     "port" : 8080,
     "loglevel" : "ERROR",
-    "xmlConfig" : {
+    "generator" : {
         "version" : 0.6,
         "copyright" : "2011 OpenStreetMap contributors",
         "instance" : "node xapi",
