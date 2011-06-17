@@ -2,6 +2,7 @@ var sinon = require('sinon');
 var injector = require('../lib/injector.js');
 var Xapi = require('../lib/xapi');
 var getGenerator = Xapi.getGenerator;
+var httpHandler = Xapi.httpHandler;
 var _ = require('underscore')._;
 
 if (module == require.main) {
@@ -14,21 +15,34 @@ var json = 'application/json';
 module.exports = {
     'getGenerator': function(test) {
         var config = {};
-        var gen = getGenerator("content-type", config, "uri");
+        var gen = getGenerator(config)("content-type", "uri");
         test.equal(gen.contentType, xml);
         test.finish();
     },
     'getGenerator, get Json': function(test) {
         var config = {};
-        var gen = getGenerator(json, config, 'uri');
+        var gen = getGenerator(config)(json, 'uri');
         test.equal(gen.contentType, json);
         test.finish();
     },
     'getGenerator, get Xml': function(test) {
         var config = {};
-        var gen = getGenerator(xml, config, 'uri');
+        var gen = getGenerator(config)(xml, 'uri');
         test.equal(gen.contentType, xml);
         test.finish();
+    },
+    'httpHandler check uri': function(test) {
+        var parse = sinon.spy();
+        var uri = '/foo/bar';
+        var req = { url: uri + '?thisshouldberemoved' }
+        var res = sinon.spy();
+        var cb = function(err, emitter) {
+        }
+        var handler = httpHandler(parse, cb)(req, res);
+        // parser should get uri in first argument of first call
+        test.equal(parse.args[0][0], uri);
+        test.finish();
+
     // },
     // 'testHttpHandleCall': function(test) {
 
