@@ -39,18 +39,27 @@ Then we initialize the project
 Testing Xapi
 ============
 
-    ./bin/run_tests
+    bin/run_tests
 
 Configure
 =========
 
 Edit `/etc/config.json`
 
-Start (not working yet)
-=====
-
-    ./bin/xapi --config <path to your config>
-
 or
 
-    ./bin/xapi --port ... --connectionString ...
+copy `/etc/config.json` to `/etc/my-config.json` and edit this file
+
+Start
+=====
+
+To get an overview of the application
+
+    bin/xapi --help
+
+    bin/xapi --config <path to your config>
+    bin/xapi --port ... --connectionString ...
+
+If you have created a `my-config.json` file in `etc` you can execute
+
+    bin/start-with-my-config
