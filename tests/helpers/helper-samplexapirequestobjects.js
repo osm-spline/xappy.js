@@ -70,10 +70,10 @@ module.exports = {
     'way[bbox=11,53,12,54]' : {
         object : 'way',
         bbox : {
-            right : 11,
-            top : 53,
-            left : 12,
-            bottom : 54
+            right : 12,
+            top : 54,
+            left : 11,
+            bottom : 53
         }
     },
     'relation' : {
