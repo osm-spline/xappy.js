@@ -8,14 +8,17 @@ var fs = require('fs');
 var path = require('path');
 
 var config = {
-    'version' : '0.6',
-    'generator' : 'xapi: OSM Extended API',
-    'namespace' : 'http://www.informationfreeway.org/xapi/0.6',
-    'copyright' : '2011 OpenStreetMap contributors',
-    'instance' : 'zappy2'
+    version : '0.6',
+    generator : 'xapi: OSM Extended API',
+    namespace : 'http://www.informationfreeway.org/xapi/0.6',
+    copyright : '2011 OpenStreetMap contributors',
+    instance : 'zappy2',
+    planetDate : 'TEST PLANETDATE'
 };
 
-var xmlGenerator = new XmlGenerator(config);
+var uri = 'uri';
+
+var xmlGenerator = new XmlGenerator(config, uri);
 
 function toISO8601(date) {
     // 2007-03-31T00:09:22+01:00
@@ -96,45 +99,31 @@ module.exports = {
     },
 
     'test_rel':function(test){
-        var expected_rel = '<relation id="655" version="34" uid="45" user="kl" changesetId="765" timestamp="' + date + '">'
+        var expected = '<relation id="655" version="34" uid="45" user="kl" changesetId="765" timestamp="' + date + '">'
                         + '<member type="way" ref="234" role="role"/></relation>';
-        var created_rel = xmlGenerator.create('relation', sample_rel);
-        test.equal(expected_rel,created_rel,"\n\texpected: " + expected_rel + "\n\tcreated:  " + created_rel + "\n");
+        var actual = xmlGenerator.create('relation', sample_rel);
+
+        var msg = "\n\texpected: " + expected + "\n\tcreated:  " + actual + "\n"
+        test.equal(expected, actual, msg);
         test.finish();
     },
-
-
     'test_header' : function (test) {
-        var uri = '/api/0.6/*[amenity=hotel]';
-        var planetDate = '200803150826';
-        /* var absPlanetDatePath = path.resolve(config.xmlConfig.planetDatePath);
-           fs.readFile(absPlanetDatePath, function(err, planetDate) {
-               if (err) {
-                   throw err;
-               }
-           });i
-        */
-        /* var config = path.join(path.dirname(__filename), '..' , 'etc', 'config.json');
-           var configFile = fs.readFileSync(config, encoding = 'utf-8');
-           var planetDatePath = 
-               configFile.substring(configFile.indexOf('./etc'),configFile.lastIndexOf('\''));
-           var planetDate = fs.readFileSync(path.join(path.dirname(__filename), '..' , planetDatePath), encoding = 'utf-8');
-        */
+
         var expected_header = '<?xml version="1.0" standalone="no"?>'
             + '<osm version="0.6" generator="xapi: OSM Extended API" '
         //    + 'xmlns:xapi="http://www.informationfreeway.org/xapi/0.6" '
             + 'xapi:uri="' + uri + '" '
-            + 'xapi:planetDate="' + planetDate + '" '
+            + 'xapi:planetDate="' + config.planetDate + '" '
             + 'xapi:copyright="2011 OpenStreetMap contributors">';
         //    + 'xapi:instance="zappy2">';
-        var created_header = xmlGenerator.createHeader(uri, planetDate);
+        var created_header = xmlGenerator.createHeader();
         test.equal(expected_header,created_header, '\n\texpected: ' + expected_header + '\n\tcreated:  ' + created_header);
         test.finish();
     },
-
     'test_footer': function (test){
-        var expected_footer = '</osm>';
-        var created_footer = xmlGenerator.createFooter();
+        var expected = '</osm>';
+        var actual = xmlGenerator.createFooter();
+        test.equal(expected, actual);
         test.finish();
     }
 };
@@ -142,5 +131,3 @@ module.exports = {
 if (module === require.main) {
     require('async_testing').run(__filename, process.ARGV);
 }
-
-// vim:set ts=4 sw=4 expandtab:
