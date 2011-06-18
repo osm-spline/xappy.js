@@ -41,30 +41,26 @@ module.exports = {
          var input = wayQueryBuilder.createQueryPlan(sampleObjects['way[bbox=11,53,12,54]']);
          test.deepEqual(input, expected, '\texpected: ' + JSON.stringify(expected) + '\n\treturned: '+ JSON.stringify(input));
          test.finish();
+    },
+    'way[name=Strandweg]': function(test) {
+        var expected = {
+             node : {
+                 name : '',
+                 text : 'SELECT nodes.id, nodes.version, nodes.user_id, nodes.tstamp, nodes.changeset_id, hstore_to_array(nodes.tags) AS tags, X(nodes.geom) AS lat, Y(nodes.geom) AS lon, users.name AS user_name FROM nodes, users, (SELECT DISTINCT way_nodes.node_id FROM ways, way_nodes WHERE ways.id = way_nodes.way_id AND (ways.tags @> hstore($1, $2))) AS nodesOfWays WHERE nodes.user_id = users.id AND nodesOfWays.node_id = nodes.id;',
+                 values : ['name', 'Strandweg'],
+                 binary : true
+             },
+             way : {
+                 name : '',
+                 text : 'SELECT ways.id, ways.version, ways.user_id, ways.tstamp, ways.changeset_id, hstore_to_array(ways.tags) AS tags, ways.nodes, users.name AS user_name FROM ways, users WHERE ways.user_id = users.id AND (ways.tags @> hstore($1, $2));',
+                 values : ['name','Strandweg'],
+                 binary : true
+             }
+        };
+        var input = wayQueryBuilder.createQueryPlan(sampleObjects['way[name=Strandweg]']);
+        test.deepEqual(input, expected, '\texpected: ' + JSON.stringify(expected) + '\n\treturned: '+ JSON.stringify(input));
+        test.finish();
     }/*,
-    'way[tag=key:value]': function(test) {
-                //select all nodes whích are in the bbox
-                //queryBuilder should return an array of sql requests
-                var myQueryObject = {
-                    object : 'way',
-                    tag : {
-                        key : ['amenity'],
-                        value : ['pub']
-                    }
-                };
-
-                var expected = {
-                        node : {
-                                name : '',
-                                text : "SELECT * FROM ways WHERE (ways.tags @> hstore($1,$2));",
-                                values : ['amenity','pub'],
-                              binary : true
-                        }
-                };
-                var input = new QueryBuilder().createQueryPlan(myQueryObject);
-                test.deepEqual(input, expected, 'queryPlan with on query for all nodes');
-                test.finish();
-        },
 
     'way[tag=key,key:value,value]': function(test) {
                 //select all nodes whích are in the bbox
