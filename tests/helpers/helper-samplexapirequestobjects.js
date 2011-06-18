@@ -74,8 +74,28 @@ module.exports = {
             value : ['Strandweg']
         }
     },
+    'way[name|name:de=Strandweg|Strandweg]' : {
+        object : 'way',
+        tag : {
+            key : ['name','name:de'],
+            value : ['Strandweg','Strandweg']
+        }
+    },
     'way[bbox=11,53,12,54]' : {
         object : 'way',
+        bbox : {
+            right : 12,
+            top : 54,
+            left : 11,
+            bottom : 53
+        }
+    },
+    'way[name|name:de=Strandweg|Strandweg][bbox=11,53,12,54]' : {
+        object : 'way',
+        tag : {
+            key : ['name','name:de'],
+            value : ['Strandweg','Strandweg']
+        },
         bbox : {
             right : 12,
             top : 54,
