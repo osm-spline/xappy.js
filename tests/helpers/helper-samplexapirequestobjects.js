@@ -67,6 +67,13 @@ module.exports = {
     'way' : {
         object : 'way'
     },
+    'way[name=Strandweg]' : {
+        object : 'way',
+        tag : {
+            key : ['name'],
+            value : ['Strandweg']
+        }
+    },
     'way[bbox=11,53,12,54]' : {
         object : 'way',
         bbox : {
