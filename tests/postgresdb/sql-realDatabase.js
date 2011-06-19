@@ -30,7 +30,7 @@ var node1 = {
     lon: 9.427,
     version: 1,
     uid: 291857,
-    changesetId: 123456,
+    changeset: 123456,
     timestamp: null,
     tags: [
         { key: 'amenity', value: 'hospital' },
@@ -44,7 +44,7 @@ var node2 = {
     lon: 7.2,
     version: 1,
     uid: 291857,
-    changesetId: 123456, 
+    changeset: 123456, 
     timestamp: null,
     tags: []
 };
@@ -55,7 +55,7 @@ var node3 = {
     lon: 13.9108,
     version: 1,
     uid: 291857,
-    changesetId: 123456, 
+    changeset: 123456, 
     timestamp: null,
     tags: [
 		{ key: 'amenity', value: 'hotel' },
@@ -68,7 +68,7 @@ var node4 = {
     lon: 7.8526,
     version: 1,
     uid: 291857,
-    changesetId: 123456, 
+    changeset: 123456, 
     timestamp: null,
     tags: [
 		{ key: 'amenity', value: 'hotel' },
@@ -81,7 +81,7 @@ var node5 = {
     lon: 13.4,
     version: 1,
     uid: 291857,
-    changesetId: 123456, 
+    changeset: 123456, 
     timestamp: null,
     tags: [
 		{ key: 'amenity', value: 'bar' },
@@ -94,7 +94,7 @@ var node6 = {
     lon: 11.52,
     version: 1,
     uid: 291857,
-    changesetId: 123456, 
+    changeset: 123456, 
     timestamp: null,
     tags: [
 		{ key: 'building', value: 'emblem' },
@@ -108,7 +108,7 @@ var node7 = {
     lon: 11.7,
     version: 1,
     uid: 291857,
-    changesetId: 123456, 
+    changeset: 123456, 
     timestamp: null,
     tags: [
 		{ key: 'amenity', value: 'hospital' },
@@ -121,7 +121,7 @@ var way1 = {
 	id: 123,
 	version: 3,
 	uid: 291857,
-	changesetId: 2211,
+	changeset: 2211,
 	timestamp: null,
 	nodes: [ 1,6,7 ],
 	tags: []	
@@ -131,7 +131,7 @@ var way2 = {
 	id: 456,
 	version: 3,
 	uid: 291857,
-	changesetId: 2211,
+	changeset: 2211,
 	timestamp: null,
 	nodes: [ 2,5 ],
 	tags: []	
@@ -141,7 +141,7 @@ var way3 = {
 	id: 789,
 	version: 3,
 	uid: 291857,
-	changesetId: 2211,
+	changeset: 2211,
 	timestamp: null,
 	nodes: [ 2,3 ],
 	tags: [{ key: 'name', value: 'Strandweg' }]	
@@ -152,7 +152,7 @@ var relation1 {
   id: 1111,
   version: 17,
   uid: 291857,
-  changesetId: 5334067,
+  changeset: 5334067,
   timestamp: null,
   tags: [ 
 	{ key : 'note', value: 'OstDeutschland' },
@@ -170,7 +170,7 @@ var relation2 {
   id: 1112,
   version: 17,
   uid: 291857,
-  changesetId: 5334067,
+  changeset: 5334067,
   timestamp: null,
   tags: [ 
 	{ key : 'note', value: 'WestDeutschland' },

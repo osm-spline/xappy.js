@@ -50,7 +50,7 @@ var sample_node = {
     version: 4,
     uid: 4,
     user: 'etti',
-    changesetId: 443654,
+    changeset: 443654,
     timestamp: date,
     tags:[{key:'key1',value:'value1'},{key:'key2',value:'value2'}]
 };
@@ -60,7 +60,7 @@ var sample_way = {
     version: 3,
     uid: 35,
     user: 'paul',
-    changesetId: 7,
+    changeset: 7,
     timestamp: date,
     nodes : [1, 2],
     tags:[{key:'key1',value:'value1'},{key:'key2',value:'value2'}]
@@ -71,7 +71,7 @@ var sample_rel = {
     version: 34,
     uid: 45,
     user: 'kl',
-    changesetId: 765,
+    changeset: 765,
     timestamp: date,
     members:[{type:'way',reference:234,role:'role'}]
 };
@@ -80,7 +80,7 @@ module.exports = {
 
     'test_node':function(test){
         test.ok(true);
-        var expected_node = '<node id="4" lat="4" lon="4" version="4" uid="4" user="etti" changesetId="443654" timestamp="' + date + '">'
+        var expected_node = '<node id="4" lat="4" lon="4" version="4" uid="4" user="etti" changeset="443654" timestamp="' + date + '">'
                           + '<tag k="key1" v="value1"/><tag k="key2" v="value2"/></node>';
         var created_node = xmlGenerator.create('node', sample_node);
         test.equal(expected_node,created_node,"\n\texpected: " + expected_node + "\n\tcreated:  " + created_node+ "\n");
@@ -88,7 +88,7 @@ module.exports = {
     },
 
     'test_way':function(test){
-        var expected_way = '<way id="45" version="3" uid="35" user="paul" changesetId="7" timestamp="' + date + '">'
+        var expected_way = '<way id="45" version="3" uid="35" user="paul" changeset="7" timestamp="' + date + '">'
                          + '<nd ref="1"/><nd ref="2"/>'
                          + '<tag k="key1" v="value1"/><tag k="key2" v="value2"/></way>';
         var created_way = xmlGenerator.create('way', sample_way);
@@ -97,7 +97,7 @@ module.exports = {
     },
 
     'test_rel':function(test){
-        var expected = '<relation id="655" version="34" uid="45" user="kl" changesetId="765" timestamp="' + date + '">'
+        var expected = '<relation id="655" version="34" uid="45" user="kl" changeset="765" timestamp="' + date + '">'
                         + '<member type="way" ref="234" role="role"/></relation>';
         var actual = xmlGenerator.create('relation', sample_rel);
 

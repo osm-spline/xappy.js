@@ -44,7 +44,7 @@ OSM node representation.
         version*: <bigint>,
         uid*: <bigint>,
         user*: <string>,
-        changesetId*: <bigint>,
+        changeset*: <bigint>,
         timestamp*: <Date>,
         tags*: [ { key: <str>, value: <str> } ]
     }
@@ -59,7 +59,7 @@ OSM way representation.
         version*: <bigint>,
         uid*: <bigint>,
         user*: <string>,
-        changesetId*: <bigint>,
+        changeset*: <bigint>,
         timestamp*: <Date>,
         nodes: [ <bigint> ],
         tags*: [ { key: <str>, value: <str> } ]
@@ -74,7 +74,7 @@ OSM way representation.
         version*: <bigint>,
         uid*: <bigint>,
         user*: name,
-        changesetId*: <bigint>,
+        changeset*: <bigint>,
         timestamp*: <Date>,
         tags*: [ { key: <str>, value: <str> } ],
         members: [ {

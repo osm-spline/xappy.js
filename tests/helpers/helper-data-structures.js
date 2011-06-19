@@ -10,7 +10,7 @@ var knownDatatypes = {
             version : 'number',
             uid : 'number',
             user : 'string',
-            changesetId : 'number',
+            changeset : 'number',
             timestamp : 'Date',
             tags : [{k : 'string', v : 'string'}]
         }
@@ -25,7 +25,7 @@ var knownDatatypes = {
             version : 'number',
             uid : 'number',
             user : 'string',
-            changesetId : 'number',
+            changeset : 'number',
             timestamp : 'Date',
             tags : [{k : 'string', v : 'string'}]
         }
@@ -44,7 +44,7 @@ var knownDatatypes = {
             version : 'number',
             uid : 'number',
             user : 'string',
-            changesetId : 'number',
+            changeset : 'number',
             timestamp : 'Date',
             tags : [{k : 'string', v : 'string'}]
         }
@@ -93,10 +93,10 @@ module.exports = {
         test.deepEqual(typeof toTestNode.user, "string", "Node user is not a string!");
         test.notDeepEqual(toTestNode.user, "", "Node user is empty");
     }
-    if(typeof toTestNode.changesetId != "undefined"){
-        test.deepEqual(typeof toTestNode.changesetId, "number", "Node changesetId is not a number!");
-        test.ok(toTestNode.changesetId >= 1, "Invalid node changesetId");
-        test.strictEqual(toTestNode.changesetId, Math.round(toTestNode.changesetId),"Node.changesetId not an integer");
+    if(typeof toTestNode.changeset != "undefined"){
+        test.deepEqual(typeof toTestNode.changeset, "number", "Node changeset is not a number!");
+        test.ok(toTestNode.changeset >= 1, "Invalid node changeset");
+        test.strictEqual(toTestNode.changeset, Math.round(toTestNode.changeset),"Node.changeset not an integer");
 
  }
     if(typeof toTestNode.timestamp != "undefined"){
@@ -151,10 +151,10 @@ module.exports = {
             test.notDeepEqual(toTestWay.user, "", "Way user is empty");
         }
 
-        if(typeof toTestWay.changesetId != "undefined"){
-            test.deepEqual(typeof toTestWay.changesetId, "number", "Way changesetId is not a number!");
-            test.ok(toTestWay.changesetId >= 1, "Invalid way changesetId");
-            test.strictEqual(toTestWay.changesetId, Math.round(toTestWay.changesetId),"Way.changesetId not an integer");
+        if(typeof toTestWay.changeset != "undefined"){
+            test.deepEqual(typeof toTestWay.changeset, "number", "Way changeset is not a number!");
+            test.ok(toTestWay.changeset >= 1, "Invalid way changeset");
+            test.strictEqual(toTestWay.changeset, Math.round(toTestWay.changeset),"Way.changeset not an integer");
         }
 
         if(typeof toTestWay.timestamp != "undefined"){
@@ -212,10 +212,10 @@ module.exports = {
             test.notDeepEqual(toTestRelation.user, "", "Relation user is empty");
         }
 
-        if(typeof toTestRelation.changesetId != "undefined"){
-            test.deepEqual(typeof toTestRelation.changesetId, "number", "Relation changesetId is not a number!");
-            test.ok(toTestRelation.changesetId >= 1, "Test relation changesetId is negative");
-            test.strictEqual(toTestRelation.changesetId, Math.round(toTestRelation.changesetId),"Relation.changesetId not an integer");
+        if(typeof toTestRelation.changeset != "undefined"){
+            test.deepEqual(typeof toTestRelation.changeset, "number", "Relation changeset is not a number!");
+            test.ok(toTestRelation.changeset >= 1, "Test relation changeset is negative");
+            test.strictEqual(toTestRelation.changeset, Math.round(toTestRelation.changeset),"Relation.changeset not an integer");
         }
 
         if(typeof toTestRelation.timestamp != "undefined"){
