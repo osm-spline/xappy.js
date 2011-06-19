@@ -1,4 +1,5 @@
-//make this test standalone
+var sinon = require('sinon');
+
 if (module == require.main) {
     require('async_testing').run(__filename, process.ARGV);
 }
@@ -6,6 +7,15 @@ if (module == require.main) {
 var PostgresDb = require('../../lib/postgresdb/postgresdb').PostgresDb;
 var events = require('events');
 module.exports = {
+    'postgresdb.end()': function(test) {
+        var backend = { end: function() {} };
+        var end = sinon.spy(backend, "end");
+
+        var db = new PostgresDb("connString", backend);
+        db.end();
+        test.ok(end.called);
+        test.finish();
+    },
     'test emitter functionality of query/client': function(test) {
         //test.numAssertions = 2;
         var myQueryObject = {
