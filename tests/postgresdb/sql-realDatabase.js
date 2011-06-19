@@ -295,7 +295,7 @@ var wrappedNodesCountSuite = wrap({
 });
 
 exports.nodesError = wrappedNodesErrorSuite;
-// exports.nodesCount = wrappedNodesCountSuite;
+exports.nodesCount = wrappedNodesCountSuite;
 
 if (module == require.main) {
     return require('async_testing').run(__filename, process.ARGV);
