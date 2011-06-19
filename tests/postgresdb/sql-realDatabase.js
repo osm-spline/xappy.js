@@ -2,13 +2,14 @@ var fs = require('fs');
 var path = require('path');
 var PostgresDb = require('../../lib/postgresdb/postgresdb').PostgresDb;
 
+var async_testing = require('async_testing');
+var wrap = async_testing.wrap;
 
 var configPath = '../../etc/my-config.json';
 var absConfPath = path.resolve(__dirname, configPath);
 var config = JSON.parse(fs.readFileSync(absConfPath));
 var connString = config.connectionString;
 
-var db = new PostgresDb(connString);
 
 // for details please read `petra.osm`
 // all contains nodes [1..7]
@@ -30,7 +31,7 @@ var node1 = {
     lon: 9.427,
     version: 1,
     uid: 291857,
-    changesetId: 123456,
+    changeset: 123456,
     timestamp: null,
     tags: [
         { key: 'amenity', value: 'hospital' },
@@ -44,7 +45,7 @@ var node2 = {
     lon: 7.2,
     version: 1,
     uid: 291857,
-    changesetId: 123456, 
+    changeset: 123456, 
     timestamp: null,
     tags: []
 };
@@ -55,7 +56,7 @@ var node3 = {
     lon: 13.9108,
     version: 1,
     uid: 291857,
-    changesetId: 123456, 
+    changeset: 123456, 
     timestamp: null,
     tags: [
 		{ key: 'amenity', value: 'hotel' },
@@ -68,7 +69,7 @@ var node4 = {
     lon: 7.8526,
     version: 1,
     uid: 291857,
-    changesetId: 123456, 
+    changeset: 123456, 
     timestamp: null,
     tags: [
 		{ key: 'amenity', value: 'hotel' },
@@ -81,7 +82,7 @@ var node5 = {
     lon: 13.4,
     version: 1,
     uid: 291857,
-    changesetId: 123456, 
+    changeset: 123456, 
     timestamp: null,
     tags: [
 		{ key: 'amenity', value: 'bar' },
@@ -94,13 +95,12 @@ var node6 = {
     lon: 11.52,
     version: 1,
     uid: 291857,
-    changesetId: 123456, 
+    changeset: 123456, 
     timestamp: null,
     tags: [
 		{ key: 'building', value: 'emblem' },
         { key: 'name', value: 'BrandenburgerTor' }
     ]
-};
 };
 var node7 = {
     id: 7,
@@ -108,7 +108,7 @@ var node7 = {
     lon: 11.7,
     version: 1,
     uid: 291857,
-    changesetId: 123456, 
+    changeset: 123456, 
     timestamp: null,
     tags: [
 		{ key: 'amenity', value: 'hospital' },
@@ -121,7 +121,7 @@ var way1 = {
 	id: 123,
 	version: 3,
 	uid: 291857,
-	changesetId: 2211,
+	changeset: 2211,
 	timestamp: null,
 	nodes: [ 1,6,7 ],
 	tags: []	
@@ -131,7 +131,7 @@ var way2 = {
 	id: 456,
 	version: 3,
 	uid: 291857,
-	changesetId: 2211,
+	changeset: 2211,
 	timestamp: null,
 	nodes: [ 2,5 ],
 	tags: []	
@@ -141,18 +141,18 @@ var way3 = {
 	id: 789,
 	version: 3,
 	uid: 291857,
-	changesetId: 2211,
+	changeset: 2211,
 	timestamp: null,
 	nodes: [ 2,3 ],
 	tags: [{ key: 'name', value: 'Strandweg' }]	
-}
+};
 
 
-var relation1 {
+var relation1 = {
   id: 1111,
   version: 17,
   uid: 291857,
-  changesetId: 5334067,
+  changeset: 5334067,
   timestamp: null,
   tags: [ 
 	{ key : 'note', value: 'OstDeutschland' },
@@ -164,13 +164,13 @@ var relation1 {
 	{type: "way", ref: 123 },
 	{type: "way", ref: 789 }      
   ]
-}
+};
 
-var relation2 {
+var relation2 = {
   id: 1112,
   version: 17,
   uid: 291857,
-  changesetId: 5334067,
+  changeset: 5334067,
   timestamp: null,
   tags: [ 
 	{ key : 'note', value: 'WestDeutschland' },
@@ -195,7 +195,6 @@ var tagEmblem = {key: ['building'], value: ['emblem'] };
 // contains nodes [3,4]
 var tagHotel = {key: ['amenity'], value: ['hotel']};
 
-
 function countNumberOfNodes(emitter, cb) {
     var count = 0;
     emitter.on('node', function() { count++; });
@@ -203,39 +202,45 @@ function countNumberOfNodes(emitter, cb) {
 }
 
 function testForCount(request, count, test) {
-    db.executeRequest(request, function(error, emitter) {
+    test.db.executeRequest(request, function(error, emitter) {
         countNumberOfNodes(emitter, function(res) {
             test.equal(count, res);
             test.finish();
-            db.end();
         });
     });
 }
 
 function testForError(request, test) {
-    db.executeRequest(request, function(error, emitter) {
+    test.db.executeRequest(request, function(error, emitter) {
         test.ok(error == null, "there is an error in the callback " + JSON.stringify(error)); 
         test.ok(emitter !== null, "emitter in the callback is null");
         test.finish();
     });
 }
 
-module.exports = {
-    setup: function(test, done) {
-        console.log("setup");
-        done();
-    },
-    'test for error while requesting nodes': function(test) {
+var nodesErrorSuite = {
+    'nodes only': function(test) {
         var request = { object: 'node' };
         testForError(request, test);
         },
-    'return all nodes (7 in db)': function(test) {
-        var request = { object: 'node' };
-        testForCount(request, 7, test);
-    },
-    'nodes: test for error while requesting nodes with bbox': function(test) {
+     'node and bbox': function(test) {
         var request = { object: 'node', bbox: allBbox };
         testForError(request, test);
+    },
+    'nodes and tag': function(test) {
+        var request = { object: 'node', tag: tagHospital };
+        testForError(request, test);
+    },
+    'node tag and bbox': function(test) {
+        var request  = { object: 'node', tag: tagHospital, bbox: allBbox };
+        testForError(request, test);
+    },
+};
+
+var nodesCountSuite = {
+   'nodes: all nodes (7 in db)': function(test) {
+        var request = { object: 'node' };
+        testForCount(request, 7, test);
     },
     'nodes: all nodes in a big bbox (should contain all nodes)': function(test) {
         var request = { object: 'node', bbox: allBbox };
@@ -245,32 +250,52 @@ module.exports = {
         var request = { object: 'node', bbox: emptyBbox };
         testForCount(request, 0, test);
     },
-    'nodes: test tag for errors': function(test) {
-        var request = { object: 'node', tag: tagHospital };
-        testForError(request, test);
-    },
     'nodes: all nodes with a special tag': function(test) {
         var request = { object: 'node', tag: tagHospital };
         testForCount(request, 2, test);
-        },
-    'nodes: test tag and bbox for errors': function(test) {
-        var request  = { object: 'node', tag: tagHospital, bbox: allBbox };
-        testForError(request, test);
     },
-    'all nodes with a tag and a bbox': function(test) {
+    'nodes: all nodes with a tag and a bbox': function(test) {
         // should return id 7
         var request = {object: 'node', tag: tagHospital, bbox: bottomBbox };
         testForCount(request, 1, test);
-    },
-    'test for error while requesting all ways': function(test) {
-        var request = { object: 'way' };
-        testForError(request, test);
+    }
+};
     // },
     // 'test for error while requesting all relations': function(test) {
     //     var request = { object: 'relation' };
     //     testForError(request, test);
-    }
+// };
+
+    // 'test for error while requesting all ways': function(test) {
+    //     var request = { object: 'way' };
+    //     testForError(request, test);
+    // }
+
+var setup = function(test, done) {
+    test.db = new PostgresDb(connString);
+    done();
 };
+
+var teardown = function(test, done) {
+    test.db.end();
+    done();
+};
+
+
+var wrappedNodesErrorSuite = wrap({
+    suite: nodesErrorSuite,
+    setup: setup,
+    teardown: teardown
+});
+
+var wrappedNodesCountSuite = wrap({
+    suite: nodesCountSuite,
+    setup: setup,
+    teardown: teardown
+});
+
+exports.nodesError = wrappedNodesErrorSuite;
+exports.nodesCount = wrappedNodesCountSuite;
 
 if (module == require.main) {
     return require('async_testing').run(__filename, process.ARGV);

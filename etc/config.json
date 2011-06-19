@@ -1,9 +1,8 @@
 {
-    "connectionString" : "pg://user:password@host/database",
     "host" : "localhost",
     "port" : 8080,
     "loglevel" : "ERROR",
-    "generator" : {
-        "copyright" : "2011 OpenStreetMap contributors"
-    }
+
+    "database" :  "pg://user:password@host/database",
+    "copyright" : "2011 OpenStreetMap contributors"
 }
