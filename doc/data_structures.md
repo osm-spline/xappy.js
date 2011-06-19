@@ -35,7 +35,7 @@ Node Object
       version*: <number>,
       uid*: <number>,
       user*: <string>,
-      changesetId*: <number>,
+      changeset*: <number>,
       timestamp*: <Date>,
       tags*: [ { key: <str>, value: <str> } ]
     }
@@ -50,7 +50,7 @@ Way Object
       version*: <number>,
       uid*: <number>,
       user*: <string>
-      changesetId*: <number>,
+      changeset*: <number>,
       timestamp*: <Date>,
       nodes: [ <number> ],
       tags*: [ { key: <str>, value: <str> } ]
@@ -66,7 +66,7 @@ Relation Object
       version*: <number>,
       uid*: <number>,
       user*: <string>,
-      changesetId*: <number>,
+      changeset*: <number>,
       timestamp*: <Date>
       tags*: [ { key: <str>, value: <str> } ],
       members: [ {
