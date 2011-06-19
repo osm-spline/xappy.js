@@ -81,6 +81,20 @@ module.exports = {
         test.finish();
     },
 
+    '"childPredicate" succeeds for child predicate': function(test) {
+        var p = makeParser('not(nd)');
+        test.deepEqual(p.childPredicate(), {child: 'not(nd)'});
+        test.finish();
+    },
+
+    '"childPredidcate" fails for non child predicate': function(test) {
+        var p = makeParser('foo');
+        test.throws(function() {
+            p.childPredicate();
+        });
+        test.finish();
+    },
+
     '"object" succeeds for known object': function(test) {
         var expr = 'way';
         var p = makeParser(expr);
@@ -134,7 +148,7 @@ module.exports = {
         var p2 = makeParser('foo\\|bar\\|baz=blub');
         test.deepEqual(p2.tagPredicate(), {key: ['foo|bar|baz'], value: ['blub']});
         test.finish();
-    }
+    },
 };
 
 if (module === require.main) {
