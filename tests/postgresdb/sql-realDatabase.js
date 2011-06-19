@@ -2,6 +2,9 @@ var fs = require('fs');
 var path = require('path');
 var PostgresDb = require('../../lib/postgresdb/postgresdb').PostgresDb;
 
+var log4js = require('log4js')();
+var log = log4js.getLogger('sql-realDatabase');
+
 var async_testing = require('async_testing');
 var wrap = async_testing.wrap;
 
@@ -32,11 +35,12 @@ var node1 = {
     version: 1,
     uid: 291857,
     changeset: 123456,
-    timestamp: null,
-    tags: [
-        { key: 'amenity', value: 'hospital' },
-        { key: 'name', value: 'Wilhelminenspital' }
-    ]
+    timestamp: '2011-05-26T16:47:48.000Z',  // ???
+    tags: {
+        key: ['amenity', 'name'],
+        value: ['hospital', 'Wilhelminenspital']
+        }
+    }
 };
 
 var node2 = {
@@ -46,8 +50,8 @@ var node2 = {
     version: 1,
     uid: 291857,
     changeset: 123456, 
-    timestamp: null,
-    tags: []
+    timestamp: '2011-05-26T16:47:48.000Z',  // ???
+    tags: {}
 };
 
 var node3 = {
@@ -58,11 +62,12 @@ var node3 = {
     uid: 291857,
     changeset: 123456, 
     timestamp: null,
-    tags: [
-		{ key: 'amenity', value: 'hotel' },
-        { key: 'name', value: 'HomeSweetHome' }
-    ]
+    tags: {
+        key: ['amenity', 'name'],
+        value: ['hotel', 'HomeSweetHome']
+    }
 };
+
 var node4 = {
     id: 4,
     lat: 47.999,
@@ -71,11 +76,12 @@ var node4 = {
     uid: 291857,
     changeset: 123456, 
     timestamp: null,
-    tags: [
-		{ key: 'amenity', value: 'hotel' },
-        { key: 'name', value: 'WalthersTruckStop' }
-    ]
+    tags: {
+        key: ['amenity', 'name'],
+        value: ['hotel', 'WalthersTruckStop'];
+    }
 };
+
 var node5 = {
     id: 5,
     lat: 49.7,
@@ -84,11 +90,12 @@ var node5 = {
     uid: 291857,
     changeset: 123456, 
     timestamp: null,
-    tags: [
-		{ key: 'amenity', value: 'bar' },
-        { key: 'name', value: 'Lucies' }
-    ]
+    tags: {
+        key: ['amenity', 'name'],
+        value: ['bar', 'Lucies']
+    }
 };
+
 var node6 = {
     id: 6,
     lat: 53.33,
@@ -97,11 +104,12 @@ var node6 = {
     uid: 291857,
     changeset: 123456, 
     timestamp: null,
-    tags: [
-		{ key: 'building', value: 'emblem' },
-        { key: 'name', value: 'BrandenburgerTor' }
-    ]
+    tags: {
+        key: ['building', 'name'],
+        value: ['emblem', 'BrandenburgerTor']
+    }
 };
+
 var node7 = {
     id: 7,
     lat: 48.13,
@@ -110,82 +118,86 @@ var node7 = {
     uid: 291857,
     changeset: 123456, 
     timestamp: null,
-    tags: [
-		{ key: 'amenity', value: 'hospital' },
-        { key: 'name', value: 'HeisseSchwestern' }
-    ]
+    tags: {
+        key: ['amenity', 'name'],
+        value: ['hospital', 'HeisseSchwestern']
+    }
 };
 
+//Berlin - Kassel - Munich
 var way1 = {
-	//Berlin - Kassel - Munich
 	id: 123,
 	version: 3,
 	uid: 291857,
 	changeset: 2211,
 	timestamp: null,
 	nodes: [ 1,6,7 ],
-	tags: []	
-}
+	tags: {}	
+};
+
+//Norden - Waldkirchen
 var way2 = {
-	//Norden - Waldkirchen
 	id: 456,
 	version: 3,
 	uid: 291857,
 	changeset: 2211,
 	timestamp: null,
 	nodes: [ 2,5 ],
-	tags: []	
-}
+	tags: {}	
+};
+
+//Norden - Usedom
 var way3 = {
-	//Norden - Usedom
 	id: 789,
 	version: 3,
 	uid: 291857,
 	changeset: 2211,
 	timestamp: null,
 	nodes: [ 2,3 ],
-	tags: [{ key: 'name', value: 'Strandweg' }]	
+	tags: {
+	    key: ['value'],
+	    value: ['Strandweg']
+	}
 };
 
-
 var relation1 = {
-  id: 1111,
-  version: 17,
-  uid: 291857,
-  changeset: 5334067,
-  timestamp: null,
-  tags: [ 
-	{ key : 'note', value: 'OstDeutschland' },
-	{ key : 'type', value: 'multipolygon' }  
-  ],
-  members: [ 
-	{type: "node", ref: 1, role: "" },
-	{type: "node", ref: 6, role: "" },
-	{type: "way", ref: 123 },
-	{type: "way", ref: 789 }      
-  ]
+    id: 1111,
+    version: 17,
+    uid: 291857,
+    changeset: 5334067,
+    timestamp: null,
+    tags: {
+        key: ['note', 'type'],
+        value: ['OstDeutschland', 'multipolygon']
+    },
+    members: {
+        {type: "node", ref: 1, role: "" },
+        {type: "node", ref: 6, role: "" },
+        {type: "way", ref: 123 },
+        {type: "way", ref: 789 }      
+    }
 };
 
 var relation2 = {
-  id: 1112,
-  version: 17,
-  uid: 291857,
-  changeset: 5334067,
-  timestamp: null,
-  tags: [ 
-	{ key : 'note', value: 'WestDeutschland' },
-	{ key : 'type', value: 'multipolygon' }  
-  ],
-  members: [ 
-	{type: "node", ref: 2, role: "" },
-	{type: "node", ref: 3, role: "" },
-	{type: "node", ref: 4, role: "" },
-	{type: "node", ref: 5, role: "" },
-	{type: "node", ref: 7, role: "" },
-	{type: "way", ref: 123 },
-	{type: "way", ref: 456 },
-	{type: "way", ref: 789 }      
-  ]
+    id: 1112,
+    version: 17,
+    uid: 291857,
+    changeset: 5334067,
+    timestamp: null,
+    tags: {
+        key: ['note', 'type'],
+        value: ['WestDeutschland', 'multipolygon']
+    },
+    members: {
+        {type: "node", ref: 2, role: "" },
+        {type: "node", ref: 3, role: "" },
+        {type: "node", ref: 4, role: "" },
+        {type: "node", ref: 5, role: "" },
+        {type: "node", ref: 7, role: "" },
+        {type: "way", ref: 123 },
+        {type: "way", ref: 456 },
+        {type: "way", ref: 789 }
+    }
 }
 
 // contains nodes [1,7]
