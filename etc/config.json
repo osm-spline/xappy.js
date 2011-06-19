@@ -4,11 +4,6 @@
     "port" : 8080,
     "loglevel" : "ERROR",
     "generator" : {
-        "version" : 0.6,
-        "copyright" : "2011 OpenStreetMap contributors",
-        "instance" : "node xapi",
-        "generator" : "xapi: OSM Extended API",
-        "namespace" : "http://localhost/xapi/0.6",
-        "planetDate": "200803150826"
+        "copyright" : "2011 OpenStreetMap contributors"
     }
 }
