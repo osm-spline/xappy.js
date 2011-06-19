@@ -13,6 +13,25 @@ var xml = 'application/xml';
 var json = 'application/json';
 
 module.exports = {
+    'errorHandler' : function(test) {
+        var error = {
+            code : 400,
+            message : 'blabla'
+        };
+        var body = error.message;
+        var res = {
+            writeHead : sinon.spy(),
+            write : sinon.spy(),
+            end : sinon.spy()
+        };
+        Xapi.errorHandler(res, error);
+        test.ok(res.end.calledOnce);
+        test.ok(res.writeHead.calledOnce);
+        test.ok(res.writeHead.calledWith(400));
+        test.ok(res.write.calledWith(body) || res.end.calledWith(body));
+        test.finish();
+    },
+
     'getGenerator': function(test) {
         var config = {};
         var gen = getGeneratorSelector(config)("content-type", "uri");
