@@ -9,16 +9,14 @@ var path = require('path');
 
 var config = {
     version : '0.6',
-    generator : 'xapi: OSM Extended API',
-    namespace : 'http://www.informationfreeway.org/xapi/0.6',
+    generator : 'xappy.js v0.2',
     copyright : '2011 OpenStreetMap contributors',
-    instance : 'zappy2',
-    planetDate : 'TEST PLANETDATE'
+    planetDate : 'TEST PLANETDATE',
+    uri: 'uri'
 };
 
-var uri = 'uri';
 
-var xmlGenerator = new XmlGenerator(config, uri);
+var xmlGenerator = new XmlGenerator(config);
 
 function toISO8601(date) {
     // 2007-03-31T00:09:22+01:00
@@ -110,9 +108,9 @@ module.exports = {
     'test_header' : function (test) {
 
         var expected_header = '<?xml version="1.0" standalone="no"?>'
-            + '<osm version="0.6" generator="xapi: OSM Extended API" '
+            + '<osm version="0.6" generator="xappy.js v0.2" '
         //    + 'xmlns:xapi="http://www.informationfreeway.org/xapi/0.6" '
-            + 'xapi:uri="' + uri + '" '
+            + 'xapi:uri="' + config.uri + '" '
             + 'xapi:planetDate="' + config.planetDate + '" '
             + 'xapi:copyright="2011 OpenStreetMap contributors">';
         //    + 'xapi:instance="zappy2">';
