@@ -13,11 +13,8 @@ var xml = 'application/xml';
 var json = 'application/json';
 
 module.exports = {
-    'errorHandler' : function(test) {
-        var error = {
-            code : 400,
-            message : 'blabla'
-        };
+    'errorHandler' : function(test,error){
+        var error = {code : 400,message : 'blabla'};
         var body = error.message;
         var res = {
             writeHead : sinon.spy(),
@@ -29,6 +26,18 @@ module.exports = {
         test.ok(res.writeHead.calledOnce);
         test.ok(res.writeHead.calledWith(400));
         test.ok(res.write.calledWith(body) || res.end.calledWith(body));
+        test.finish();
+    },
+    'errorHandler with 500' : function(test,error){
+        var error = {code : 500,message : 'blabla'};
+        var body = error.message;
+        var res = {
+            writeHead : function(){},
+            write : sinon.spy(),
+            end : sinon.spy()
+        };
+        Xapi.errorHandler(res, error);
+        test.ok(!res.write.calledWith(body) && !res.end.calledWith(body));
         test.finish();
     },
 
@@ -115,13 +124,24 @@ module.exports = {
         var generator =  sinon.spy();
         var emitterCallback = function() {};
         var getGen = sinon.stub().returns(generator);
-        var callback = sinon.stub().returns(emitterCallback);
-        var res = { an : "object" };
+        var res = {
+            writeHead : sinon.spy(),
+            write : sinon.spy(),
+            end : sinon.spy()
+        };
+        var db = {
+            executeRequest : sinon.spy()
+        };
         var contentType = "bla/foo";
         var sampleRequest = require('./helpers/helper-samplexapirequestobjects.js').node;
 
-        // todo: 
-        // reqHandler(res,contentType,null,sampleRequest);
+        var reqHandler = Xapi.getXapiRequestHandler(db,getGen,null);
+        reqHandler(res, contentType,{ code : 400, message : 'blabla'}, null);
+
+        test.ok(!getGen.called);
+        test.ok(!db.executeRequest.called);
+        test.ok(res.writeHead.calledWith(400));
+
         test.finish();
     // },
     // 'testHttpHandleCall': function(test) {
