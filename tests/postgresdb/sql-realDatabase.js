@@ -1,12 +1,9 @@
 var PostgresDb = require('../../lib/postgresdb/postgresdb').PostgresDb;
-<<<<<<< HEAD
 
 var log4js = require('log4js')();
 var log = log4js.getLogger('sql-realDatabase');
 
-=======
 var utility = require('../../lib/utility');
->>>>>>> 5d479adc68b15b34c692fa9e92f7a3bf502f03e7
 var async_testing = require('async_testing');
 var wrap = async_testing.wrap;
 
@@ -59,7 +56,7 @@ var node3 = {
     version: 1,
     uid: 291857,
     changeset: 123456, 
-    timestamp: null,
+    timestamp: '2011-05-26T16:47:48.000Z',  // ???
     tags: {
         key: ['amenity', 'name'],
         value: ['hotel', 'HomeSweetHome']
@@ -87,7 +84,7 @@ var node5 = {
     version: 1,
     uid: 291857,
     changeset: 123456, 
-    timestamp: null,
+    timestamp: '2011-05-26T16:47:48.000Z',  // ???
     tags: {
         key: ['amenity', 'name'],
         value: ['bar', 'Lucies']
@@ -101,7 +98,7 @@ var node6 = {
     version: 1,
     uid: 291857,
     changeset: 123456, 
-    timestamp: null,
+    timestamp: '2011-05-26T16:47:48.000Z',  // ???
     tags: {
         key: ['building', 'name'],
         value: ['emblem', 'BrandenburgerTor']
@@ -115,7 +112,7 @@ var node7 = {
     version: 1,
     uid: 291857,
     changeset: 123456, 
-    timestamp: null,
+    timestamp: '2011-05-26T16:47:48.000Z',  // ???
     tags: {
         key: ['amenity', 'name'],
         value: ['hospital', 'HeisseSchwestern']
@@ -128,7 +125,7 @@ var way1 = {
 	version: 3,
 	uid: 291857,
 	changeset: 2211,
-	timestamp: null,
+	timestamp: '2007-07-25T01:55:35.010Z',  // ???
 	nodes: [ 1,6,7 ],
 	tags: {}	
 };
@@ -139,7 +136,7 @@ var way2 = {
 	version: 3,
 	uid: 291857,
 	changeset: 2211,
-	timestamp: null,
+	timestamp: '2007-07-25T01:55:35.010Z',  // ???
 	nodes: [ 2,5 ],
 	tags: {}	
 };
@@ -150,7 +147,7 @@ var way3 = {
 	version: 3,
 	uid: 291857,
 	changeset: 2211,
-	timestamp: null,
+	timestamp: '2011-05-26T16:47:48.000Z',  // ???
 	nodes: [ 2,3 ],
 	tags: {
 	    key: ['value'],
@@ -163,7 +160,7 @@ var relation1 = {
     version: 17,
     uid: 291857,
     changeset: 5334067,
-    timestamp: null,
+    timestamp: '2010-07-27T22:34:46.000Z',  // ???
     tags: {
         key: ['note', 'type'],
         value: ['OstDeutschland', 'multipolygon']
@@ -181,7 +178,7 @@ var relation2 = {
     version: 17,
     uid: 291857,
     changeset: 5334067,
-    timestamp: null,
+    timestamp: '2010-07-27T22:34:46.000Z',  // ???
     tags: {
         key: ['note', 'type'],
         value: ['WestDeutschland', 'multipolygon']
