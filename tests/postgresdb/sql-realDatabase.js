@@ -1,15 +1,9 @@
-var fs = require('fs');
-var path = require('path');
 var PostgresDb = require('../../lib/postgresdb/postgresdb').PostgresDb;
-
+var utility = require('../../lib/utility');
 var async_testing = require('async_testing');
 var wrap = async_testing.wrap;
 
-var configPath = '../../etc/my-config.json';
-var absConfPath = path.resolve(__dirname, configPath);
-var config = JSON.parse(fs.readFileSync(absConfPath));
-var connString = config.connectionString;
-
+var configPath = 'etc/my-config.json';
 
 // for details please read `petra.osm`
 // all contains nodes [1..7]
@@ -284,8 +278,10 @@ function suiteUp(suite) {
 }
 
 var setup = function(test, done) {
-    test.db = new PostgresDb(connString);
-    done();
+    utility.readRelConfig(configPath, function(error, config) {
+        test.db = new PostgresDb(config.database);
+        done();
+    });
 };
 
 var teardown = function(test, done) {
