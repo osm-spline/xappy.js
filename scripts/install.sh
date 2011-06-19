@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 git clone git@github.com:osm-spline/xappy.js.git 
-cd osm-spline-xapi
+cd xappy.js
 git submodule init
 git submodule update
 cd deps/pg
