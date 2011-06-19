@@ -1,4 +1,3 @@
-====================
 Module documentation
 ====================
 
@@ -15,17 +14,14 @@ be supported with generators as test helpers
 Datatypes
 ---------
 
-All fields notaded with *field** are optional. Fields seperated with *field |
-field* can be viewied as different options.
+All fields notaded with `field*` are optional. Fields seperated with `field |
+field` can be viewed as different options.
 
-xapiRequest
-...........
+### xapiRequest
 
 This object represents a different representation of our XPath query url. It
 will be produced by the RequestParser and be translated in to a db-query by the
 db-module.
-
-::
 
     {
         object: "node" | "way" | "relation" | "*",
@@ -37,12 +33,9 @@ db-module.
                     value: [ <string> ] | []}
     }
 
-Node object
-...........
+### Node object
 
 OSM node representation.
-
-::
 
     {
         id: <bigint>,
@@ -57,12 +50,9 @@ OSM node representation.
     }
 
 
-Way object
-...........
+### Way object
 
 OSM way representation.
-
-::
 
     {
         id: <bigint>,
@@ -75,13 +65,9 @@ OSM way representation.
         tags*: [ { key: <str>, value: <str> } ]
     }
 
-
-Relation object
-...............
+### Relation object
 
 OSM way representation.
-
-::
 
     {
         id: <bigint>,
@@ -98,48 +84,44 @@ OSM way representation.
         } ]
     }
 
-
 Modules
 -------
 
-requestParser
-.............
+### requestParser
 
 The purpose of this module is to for a request object from the string
 representation of the url.
 
 Methods
+
     parseFromUrl(<String>,<callback(err,xapiRequest)>)
 
 
-responseHandler
-...............
+### responseHandler
 
-This *interface*-like descritption will be meet by serveral implementations, to
+This `interface`-like description will be meet by several implementations, to
 realize output in different formats (e.g. json / xml).
 
 Methods
+
     putNode(<Node>);
     putWay(<Way>);
     putRelation(<Relation>);
     finish();
 
-dataBase
-........
+### Database
 
 Access the database.
 
 Methods
+
     executeRequest(xapiRequest,<callback(error,dbEventemitter)>)
 
 the returned event emitter is a object of the following shape:
 
-::
-
     dbEventEmitter{
         on(<String:Event>,<callback>)
     }
-
 
 Those events are supported, calling the function with the specified arguments.
 
@@ -157,22 +139,16 @@ end         -
 Postgres database module
 ------------------------
 
-QueryBuilder
-............
+### QueryBuilder
 
 The QueryBuilder is responsible for creating query plans executed by the postgres database module.
-
-::
 
     QueryBuilder(); //constructor?
     createQueryPlan(xapiRequest);
 
-queryPlan
-.........
+### queryPlan
 
 The query plan is a set of prepared statements from node-postgres
-
-::
 
     {
         node : <query>,
@@ -180,13 +156,11 @@ The query plan is a set of prepared statements from node-postgres
         relation*: <query>
     }
 
-query
-.....
+### query
 
-A query is a prepared statement from node-postgres. Please check the node-postgres documentation at:
+A query is a prepared statement from node-postgres.
+Please check the node-postgres documentation at:
 https://github.com/brianc/node-postgres/wiki/Client
-
-::
 
     {
 
@@ -194,3 +168,4 @@ https://github.com/brianc/node-postgres/wiki/Client
         text : <string>,
         values : []
     }
+

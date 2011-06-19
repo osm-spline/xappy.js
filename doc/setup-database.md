@@ -1,54 +1,12 @@
-===============
-osm@spline Xapi
-===============
-
-Contact
-============
-http://osm.spline.de
-mailing list: osm@lists.spline.de or xapi@lists.spline.de
-irc: irc://irc.freenode.net/#spline
-
-Aim
-============
-
-We like to rewrite some parts of the XApi needed for our own application. Our
-aim is not get a full implementation of the Xapi, but to answer only specific
-requests, at low latency. For this subset of Xapi we want completly cover the
-original api.
-
-Requests
-=============
-
-This is a list of example requests, we want to optimize.
-
-* xapi.spline.de/api/0.6/node[amenity=*]
-* xapi.spline.de/api/0.6/node[highway=busstop]
-* xapi.spline.de/api/0.6/node[bbox=-6,50,2,61]
-* xapi.spline.de/api/0.6/node[amenity=hospital][bbox=-6,50,2,61]
-
-a more formal description
--------------------------
-
-We serve the node endpoint, but no others. We implment the tag based filtering,
-for only one tag and a bounding box.
-
-Basic setup
-=============
-
-Just read doc/installation.md
-
-Dependencies
-=============
-
-For dependencies checkout the package.json file.
-
-If you try the libxml branch make sure you have installed libxml for developers.
-
 Database setup
-=============
+==============
 
 We use postgres 9.* with postgis 1.5. Postgres 9.0 is used because we need some
 functions on hstores and postgis 1.5 is used for fancy geometry things.
+
+
+Linux
+-----
 
 To setup a database you first need a runing postgres 9.0 instance. I hope you know
 how to do this.
@@ -81,14 +39,10 @@ Create the actual schema for osm data. For this step you need osmosis. If your
 osmosis build is correct there should be a directory named package/scripts where
 you run:
 
-::
-
     psql -d osm < pgsql_simple_schema_0.6.sql
     psql -d osm < pgsql_simple_schema_0.6_linestring.sql
 
 Optional/still to test:
-
-::
 
     psql -d osm < pgsql_simple_schema_0.6_action.sql
     psql -d osm < pgsql_simple_schema_0.6_bbox.sql
@@ -97,13 +51,39 @@ For documentation on the schema read pgsql_simple.txt.
 
 Import data from xml with:
 
-    osmosis --read-xml file="planet.osm.bz2" --wp host="localhost" password="TopSecretPassword" user="insertUserNameHere" database="osm"
+    osmosis --read-xml file="planet.osm.bz2" --wp host="localhost" password="pass" user="user" database="osm"
 
 Before or after import you may want to create a indexes. Examples below:
-
-::
 
     CREATE INDEX idx_nodes_tags ON nodes USING GIN(tags);
     CREATE INDEX idx_nodes_tags ON nodes USING GIST(tags);
     CREATE INDEX idx_ways_tags ON ways USING GIN(tags);
     CREATE INDEX idx_ways_tags ON ways USING GIST(tags);
+
+Mac OS X
+--------
+
+We assume that `homebrew` is installed
+
+    brew install postgresql
+    brew install postgis
+    brew install osmosis
+
+Install the db
+
+    initdb osm
+
+    initdb -U osm osm
+    postgres -D osm/
+    createdb -U osm osm
+
+createlang -U osm -d osm plpgsql 
+createlang: language "plpgsql" is already installed in database "osm"
+
+    psql osm osm < /usr/local/Cellar/postgresql/9.0.4/share/postgresql/contrib/hstore.sql 
+    psql osm osm < /usr/local/Cellar/postgresql/9.0.4/share/postgresql/contrib/postgis-1.5/postgis.sql
+    psql osm osm < /usr/local/Cellar/postgresql/9.0.4/share/postgresql/contrib/postgis-1.5/spatial_ref_sys.sql
+
+    psql osm osm < /usr/local/Cellar/osmosis/0.38/libexec/script/pgsql_simple_schema_0.6.sql
+    psql osm osm < /usr/local/Cellar/osmosis/0.38/libexec/script/pgsql_simple_schema_0.6_linestring.sql
+
