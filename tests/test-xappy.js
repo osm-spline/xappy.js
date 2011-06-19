@@ -74,15 +74,54 @@ module.exports = {
 
         parse.args[0][1](null,sampleRequest.node);
 
-        test.ok(callback.called);
+        test.ok(callback.calledOnce);
 
         test.equal(res,callback.args[0][0]);
-        console.log(JSON.stringify(callback.args));
         test.equal(req.url,callback.args[0][1]);
         test.equal(req.headers['content-type'],callback.args[0][2]);
         test.equal(null,callback.args[0][3]);
         test.equal(sampleRequest.node,callback.args[0][4]);
 
+        test.finish();
+    },
+    'xapiRequestHandler': function(test){
+        var generator =  sinon.spy();
+        var emitterCallback = function() {};
+        var getGen = sinon.stub().returns(generator);
+        var callback = sinon.stub().returns(emitterCallback);
+        var res = { an : "object" };
+        var contentType = "bla/foo";
+        var sampleRequest = require('./helpers/helper-samplexapirequestobjects.js').node;
+
+        var db = {
+            executeRequest : sinon.spy()
+        };
+
+        var reqHandler = Xapi.getXapiRequestHandler(db,getGen,callback);
+        reqHandler(res,contentType,null,sampleRequest);
+
+        test.ok(getGen.calledOnce,'getGen was not called');
+        test.ok(getGen.calledWith(contentType),'getGen with wrong parameters');
+
+        test.ok(db.executeRequest.calledOnce,'database request not executed');
+        test.ok(db.executeRequest.calledWith(sampleRequest,emitterCallback),'database query started with wrong parameters');
+
+        test.ok(callback.called);
+        test.ok(callback.calledWith(res,generator));
+
+        test.finish();
+    },
+    'xapiRequestHandler with error': function(test){
+        var generator =  sinon.spy();
+        var emitterCallback = function() {};
+        var getGen = sinon.stub().returns(generator);
+        var callback = sinon.stub().returns(emitterCallback);
+        var res = { an : "object" };
+        var contentType = "bla/foo";
+        var sampleRequest = require('./helpers/helper-samplexapirequestobjects.js').node;
+
+        // todo: 
+        // reqHandler(res,contentType,null,sampleRequest);
         test.finish();
     // },
     // 'testHttpHandleCall': function(test) {
