@@ -11,7 +11,7 @@
 5. [bbox = 7.0, 47.0, 9.49, 54.0]	left half of germany. Containing nodes 1, 2, 4
 6. [bbox = -11.43, 49.81, 0.95, 59.0]	England. Containing no nodes.
 
-Example Queries: 
+Example Queries:
 
 '/api/0.6/node[bbox = 7.0, 47.0, 14.0, 54.0]                    => returns nodes 1, 2, 3, 4, 5, 6, 7
 '/api/0.6/node[bbox = 7.0, 47.0, 9.49, 54.0]'                   => returns nodes 1, 2, 4
@@ -44,52 +44,52 @@ and ways 123, 456, 789 (direct members)
 and (probably) node 1 and 6, cause they are referenced by these ways
 -->
 
-<osm version='0.6' generator='xapi: OSM Extended API' 
+<osm version='0.6' generator='xapi: OSM Extended API'
      xmlns:xapi='http://www.informationfreeway.org/xapi/0.6'
      xapi:uri='/api/0.6/*[amenity=hotel]'
-     xapi:planetDate='200803150826' 
-     xapi:copyright='2008 OpenStreetMap contributors' 
+     xapi:planetDate='200803150826'
+     xapi:copyright='2008 OpenStreetMap contributors'
      xapi:instance='zappy2'>
-  
+
 
   <!-- NODES -->
-  
+
   <!-- Kassel - center of germany -->
   <node id='1' lat='51.415' lon='9.427' timestamp='2011-05-26T16:47:48+00:00' version='1' changeset='123456' user='sladda' uid='291857'>
     <tag  k='amenity' v='hospital'/>
     <tag  k='name' v='Wilhelminenspital'/>
-  </node>	
-  
+  </node>
+
   <!-- Norden - top-left of germany -->
   <node id='2' lat='53.6' lon='7.2' timestamp='2011-05-26T16:47:48+00:00' version='1' changeset='123456' user='sladda' uid='291857'>
     <!-- no tags -->
   </node>
-  
+
   <!-- Usedom - top-right of germany -->
   <node id='3' lat='53.875' lon='13.9108' timestamp='2011-05-26T16:47:48+00:00' version='1' changeset='123456' user='sladda' uid='291857'>
     <tag k='amenity' v='hotel'/>
     <tag  k='name' v='HomeSweetHome'/>
   </node>
-  
+
   <!-- Freiburg - bottom-left of germany -->
   <node id='4' lat='47.999' lon='7.8526' timestamp='2011-05-26T16:47:48+00:00' version='1' changeset='123456' user='sladda' uid='291857'>
     <tag k='amenity' v='hotel'/>
     <tag  k='name' v='WalthersTruckStop'/>
   </node>
-  
+
   <!-- Waldkirchen - bottom-right of germany -->
   <node id='5' lat='49.7' lon='13.4' timestamp='2011-05-26T16:47:48+00:00' version='1' changeset='123456' user='sladda' uid='291857'>
     <tag k='amenity' v='bar'/>
     <tag  k='name' v='Lucies'/>
   </node>
-  
+
   <!-- Berlin -->
   <node id='6' lat='53.33' lon='11.52' timestamp='2011-05-26T16:47:48+00:00' version='1' changeset='123456' user='sladda' uid='291857'>
     <tag k='building' v='emblem'/>
     <tag  k='name' v='BrandenburgerTor'/>
 
   </node>
-  
+
   <!-- Muenchen -->
   <node id='7' lat='48.13' lon='11.7' timestamp='2011-05-26T16:47:48+00:00' version='1' changeset='123456' user='sladda' uid='291857'>
     <tag  k='amenity' v='hospital'/>
@@ -97,20 +97,20 @@ and (probably) node 1 and 6, cause they are referenced by these ways
   </node>
 
   <!--  WAYS -->
-  
+
   <!-- Berlin - Kassel - Munich -->
   <way id='123' timestamp='2007-07-25T01:55:35+01:00' version='3' changeset='2211' user='sladda' uid='291857'>
     <nd ref='6'/>
     <nd ref='1'/>
     <nd ref='7'/>
   </way>
-  
+
   <!-- Norden - Waldkirchen -->
   <way id='456' timestamp='2007-07-25T01:55:35+01:00' version='3' changeset='2211' user='sladda' uid='291857'>
     <nd ref='2'/>
     <nd ref='5'/>
   </way>
-  
+
   <!-- Norden - Usedom -->
   <way id='789' timestamp='2007-07-25T01:55:35+01:00' version='3' changeset='2211' user='sladda' uid='291857'>
     <nd ref='2'/>
@@ -119,19 +119,19 @@ and (probably) node 1 and 6, cause they are referenced by these ways
   </way>
 
   <!-- RELATIONS -->
-  
+
   <relation id="1111" visible="true" timestamp="2010-07-27T22:34:46Z" version="17" changeset="5334067" user="sladda" uid="291857">
     <tag k="note" v="OstDeutschland"/>
-    <tag k="type" v="multipolygon"/>		
+    <tag k="type" v="multipolygon"/>
     <member type="node" role="" ref="1"/>
     <member type="node" role="" ref="6"/>
     <member type="way" ref="123"/>
     <member type="way" ref="789"/>
   </relation>
-  
+
   <relation id="1112" visible="true" timestamp="2010-07-27T22:34:46Z" version="17" changeset="5334067" user="sladda" uid="291857">
     <tag k="note" v="WestDeutschland"/>
-    <tag k="type" v="multipolygon"/>		
+    <tag k="type" v="multipolygon"/>
     <member type="node" role="" ref="2"/>
     <member type="node" role="" ref="3"/>
     <member type="node" role="" ref="4"/>
@@ -140,5 +140,34 @@ and (probably) node 1 and 6, cause they are referenced by these ways
     <member type="way" ref="123"/>
     <member type="way" ref="456"/>
     <member type="way" ref="789"/>
-  </relation>	
+  </relation>
+
+  <relation id="1113" visible="true" timestamp="2010-07-27T22:34:46Z" version="17" changeset="5334067" user="sladda" uid="291857">
+    <tag k="note" v="Deutschland"/>
+    <member type="relation" role="" ref="1111"/>
+    <member type="relation" role="" ref="1112"/>
+  </relation>
+
+  <relation id="1114" visible="true" timestamp="2010-07-27T22:34:46Z" version="17" changeset="5334067" user="sladda" uid="291857">
+    <tag k="note" v="all"/>
+    <member type="node" role="" ref="1"/>
+    <member type="node" role="" ref="2"/>
+    <member type="node" role="" ref="3"/>
+    <member type="node" role="" ref="4"/>
+    <member type="node" role="" ref="5"/>
+    <member type="node" role="" ref="6"/>
+    <member type="node" role="" ref="7"/>
+    <member type="way" ref="123"/>
+    <member type="way" ref="123"/>
+    <member type="way" ref="456"/>
+    <member type="way" ref="789"/>
+    <member type="way" ref="789"/>
+    <member type="relation" role="" ref="1111"/>
+    <member type="relation" role="" ref="1112"/>
+  </relation>
+
+  <relation id="1115" visible="true" timestamp="2010-07-27T22:34:46Z" version="17" changeset="5334067" user="sladda" uid="291857">
+    <tag k="note" v="recursive"/>
+    <member type="relation" role="" ref="1115"/>
+  </relation>
 </osm>
