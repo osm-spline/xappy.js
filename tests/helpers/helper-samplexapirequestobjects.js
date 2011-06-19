@@ -81,6 +81,20 @@ module.exports = {
             value : ['Strandweg','Strandweg']
         }
     },
+    'way[name=BrandenburgerTor|HeisseSchwestern]' : {
+        object : 'way',
+        tag : {
+            key : ['name'],
+            value : ['BrandenburgerTor','HeisseSchwestern']
+        }
+    },
+    'way[name|amenity=BrandenburgerTor]' : {
+        object : 'way',
+        tag : {
+            key : ['name','amenity'],
+            value : ['BrandenburgerTor']
+        }
+    },
     'way[bbox=11,53,12,54]' : {
         object : 'way',
         bbox : {

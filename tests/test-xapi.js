@@ -1,6 +1,6 @@
 var sinon = require('sinon'); 
 var injector = require('../lib/injector.js');
-var Xapi = require('../lib/xapi');
+var Xapi = require('../lib/xappy');
 var getGenerator = Xapi.getGenerator;
 var httpHandler = Xapi.httpHandler;
 var _ = require('underscore')._;
