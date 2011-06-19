@@ -1,6 +1,6 @@
-===============
-osm@spline Xapi
-===============
+========
+xappy.js
+========
 
 Contact
 ============
@@ -11,7 +11,7 @@ irc: irc://irc.freenode.net/#spline
 Aim
 ============
 
-We like to rewrite some parts of the XApi needed for our own application. Our
+We like to rewrite some parts of the Xapi needed for our own application. Our
 aim is not get a full implementation of the Xapi, but to answer only specific
 requests, at low latency. For this subset of Xapi we want completly cover the
 original api.
@@ -41,8 +41,6 @@ Dependencies
 =============
 
 For dependencies checkout the package.json file.
-
-If you try the libxml branch make sure you have installed libxml for developers.
 
 Database setup
 =============
