@@ -42,3 +42,19 @@ To have the node in execution path, when starting up add this line to your
     source path/to/project/deps/nvm/nvm.sh
 
 And done
+
+Windows
+-------
+
+**this section needs some love**
+
+To install node on windows, get the cygwin paket from http://uves.spline.de/osm-xapi-projekt/cygwin.zip
+
+ToDo:
+
+1. Change the name of the directory cygwin/home/yves to cygwin/home/yourname   
+2. Adapt the paths in the .bat file in the cygwin directory and start it.
+3. Add certificate: http://stackoverflow.com/questions/3777075/https-github-access/4454754#4454754
+4. Change your /etc/hosts file to:
+
+    127.0.0.1    localhost
