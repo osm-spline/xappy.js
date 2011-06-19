@@ -2,4 +2,4 @@
 REL_PATH="`dirname \"$0\"`" # relative
 ROOT="${REL_PATH}/.." # use when dir structure is fixed
 
-${ROOT}/bin/xappy.js --config "${ROOT}/etc/my-config.json"
+${ROOT}/bin/xappy.js --config "${ROOT}/etc/my-config.json" "$@"

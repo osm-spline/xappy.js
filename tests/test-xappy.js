@@ -1,8 +1,8 @@
-var sinon = require('sinon'); 
+var sinon = require('sinon');
 var injector = require('../lib/injector.js');
 var Xapi = require('../lib/xappy');
-var getGenerator = Xapi.getGenerator;
-var httpHandler = Xapi.httpHandler;
+var getGeneratorSelector = Xapi.getGeneratorSelector;
+var getHttpHandler = Xapi.getHttpHandler;
 var _ = require('underscore')._;
 
 if (module == require.main) {
@@ -15,19 +15,19 @@ var json = 'application/json';
 module.exports = {
     'getGenerator': function(test) {
         var config = {};
-        var gen = getGenerator(config)("content-type", "uri");
+        var gen = getGeneratorSelector(config)("content-type", "uri");
         test.equal(gen.contentType, xml);
         test.finish();
     },
     'getGenerator, get Json': function(test) {
         var config = {};
-        var gen = getGenerator(config)(json, 'uri');
+        var gen = getGeneratorSelector(config)(json, 'uri');
         test.equal(gen.contentType, json);
         test.finish();
     },
     'getGenerator, get Xml': function(test) {
         var config = {};
-        var gen = getGenerator(config)(xml, 'uri');
+        var gen = getGeneratorSelector(config)(xml, 'uri');
         test.equal(gen.contentType, xml);
         test.finish();
     },
@@ -38,11 +38,33 @@ module.exports = {
         var res = sinon.spy();
         var cb = function(err, emitter) {
         }
-        var handler = httpHandler(parse, cb)(req, res);
+        var handler = getHttpHandler(parse, cb)(req, res);
         // parser should get uri in first argument of first call
         test.equal(parse.args[0][0], uri);
         test.finish();
+    },
+    'httpHandler callback': function(test) {
+        var callback = sinon.spy();
+        var req = { url: '/xapi/node', headers: { 'content-type': 'test/test' } };
+        var sampleRequest = require('./helpers/helper-samplexapirequestobjects.js');
+        var parse = sinon.spy();
+        var res = { an : "object" };
 
+        var httpHandler = getHttpHandler(parse, callback);
+        httpHandler(req,res);
+
+        parse.args[0][1](null,sampleRequest.node);
+
+        test.ok(callback.called);
+
+        test.equal(res,callback.args[0][0]);
+        console.log(JSON.stringify(callback.args));
+        test.equal(req.url,callback.args[0][1]);
+        test.equal(req.headers['content-type'],callback.args[0][2]);
+        test.equal(null,callback.args[0][3]);
+        test.equal(sampleRequest.node,callback.args[0][4]);
+
+        test.finish();
     // },
     // 'testHttpHandleCall': function(test) {
 
