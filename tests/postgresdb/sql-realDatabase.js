@@ -260,16 +260,28 @@ var nodesCountSuite = {
         testForCount(request, 1, test);
     }
 };
-    // },
-    // 'test for error while requesting all relations': function(test) {
-    //     var request = { object: 'relation' };
-    //     testForError(request, test);
-// };
 
-    // 'test for error while requesting all ways': function(test) {
-    //     var request = { object: 'way' };
-    //     testForError(request, test);
-    // }
+var relationErrorSuite = {
+    'test for error while requesting all relations': function(test) {
+        var request = { object: 'relation' };
+        testForError(request, test);
+    }
+};
+
+var wayErrorSuite = {
+    'test for error while requesting all ways': function(test) {
+        var request = { object: 'way' };
+        testForError(request, test);
+    }
+};
+
+function suiteUp(suite) {
+    return wrap({
+        suite: suite,
+        setup: setup,
+        teardown: teardown
+    });
+}
 
 var setup = function(test, done) {
     test.db = new PostgresDb(connString);
@@ -281,21 +293,10 @@ var teardown = function(test, done) {
     done();
 };
 
-
-var wrappedNodesErrorSuite = wrap({
-    suite: nodesErrorSuite,
-    setup: setup,
-    teardown: teardown
-});
-
-var wrappedNodesCountSuite = wrap({
-    suite: nodesCountSuite,
-    setup: setup,
-    teardown: teardown
-});
-
-exports.nodesError = wrappedNodesErrorSuite;
-exports.nodesCount = wrappedNodesCountSuite;
+exports.nodesError = suiteUp(nodesErrorSuite);
+exports.nodesCount = suiteUp(nodesCountSuite);
+// exports.relationsError = suiteUp(relationErrorSuite);
+exports.wayError = suiteUp(wayErrorSuite);
 
 if (module == require.main) {
     return require('async_testing').run(__filename, process.ARGV);
