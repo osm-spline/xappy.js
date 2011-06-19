@@ -24,6 +24,22 @@ var rightBbox = { left: 9.5, bottom: 47, right: 14, top: 54};
 // empty contains nodes []
 var emptyBbox = { left: -11.43, bottom: 49.81, right: 0.95, top: 59 };
 
+var node1 = {
+    id: 1,
+    lat: 51.415,
+    lon: 9.427,
+    version: 1,
+    uid: 291857,
+    changesetId: 
+    timestamp: null,
+    tags: [
+        { key: 'amenity', value: 'hospital' },
+        { key: 'name', value: 'Wilhelminenspital' }
+    ]
+};
+
+
+
 // contains nodes [1,7]
 var tagHospital = {key: ['amenity'], value: ['hospital'] };
 // contains nodes [6]
@@ -43,6 +59,7 @@ function testForCount(request, count, test) {
         countNumberOfNodes(emitter, function(res) {
             test.equal(count, res);
             test.finish();
+            db.end();
         });
     });
 }
@@ -56,6 +73,10 @@ function testForError(request, test) {
 }
 
 module.exports = {
+    setup: function(test, done) {
+        console.log("setup");
+        done();
+    },
     'test for error while requesting nodes': function(test) {
         var request = { object: 'node' };
         testForError(request, test);
