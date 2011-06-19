@@ -3,9 +3,11 @@ xappy.js
 
 Contact
 --------
-Website: [osm.spline.de](http://osm.spline.de)
+Website: http://osm.spline.de
+
 Mailing List: osm@lists.spline.de or xapi@lists.spline.de
-irc: irc://irc.freenode.net/#spline
+
+IRC: irc://irc.freenode.net/#spline
 
 Aim
 ---
