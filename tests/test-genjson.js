@@ -1,7 +1,14 @@
 var samples = require('./samples');
 
+var config = {
+    "uri" : "XXX",
+    "planetDate" : "XXX",
+    "copyright" : "XXX",
+    "instance" : "XXX"
+};
+
 var jsongenerator = require('../lib/genjson').JSONGenerator;
-var jsonGen = new jsongenerator();
+var jsonGen = new jsongenerator(config, config.uri);
 
 module.exports = {
     'createNode': function(test) {
