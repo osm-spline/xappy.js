@@ -59,7 +59,19 @@ var compareRows = function(sampleObject, key, result) {
             
             //TODO: compare more than IDs?
             for (var j = 0; j < length; j++) {
-                if(row['id'] === sampleDBRowObjects[key][j]['id']) {
+                var testType = sampleDBRowObjects[key][j]['type'];
+                
+                var rowType = "node";
+                if(row['ways'] != null){
+                    rowType = "relation";
+                }
+                else{
+					if(row['nodes'] != null){
+						rowType = "way";
+					}
+                }
+                log.debug("testType = " + testType + ", rowType = "+ rowType);
+                if(row['id'] === sampleDBRowObjects[key][j]['id'] && testType === rowType) {
                     true_count++;
                     break;
                 }
@@ -87,7 +99,7 @@ module.exports = {
             //console.log(sampleObject);
             //console.log('---');
             //xapiRequestTester.test_xapi_request(test, sampleObject);
-            if (sampleObject.object === 'node') {
+            if (sampleObject.object === 'node' || sampleObject.object === 'way') {
                 queryPlan = queryBuilder.createQueryPlan(sampleObject);
                 //iterate over subQueries of queryPlan
                 _.each(queryPlan, function(query) {
@@ -95,7 +107,8 @@ module.exports = {
                         counter = counter + 1;
                         //console.log('Testing: ' + key);
                         log.debug('Testing: ' + key);
-                        //console.log('QUERY: ' + query.text);
+                        log.debug('QUERY: ' + query.text);
+                        log.debug('VALUES: ' + JSON.stringify(query.values));
                         
                         if(error) {
                             console.log("Error executing: (" + JSON.stringify(sampleObject) + ")\n" + JSON.stringify(query));

@@ -82,6 +82,10 @@ module.exports={
                 if(totest_xapi_request.object == 'way'){
                     test.ok(totest_xapi_request.child.attribute !== 'way', "Child predicate of way cannot be a way");
                 }
+
+                if(totest_xapi_request.child.attribute == 'tag'){
+                    test.deepEqual(totest_xapi_request.tag, 'undefined',"Tag child predicate and tag predicate cannot exist simultaneously");
+                }
             }
         },
 

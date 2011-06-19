@@ -4,13 +4,18 @@ var testObj = {
     object : 'node',
     bbox : {
         left : 21,
-        right : 16,
+        right : 28,
         top : 0.9492,
-        bottom : 23
+        bottom : 0.23
     },
     tag : {
         key : ['name'],
         value : ['spline', 'cafete']
+    },
+
+    child : {
+        has : true,
+        attribute : 'way'
     }
 };
 
