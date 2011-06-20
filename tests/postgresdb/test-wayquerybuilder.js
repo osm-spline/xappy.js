@@ -81,6 +81,49 @@ module.exports = {
         test.deepEqual(input, expected, '\texpected: ' + JSON.stringify(expected) + '\n\treturned: '+ JSON.stringify(input));
         test.finish();
     },
+
+    'way[name=BrandenburgerTor|HeisseSchwestern]': function(test) {
+        var tagCondition = '(ways.tags @> hstore($1, $2) OR ways.tags @> hstore($3, $4))';
+        var expected = {
+             node : {
+                 name : '',
+                 text : 'SELECT nodes.id, nodes.version, nodes.user_id, nodes.tstamp, nodes.changeset_id, hstore_to_array(nodes.tags) AS tags, X(nodes.geom) AS lat, Y(nodes.geom) AS lon, users.name AS user_name FROM nodes, users, (SELECT DISTINCT way_nodes.node_id FROM ways, way_nodes WHERE ways.id = way_nodes.way_id AND ' + tagCondition + ') AS nodesOfWays WHERE nodes.user_id = users.id AND nodesOfWays.node_id = nodes.id;',
+                 values : ['name', 'BrandenburgerTor','name','HeisseSchwestern'],
+                 binary : true
+             },
+             way : {
+                 name : '',
+                 text : 'SELECT ways.id, ways.version, ways.user_id, ways.tstamp, ways.changeset_id, hstore_to_array(ways.tags) AS tags, ways.nodes, users.name AS user_name FROM ways, users WHERE ways.user_id = users.id AND ' + tagCondition + ';',
+                 values : ['name', 'BrandenburgerTor','name','HeisseSchwestern'],
+                 binary : true
+             }
+        };
+        var input = wayQueryBuilder.createQueryPlan(sampleObjects['way[name=BrandenburgerTor|HeisseSchwestern]']);
+        test.deepEqual(input, expected, '\texpected: ' + JSON.stringify(expected) + '\n\treturned: '+ JSON.stringify(input));
+        test.finish();
+    },
+
+    'way[name|amenity=BrandenburgerTor]': function(test) {
+        var tagCondition = '(ways.tags @> hstore($1, $2) OR ways.tags @> hstore($3, $4))';
+        var expected = {
+             node : {
+                 name : '',
+                 text : 'SELECT nodes.id, nodes.version, nodes.user_id, nodes.tstamp, nodes.changeset_id, hstore_to_array(nodes.tags) AS tags, X(nodes.geom) AS lat, Y(nodes.geom) AS lon, users.name AS user_name FROM nodes, users, (SELECT DISTINCT way_nodes.node_id FROM ways, way_nodes WHERE ways.id = way_nodes.way_id AND ' + tagCondition + ') AS nodesOfWays WHERE nodes.user_id = users.id AND nodesOfWays.node_id = nodes.id;',
+                 values : ['name', 'BrandenburgerTor','amenity','BrandenburgerTor'],
+                 binary : true
+             },
+             way : {
+                 name : '',
+                 text : 'SELECT ways.id, ways.version, ways.user_id, ways.tstamp, ways.changeset_id, hstore_to_array(ways.tags) AS tags, ways.nodes, users.name AS user_name FROM ways, users WHERE ways.user_id = users.id AND ' + tagCondition + ';',
+                 values : ['name', 'BrandenburgerTor','amenity','BrandenburgerTor'],
+                 binary : true
+             }
+        };
+        var input = wayQueryBuilder.createQueryPlan(sampleObjects['way[name|amenity=BrandenburgerTor]']);
+        test.deepEqual(input, expected, '\texpected: ' + JSON.stringify(expected) + '\n\treturned: '+ JSON.stringify(input));
+        test.finish();
+    },
+
     'way[name|name:de=Strandweg|Strandweg][11,53,12,54]': function(test) {
         var tagCondition = '(ways.tags @> hstore($5, $6) OR ways.tags @> hstore($7, $8) OR ways.tags @> hstore($9, $10) OR ways.tags @> hstore($11, $12))';
         var spacialCondition = '(ST_Crosses(st_setsrid(ways.linestring,4326),st_setsrid(st_makebox2d(st_setsrid(st_makepoint($1, $2),4326),st_setsrid(st_makepoint($3, $4),4326)),4326)))';
