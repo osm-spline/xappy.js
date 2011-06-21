@@ -15,7 +15,7 @@
     "devDependencies" : {
         "async_testing" : "*",
         "sinon" : "*",
-        "jslint" : "*"
+        "jshint" : "*"
     },
     "scripts": {
         "test": "node_modules/async_testing/bin/node-async-test.js tests/"
