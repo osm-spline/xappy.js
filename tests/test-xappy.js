@@ -13,6 +13,34 @@ var xml = 'application/xml';
 var json = 'application/json';
 
 module.exports = {
+    'errorHandler' : function(test,error){
+        var error = {code : 400,message : 'blabla'};
+        var body = error.message;
+        var res = {
+            writeHead : sinon.spy(),
+            write : sinon.spy(),
+            end : sinon.spy()
+        };
+        Xapi.errorHandler(res, error);
+        test.ok(res.end.calledOnce);
+        test.ok(res.writeHead.calledOnce);
+        test.ok(res.writeHead.calledWith(400));
+        test.ok(res.write.calledWith(body) || res.end.calledWith(body));
+        test.finish();
+    },
+    'errorHandler with 500' : function(test,error){
+        var error = {code : 500,message : 'blabla'};
+        var body = error.message;
+        var res = {
+            writeHead : function(){},
+            write : sinon.spy(),
+            end : sinon.spy()
+        };
+        Xapi.errorHandler(res, error);
+        test.ok(!res.write.calledWith(body) && !res.end.calledWith(body));
+        test.finish();
+    },
+
     'getGenerator': function(test) {
         var config = {};
         var gen = getGeneratorSelector(config)("content-type", "uri");
@@ -55,14 +83,64 @@ module.exports = {
 
         parse.args[0][1](null,sampleRequest.node);
 
-        test.ok(callback.called);
+        test.ok(callback.calledOnce);
 
         test.equal(res,callback.args[0][0]);
-        console.log(JSON.stringify(callback.args));
         test.equal(req.url,callback.args[0][1]);
         test.equal(req.headers['content-type'],callback.args[0][2]);
         test.equal(null,callback.args[0][3]);
         test.equal(sampleRequest.node,callback.args[0][4]);
+
+        test.finish();
+    },
+    'xapiRequestHandler': function(test){
+        var generator =  sinon.spy();
+        var emitterCallback = function() {};
+        var getGen = sinon.stub().returns(generator);
+        var callback = sinon.stub().returns(emitterCallback);
+        var res = { an : "object" };
+        var contentType = "bla/foo";
+        var sampleRequest = require('./helpers/helper-samplexapirequestobjects.js').node;
+
+        var db = {
+            executeRequest : sinon.spy()
+        };
+
+        var reqHandler = Xapi.getXapiRequestHandler(db,getGen,callback);
+        reqHandler(res,contentType,null,sampleRequest);
+
+        test.ok(getGen.calledOnce,'getGen was not called');
+        test.ok(getGen.calledWith(contentType),'getGen with wrong parameters');
+
+        test.ok(db.executeRequest.calledOnce,'database request not executed');
+        test.ok(db.executeRequest.calledWith(sampleRequest,emitterCallback),'database query started with wrong parameters');
+
+        test.ok(callback.called);
+        test.ok(callback.calledWith(res,generator));
+
+        test.finish();
+    },
+    'xapiRequestHandler with error': function(test){
+        var generator =  sinon.spy();
+        var emitterCallback = function() {};
+        var getGen = sinon.stub().returns(generator);
+        var res = {
+            writeHead : sinon.spy(),
+            write : sinon.spy(),
+            end : sinon.spy()
+        };
+        var db = {
+            executeRequest : sinon.spy()
+        };
+        var contentType = "bla/foo";
+        var sampleRequest = require('./helpers/helper-samplexapirequestobjects.js').node;
+
+        var reqHandler = Xapi.getXapiRequestHandler(db,getGen,null);
+        reqHandler(res, contentType,{ code : 400, message : 'blabla'}, null);
+
+        test.ok(!getGen.called);
+        test.ok(!db.executeRequest.called);
+        test.ok(res.writeHead.calledWith(400));
 
         test.finish();
     // },
