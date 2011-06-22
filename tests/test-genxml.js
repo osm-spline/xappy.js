@@ -110,7 +110,6 @@ module.exports = {
         var expected_header = '<?xml version="1.0" standalone="no"?>'
             + '<osm version="0.6" generator="xappy.js v0.2" '
         //    + 'xmlns:xapi="http://www.informationfreeway.org/xapi/0.6" '
-            + 'xapi:uri="' + config.uri + '" '
             + 'xapi:planetDate="' + config.planetDate + '" '
             + 'xapi:copyright="2011 OpenStreetMap contributors">';
         //    + 'xapi:instance="zappy2">';
