@@ -34,7 +34,6 @@ var node1 = {
     tags: {
         key: ['amenity', 'name'],
         value: ['hospital', 'Wilhelminenspital']
-        }
     }
 };
 
@@ -44,7 +43,7 @@ var node2 = {
     lon: 7.2,
     version: 1,
     uid: 291857,
-    changeset: 123456, 
+    changeset: 123456,
     timestamp: '2011-05-26T16:47:48.000Z',  // ???
     tags: {}
 };
@@ -55,7 +54,7 @@ var node3 = {
     lon: 13.9108,
     version: 1,
     uid: 291857,
-    changeset: 123456, 
+    changeset: 123456,
     timestamp: '2011-05-26T16:47:48.000Z',  // ???
     tags: {
         key: ['amenity', 'name'],
@@ -69,7 +68,7 @@ var node4 = {
     lon: 7.8526,
     version: 1,
     uid: 291857,
-    changeset: 123456, 
+    changeset: 123456,
     timestamp: null,
     tags: {
         key: ['amenity', 'name'],
@@ -83,7 +82,7 @@ var node5 = {
     lon: 13.4,
     version: 1,
     uid: 291857,
-    changeset: 123456, 
+    changeset: 123456,
     timestamp: '2011-05-26T16:47:48.000Z',  // ???
     tags: {
         key: ['amenity', 'name'],
@@ -97,7 +96,7 @@ var node6 = {
     lon: 11.52,
     version: 1,
     uid: 291857,
-    changeset: 123456, 
+    changeset: 123456,
     timestamp: '2011-05-26T16:47:48.000Z',  // ???
     tags: {
         key: ['building', 'name'],
@@ -111,7 +110,7 @@ var node7 = {
     lon: 11.7,
     version: 1,
     uid: 291857,
-    changeset: 123456, 
+    changeset: 123456,
     timestamp: '2011-05-26T16:47:48.000Z',  // ???
     tags: {
         key: ['amenity', 'name'],
@@ -121,38 +120,38 @@ var node7 = {
 
 //Berlin - Kassel - Munich
 var way1 = {
-	id: 123,
-	version: 3,
-	uid: 291857,
-	changeset: 2211,
-	timestamp: '2007-07-25T01:55:35.010Z',  // ???
-	nodes: [ 1,6,7 ],
-	tags: {}	
+    id: 123,
+    version: 3,
+    uid: 291857,
+    changeset: 2211,
+    timestamp: '2007-07-25T01:55:35.010Z',  // ???
+    nodes: [ 1,6,7 ],
+    tags: {}
 };
 
 //Norden - Waldkirchen
 var way2 = {
-	id: 456,
-	version: 3,
-	uid: 291857,
-	changeset: 2211,
-	timestamp: '2007-07-25T01:55:35.010Z',  // ???
-	nodes: [ 2,5 ],
-	tags: {}	
+    id: 456,
+    version: 3,
+    uid: 291857,
+    changeset: 2211,
+    timestamp: '2007-07-25T01:55:35.010Z',  // ???
+    nodes: [ 2,5 ],
+    tags: {}
 };
 
 //Norden - Usedom
 var way3 = {
-	id: 789,
-	version: 3,
-	uid: 291857,
-	changeset: 2211,
-	timestamp: '2011-05-26T16:47:48.000Z',  // ???
-	nodes: [ 2,3 ],
-	tags: {
-	    key: ['value'],
-	    value: ['Strandweg']
-	}
+    id: 789,
+    version: 3,
+    uid: 291857,
+    changeset: 2211,
+    timestamp: '2011-05-26T16:47:48.000Z',  // ???
+    nodes: [ 2,3 ],
+    tags: {
+        key: ['value'],
+        value: ['Strandweg']
+    }
 };
 
 var relation1 = {
@@ -169,7 +168,7 @@ var relation1 = {
         {type: "node", ref: 1, role: "" },
         {type: "node", ref: 6, role: "" },
         {type: "way", ref: 123 },
-        {type: "way", ref: 789 }      
+        {type: "way", ref: 789 }
     }
 };
 
@@ -219,7 +218,7 @@ function testForCount(request, count, test) {
 
 function testForError(request, test) {
     test.db.executeRequest(request, function(error, emitter) {
-        test.ok(error == null, "there is an error in the callback " + JSON.stringify(error)); 
+        test.ok(error == null, "there is an error in the callback " + JSON.stringify(error));
         test.ok(emitter !== null, "emitter in the callback is null");
         test.finish();
     });
@@ -229,8 +228,8 @@ var nodesErrorSuite = {
     'nodes only': function(test) {
         var request = { object: 'node' };
         testForError(request, test);
-        },
-     'node and bbox': function(test) {
+    },
+    'node and bbox': function(test) {
         var request = { object: 'node', bbox: allBbox };
         testForError(request, test);
     },
@@ -245,7 +244,7 @@ var nodesErrorSuite = {
 };
 
 var nodesCountSuite = {
-   'nodes: all nodes (7 in db)': function(test) {
+    'nodes: all nodes (7 in db)': function(test) {
         var request = { object: 'node' };
         testForCount(request, 7, test);
     },
