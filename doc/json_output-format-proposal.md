@@ -1,4 +1,4 @@
-# JSON output format definition by example.
+# JSON output format definition by example
 
 **Note:** for simple reading we included whitespaces which are of course omitted
 in the actual implementation.
