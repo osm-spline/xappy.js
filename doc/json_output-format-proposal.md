@@ -11,9 +11,8 @@ in the actual implementation.
         "xapi": {
              "uri": "XXX",
              "planetDate": 201106161601,
-             "copyright": "XXX",
-             "instance": "XXX"
-         },
+             "copyright": "XXX"
+        },
         "elements": [
             ...
             ...
