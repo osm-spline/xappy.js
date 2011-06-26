@@ -89,8 +89,18 @@ Enforcement with the tool JSHint
 
 \end{frame}
 
-\normalsize
 
-}
+\begin{frame}{EventHandler}
 
+    Nessecary because of async behaviour of node.
+
+    \begin{itemize}
+        \item callbacks must be registered for events
+        \item pushes objects from DB
+        \item events emitted befor first and last
+    \end{itemize}
+
+    The EventHandler is created by DB the module, callbacks are defined in xappy.js.
+
+\end{frame}
 \end{document}
