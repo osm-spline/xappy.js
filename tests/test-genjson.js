@@ -34,6 +34,12 @@ module.exports = {
         var expectedJsonHeader = samples.headers().h1json;
         test.equal(toTestHeader, expectedJsonHeader, "\nA: "+toTestHeader + "\nB: " + expectedJsonHeader);
         test.finish();
+    },
+    'createFooter': function(test) {
+        var toTestFooter = jsonGen.createFooter();
+        var expectedJsonFooter = "]}";
+        test.equal(toTestFooter, expectedJsonFooter, "\nA: "+toTestFooter + "\nB: " + expectedJsonFooter);
+        test.finish();
     }
 };
 
