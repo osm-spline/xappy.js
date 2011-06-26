@@ -1,0 +1,63 @@
+\documentclass{beamer}
+
+\begin{document}
+\frame{
+
+
+\Large
+XML Generator
+\normalsize
+\begin{itemize}
+\item genxml(type, elem)
+\item createHeader()
+\item createFooter()
+\end{itemize}
+
+\textbf{The header}:\\
+$<$ ?xml version = "1.0" standalone="no"?$>$ \\
+$<$ osm \\
+version = "0.6" \\
+generator="xappy.js v0.2" \\
+xapi:planetDate = "200803150826"\\
+xapi:copyright = "2011 OpenStreetMap contributors"$>$\\
+\dots\\
+$</$osm$>$
+}
+
+\frame{
+\Large
+JSON Generator\\
+\normalsize
+\begin{itemize}
+\item genjson(type, elem)
+\item createHeader()
+\item createFooter()
+\end{itemize}
+
+\textbf{The header}\\
+\{\\
+\hspace*{4mm}"version": 0.6,\\
+\hspace*{4mm} "generator": "xappy.js v0.2",\\
+\hspace*{4mm} "xapi":\{\\
+\hspace*{8mm} "planetDate": 200803150826,\\
+\hspace*{8mm} "copyright": "XXX"\\
+\hspace*{4mm} \},\\
+
+\hspace*{4mm}"elements": [\\
+\hspace*{8mm}\dots\\
+\hspace*{4mm}]\\
+\}
+
+}
+
+
+\frame{
+\Large{Coding Style}
+\\
+
+\normalsize
+Combination of Google \& Crockford\\
+Enforcement with the tool JSHint
+}
+
+\end{document}
