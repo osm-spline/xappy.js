@@ -1,5 +1,4 @@
 var sinon = require('sinon');
-var injector = require('../lib/injector.js');
 var Xapi = require('../lib/xappy');
 var getGeneratorSelector = Xapi.getGeneratorSelector;
 var getHttpHandler = Xapi.getHttpHandler;
@@ -71,7 +70,7 @@ module.exports = {
         test.equal(parse.args[0][0], uri);
         test.finish();
     },
-    'httpHandler callback': function(test) {
+    /* 'httpHandler callback': function(test) {
         var callback = sinon.spy();
         var req = { url: '/xapi/node', headers: { 'content-type': 'test/test' } };
         var sampleRequest = require('./helpers/helper-samplexapirequestobjects.js');
@@ -92,7 +91,7 @@ module.exports = {
         test.equal(sampleRequest.node,callback.args[0][4]);
 
         test.finish();
-    },
+    },*/
     'xapiRequestHandler': function(test){
         var generator =  sinon.spy();
         var emitterCallback = function() {};
@@ -152,7 +151,6 @@ module.exports = {
     //     };
 
     //     // create spies
-    //     var db = injector.require('database');
     //     var ebSpy = sinon.spy(db);
 
     //     var http = require('http'); 
