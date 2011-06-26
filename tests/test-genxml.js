@@ -1,6 +1,5 @@
 var XmlGenerator = require('../lib/genxml').XmlGenerator; // Konstruktor aufrufen
 var underscore = require('underscore');
-var async_testing = require('async_testing');
 var builder = require('xmlbuilder');
 var log4js = require('log4js')();
 var log = log4js.getLogger('test-xmlgenerator');
@@ -126,5 +125,5 @@ module.exports = {
 };
 
 if (module === require.main) {
-    require('async_testing').run(__filename, process.ARGV);
+    require('xappy-async_testing').run(__filename, process.ARGV);
 }

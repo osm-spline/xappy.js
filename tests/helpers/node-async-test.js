@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-var testing = require('async_testing'),
+var testing = require('xappy-async_testing'),
 sys = require('sys'),
 fs = require('fs'),
 path = require('path');

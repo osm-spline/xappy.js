@@ -32,6 +32,6 @@ module.exports = {
 };
 
 if (module == require.main) {
-    async_testing = require('async_testing');
+    async_testing = require('xappy-async_testing');
     return async_testing.run(__filename, process.ARGV);
 }

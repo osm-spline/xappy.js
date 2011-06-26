@@ -5,7 +5,7 @@ var getHttpHandler = Xapi.getHttpHandler;
 var _ = require('underscore')._;
 
 if (module == require.main) {
-  require('async_testing').run(__filename, process.ARGV);
+  require('xappy-async_testing').run(__filename, process.ARGV);
 }
 
 var xml = 'application/xml';
@@ -13,6 +13,7 @@ var json = 'application/json';
 
 module.exports = {
     'errorHandler' : function(test,error){
+        // test.ok(false);
         var error = {code : 400,message : 'blabla'};
         var body = error.message;
         var res = {

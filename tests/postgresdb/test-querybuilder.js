@@ -1,6 +1,6 @@
 //make this test standalone
 if (module == require.main) {
-	require('async_testing').run(__filename, process.ARGV);
+	require('xappy-async_testing').run(__filename, process.ARGV);
 }
 
 var queryBuilder = require('../../lib/postgresdb/querybuilder');

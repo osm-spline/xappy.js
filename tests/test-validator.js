@@ -1,5 +1,4 @@
 var validator = require('../lib/validator');
-//var helperObj = require('./helpers/helper-xapi-request.js');
 
 module.exports = {
     'validate correct simple object' : function(test){
@@ -215,16 +214,8 @@ module.exports = {
             test.finish();
         });
      }
-
-
-    /*
-
-     */
-
 };
 
 if (module == require.main) {
-  return require('async_testing').run(__filename, process.ARGV);
+  return require('xappy-async_testing').run(__filename, process.ARGV);
 }
-
-

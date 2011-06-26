@@ -3,10 +3,10 @@ REL_PATH="`dirname \"$0\"`"
 ROOT="${REL_PATH}/.."
 
 if [ -n "${JSCOVERAGE}" -a -x "${JSCOVERAGE}" ]; then
-    COVERAGE_DIR=$(mktemp -d --tmpdir="${ROOT}" cov-XXXXXXX)
+    COVERAGE_DIR=$(TMPDIR=$ROOT mktemp -d  cov-XXXXXXX)
     ${JSCOVERAGE} "${ROOT}/lib" "${COVERAGE_DIR}/lib/"
     cp -a "${ROOT}/tests/" "${ROOT}/etc/" "${COVERAGE_DIR}/"
-    ${ROOT}/tests/helpers/node-async-test.js "$@" "${COVERAGE_DIR}/tests/"
+    ${ROOT}/bin/run_tests.js "$@" "${COVERAGE_DIR}/tests/"
     RESULT=$?
     rm -rf "${COVERAGE_DIR}"
 
