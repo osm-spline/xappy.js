@@ -60,6 +60,19 @@ Combination of Google \& Crockford\\
 Enforcement with the tool JSHint
 }
 
+\begin{frame}{Xappy.js Modules}
+    This module contains glue code to stick various elements of the module to gether.
+
+    Therefore various helpers are used for:
+
+    \begin{itemize}
+        \item Reading a config file
+        \item Command line interface
+        \item Loading all modules
+        \item Configure a Callback for node.js
+    \end{itemize}
+\end{frame}
+
 \begin{frame}{Validator}
 
     \begin{block}{Validates}
@@ -76,8 +89,18 @@ Enforcement with the tool JSHint
 
 \end{frame}
 
-\normalsize
 
-}
+\begin{frame}{EventHandler}
 
+    Nessecary because of async behaviour of node.
+
+    \begin{itemize}
+        \item callbacks must be registered for events
+        \item pushes objects from DB
+        \item events emitted befor first and last
+    \end{itemize}
+
+    The EventHandler is created by DB the module, callbacks are defined in xappy.js.
+
+\end{frame}
 \end{document}
