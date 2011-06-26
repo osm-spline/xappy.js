@@ -1,0 +1,40 @@
+\begin{frame} {whosh - a new approach to osm data import}
+    \begin{block}{What?}
+        \begin{itemize}
+        \item tool to import osm geo data into a postgres database
+        \item push data into the database as fast as possible
+        \item actions not while streaming into the db should be handled by the db afterwards
+        \end{itemize}
+    \end{block}
+    \begin{block}{Why?}
+        \begin{itemize}
+        \item all available tools need a lot of time for the import
+        \item all available tools need a lot of ram
+        \item most of the tools available do more than we need
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame} {whosh - a new approach to osm data import}
+    \begin{block}{How?}
+        \begin{itemize}
+        \item we use osmium - a lib for parsing osm data in multiple formats
+        \item library gives callbacks on node, way or relation
+        \item independent COPY command for nodes, way and relations
+        \item COPY allows to insert data fast (and unchecked) into tables
+        \item functions in pg/SQL create geometry objects
+        \item streaming and use of pg/SQL should solve ram and time issues
+        \end{itemize}
+    \end{block}    
+\end{frame}
+
+\begin{frame} {whosh - a new approach to osm data import}
+    \begin{block}{Future?}
+        \begin{itemize}
+        \item currently text format for COPY
+        \item binary format would be better
+        \item speed and usability benchmarks
+        \item world domination ... eh import
+        \end{itemize}
+    \end{block}    
+\end{frame}
