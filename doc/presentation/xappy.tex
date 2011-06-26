@@ -20,6 +20,32 @@
 
 
 \begin{document}
+\begin{frame}{Parser}
+    \begin{block}{Features}
+        \begin{itemize}
+            \item Nodes
+            \item Ways
+            \item Relations
+            \item All Elements
+            \item Bounding Box
+            \item Tags
+            \item Child Predicates
+            \item Excaping
+        \end{itemize}
+    \end{block}{
+
+    \begin{block}{Input}
+        \begin{itemize}
+            \item http://server/api/0.6/node
+            \item http://server/api/0.6/way
+            \item http://server/api/0.6/relation
+            \item http://server/api/0.6/*
+            \item http://server/api/0.6/*[bbox=Int,Int,Int,Int]
+            \item http://server/api/0.6/*[highway=motorway|trunk]
+            \item http://server/api/0.6/relation[not(relation)]
+        \end{itemize}
+    \end{block}{Input}
+\end{frame}{Parser}
 
 \begin{frame}{Validator}
 
