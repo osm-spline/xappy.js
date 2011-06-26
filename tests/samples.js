@@ -84,3 +84,9 @@ exports.relations = function() {
 
     };
 };
+
+exports.headers = function() {
+    return {
+        h1json: '{"version":0.6,"generator":"xappy.js v0.2","xapi":{"planetDate":"201101010101","copyright":"2011 OpenStreetMap contributors"},"elements":['
+    };
+};
