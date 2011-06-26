@@ -9,7 +9,6 @@ in the actual implementation.
         "version": 0.6,
         "generator": "xappy.js",
         "xapi": {
-             "uri": "XXX",
              "planetDate": 201106161601,
              "copyright": "XXX"
         },
