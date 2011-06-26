@@ -1,6 +1,94 @@
 \documentclass{beamer}
+%packages
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[english]{babel}
+
+\hypersetup{urlcolor=red,colorlinks}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\usetheme{Rochester}
+
+\title{Sprint 2}
+\author{xapi-team}
+\institute{Institute for Computer Science, Free University Berlin}
+\date{26.6.2011}
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+
 
 \begin{document}
+
+\begin{frame}{Validator}
+
+    \begin{block}{Validates}
+        \begin{itemize}
+            \item bbox out of range
+            \item bbox: left and right or top and bottom are swapped
+            \item tag predicate with child predicate no(tags)
+            \item tag predicate with child predicate tags
+            \item node object with child predicate attribute node
+            \item way object with child predicate attribute way
+            \item way object and child predicate attribute node
+        \end{itemize}
+    \end{block}
+
+\end{frame}
+
+\begin{frame}{xapi Request Object}
+
+    \begin{block}{object}
+        \begin{itemize}
+            \item node
+            \item way
+            \item relation
+            \item *
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{bbox*}
+        \begin{itemize}
+            \item left
+            \item right
+            \item top
+            \item bottom
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{tag*}
+        \begin{itemize}
+            \item key
+            \item value
+        \end{itemize}
+    \end{block}
+
+     \begin{block}{child*}
+        \begin{itemize}
+            \item has
+            \item attribute: 
+                \begin{itemize}
+                    \item node
+                    \item way
+                    \item relation
+                    \item tag
+                \end{itemize}
+        \end{itemize}
+    \end{block}
+
+
+\end{frame}
+
+\begin{frame}{Internal Data Structure}
+    \begin{block}{Node}
+    \end{block}
+    \begin{block}{Way}
+    \end{block}
+    \begin{block}{Relation}
+    \end{block}
+\end{frame}
+
 \frame{
 
 
@@ -51,6 +139,7 @@ JSON Generator\\
 }
 
 
+
 \frame{
 \Large{Coding Style}
 \\
@@ -59,25 +148,6 @@ JSON Generator\\
 Combination of Google \& Crockford\\
 Enforcement with the tool JSHint
 }
-
-\begin{frame}{Validator}
-
-    \begin{block}{Validates}
-        \begin{itemize}
-            \item bbox out of range
-            \item bbox: left and right or top and bottom are swapped
-            \item tag predicate with child predicate no(tags)
-            \item tag predicate with child predicate tags
-            \item node object with child predicate attribute node
-            \item way object with child predicate attribute way
-            \item way object and child predicate attribute node
-        \end{itemize}
-    \end{block}
-
-\end{frame}
-
-\normalsize
-
 }
 
 \end{document}
