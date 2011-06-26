@@ -178,6 +178,37 @@ Enforcement with the tool JSHint
 
 \end{frame}
 
+\begin{frame}{postgresdb - Queries}
+    \begin{block}{Queries}
+        \begin{itemize}
+            \item Prepared statements
+            \item name, sqlstatement, values
+            \item secure, fast
+        \end{itemize}
+    \end{block}
+\end{frame}
+\begin{frame}{postgresdb - QueryPlan}
+    \begin{block}{QueryPlan}
+        \begin{itemize}
+            \item Groups queries for all tables
+            \item One query for every table (nodes, ways, relations)
+        \end{itemize}
+    \end{block}
+\end{frame}
+\begin{frame}{postgresdb - QueryBuilder}
+    \begin{block}{QueryBuilder}
+        \begin{itemize}
+            \item creates queries and groups them into QueryPlans based on xapiRequests
+        \end{itemize}
+    \end{block}
+\end{frame}
+\begin{frame}{postgresdb - main}
+    \begin{block}{main}
+        \begin{itemize}
+            \item passes xapiRequestsObject to queryBuilder
+        \end{itemize}
+    \end{block}
+\end{frame}
 
 \begin{frame}{EventHandler}
 
