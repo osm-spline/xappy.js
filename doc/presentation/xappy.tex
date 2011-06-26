@@ -1,0 +1,35 @@
+\documentclass{beamer}
+
+\begin{document}
+\frame{
+
+
+\Large
+XML Generator
+\normalsize
+\begin{itemize}
+\item genxml(type, elem)
+\item createHeader()
+\item createFooter()
+\end{itemize}
+
+\textbf{The header}:\\
+$<$ ?xml version = "1.0" standalone="no"?$>$ \\
+$<$ osm version = "0.6" generator="xappy.js v0.2" \\
+xmlns:xapi = "http://www.informationfreeway.org/xapi/0.6" \\
+xapi:planetDate = "200803150826"\\
+xapi:copyright = "2011 OpenStreetMap contributors"$>$\\
+\dots\\
+$</$osm$>$
+}
+
+\frame{
+\Large{Coding Style}
+\\
+
+\normalsize
+Combination of Google \& Crockford\\
+Enforcement with the tool JSHint
+}
+
+\end{document}
