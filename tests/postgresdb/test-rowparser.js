@@ -26,7 +26,7 @@ var testObjects = {
             changeset_id: 2342,
             tags: ['name','blub'],
             nodes: [1,2,3,4]
-        }/*,
+        },
         relation : {
             id: 1,
             version: 23,
@@ -35,8 +35,10 @@ var testObjects = {
             tstamp: new Date(),
             changeset_id: 2342,
             tags: ['name','blub'],
-            members: [1,2,3,4,5]
-        }*/
+            member_id : 1234,
+            member_role : 'blub',
+            member_type : 'W'
+        }
 };
 
 module.exports = {
@@ -48,15 +50,16 @@ module.exports = {
         helper.testway(test,rowParser.rowToWay(testObjects.way));
         test.finish();
     },
-    /*'parse row to relation' : function(test) {
+    'parse row to relation' : function(test) {
+        console.log(rowParser.rowToRelation(testObjects.relation));
         helper.testrelation(test,rowParser.rowToRelation(testObjects.relation));
         test.finish();
-    },*/
+    }/*,
     'test rowToObject' : function(test) {
         _.each(testObjects,function(value, key) {
             rowParser.rowToObject(key,value); //TODO THINK ABOUT IT
             test.finish();
         });
-    }
+    }*/
 
 };
