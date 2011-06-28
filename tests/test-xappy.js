@@ -105,7 +105,7 @@ module.exports = {
             executeRequest : sinon.spy()
         };
 
-        var reqHandler = Xapi.getXapiRequestHandler(db,getGen,callback);
+        var reqHandler = Xapi.getXappyRequestHandler(db,getGen,callback);
         reqHandler(res,contentType,null,sampleRequest);
 
         test.ok(getGen.calledOnce,'getGen was not called');
@@ -134,7 +134,7 @@ module.exports = {
         var contentType = "bla/foo";
         var sampleRequest = require('./helpers/helper-samplexapirequestobjects.js').node;
 
-        var reqHandler = Xapi.getXapiRequestHandler(db,getGen,null);
+        var reqHandler = Xapi.getXappyRequestHandler(db,getGen,null);
         reqHandler(res, contentType,{ code : 400, message : 'blabla'}, null);
 
         test.ok(!getGen.called);

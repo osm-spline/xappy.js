@@ -1,10 +1,10 @@
 var samples = require('./samples');
 
 var config = {
-    "uri" : "XXX",
-    "planetDate" : "XXX",
-    "copyright" : "XXX",
-    "instance" : "XXX"
+    "planetDate" : "201101010101",
+    "copyright" : "2011 OpenStreetMap contributors",
+    "generator": "xappy.js v0.2",
+    "version": 0.6
 };
 
 var jsongenerator = require('../lib/genjson').JSONGenerator;
@@ -27,6 +27,18 @@ module.exports = {
         var toTestRelation = jsonGen.create('relation', samples.relations().r1);
         var expectedJsonRelation = samples.relations().r1json;
         test.equal(toTestRelation, expectedJsonRelation, "\nA: "+toTestRelation + "\nB: " + expectedJsonRelation);
+        test.finish();
+    },
+    'createHeader': function(test) {
+        var toTestHeader = jsonGen.createHeader();
+        var expectedJsonHeader = samples.headers().h1json;
+        test.equal(toTestHeader, expectedJsonHeader, "\nA: "+toTestHeader + "\nB: " + expectedJsonHeader);
+        test.finish();
+    },
+    'createFooter': function(test) {
+        var toTestFooter = jsonGen.createFooter();
+        var expectedJsonFooter = "]}";
+        test.equal(toTestFooter, expectedJsonFooter, "\nA: "+toTestFooter + "\nB: " + expectedJsonFooter);
         test.finish();
     }
 };
