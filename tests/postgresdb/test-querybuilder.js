@@ -21,5 +21,12 @@ module.exports = {
         queryBuilder.createQueryPlan(sampleObjects['way']);
         test.ok(spy.called);
         test.finish();
+    },
+    'create query for relation' : function(test) {
+        var relationQueryBuilder = require('../../lib/postgresdb/relationquerybuilder');
+        var spy = sinon.spy(relationQueryBuilder,'createQueryPlan');
+        queryBuilder.createQueryPlan(sampleObjects['relation']);
+        test.ok(spy.called);
+        test.finish();
     }
 };

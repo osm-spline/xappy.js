@@ -120,6 +120,13 @@ module.exports = {
     'relation' : {
         object : 'relation'
     },
+    'relation[note=OstDeutschland]' : {
+        object : 'relation',
+        tag : {
+            key : ['note'],
+            value : ['OstDeutschland']
+        }
+    },
     '*' : {
         object : '*'
     }
