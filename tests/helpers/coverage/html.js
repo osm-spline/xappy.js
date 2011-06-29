@@ -26,7 +26,27 @@ function print(str){
 function reportCoverage(cov) {
     var LOC = 0, SLOC = 0, totalFiles = 0, totalHits = 0, totalMisses = 0, coverage = 0, sources = {};
 
-    print('<html><head><style type="text/css">.source { white-space: pre; font-family: monospace; padding-left: 20px; } .line { font-size: 1em; width: 50px; font-family: monospace; }  .source .comment, .source .template_comment, .source .diff .header, .source .javadoc {   color: #998;   font-style: italic }  .source .keyword, .source .css .rule .keyword, .source .winutils, .source .javascript .title, .source .lisp .title, .source .subst {   color: #000;   font-weight: bold }  .source .number, .source .hexcolor {   color: #40a070 }  .source .string, .source .attribute .value, .source .phpdoc, .source .tex .formula {   color: #d14 }  .source .title, .source .id {   color: #900;   font-weight: bold }  .source .javascript .title, .source .lisp .title, .source .subst {   font-weight: normal }  .source .class .title, .source .tex .command {   color: #458;   font-weight: bold }  .source .tag, .source .css .keyword, .source .html .keyword, .source .tag .title, .source .django .tag .keyword {   color: #000080;   font-weight: normal }  .source .attribute, .source .variable, .source .instancevar, .source .lisp .body {   color: #008080 }  .source .regexp {   color: #009926 }  .source .class {   color: #458;   font-weight: bold }  .source .symbol, .source .ruby .symbol .string, .source .ruby .symbol .keyword, .source .ruby .symbol .keymethods, .source .lisp .keyword, .source .tex .special {   color: #990073 }  .source .builtin, .source .built_in, .source .lisp .title {   color: #0086b3 }  .source .preprocessor, .source .pi, .source .doctype, .source .shebang, .source .cdata {   color: #999;   font-weight: bold }  .source .deletion {   background: #fdd }  .source .addition {   background: #dfd }  .source .diff .change {   background: #0086b3 }  .source .chunk {   color: #aaa }  .source .tex .formula {   opacity: 0.5; } .zero { background: red; } .zero, .zero * { color: white !important; } </style></head><body>');
+    print('<html><head><style type="text/css"> \
+        .source { white-space: pre; font-family: monospace; padding-left: 20px; } \
+        .line { font-size: 1em; width: 50px; font-family: monospace; } \
+        .source .comment { color: #998; font-style: italic } \
+        .source .keyword, .source .javascript .title, .source .subst { color: #000; font-weight: bold } \
+        .source .number, .source .hexcolor { color: #40a070 } \
+        .source .string, .source .attribute .value { color: #d14 } \
+        .source .title, .source .id { color: #900; font-weight: bold } \
+        .source .literal { color: #00a8c9; } \
+        .source .javascript .title, .source .subst { font-weight: normal } \
+        .source .class .title { color: #458; font-weight: bold } \
+        .source .tag, .source .tag .title { color: #000080; font-weight: normal } \
+        .source .attribute, .source .variable, .source .instancevar { color: #008080 } \
+        .source .regexp { color: #009926 } \
+        .source .class { color: #458; font-weight: bold } \
+        .source .symbol { color: #990073 } \
+        .source .builtin, .source .built_in { color: #0086b3 } \
+        .source .pi, .source .doctype, .source .shebang, .source .cdata { color: #999; font-weight: bold } \
+        .zero { background: red; } \
+        .zero, .zero * { color: white !important; } \
+        </style></head><body>');
 
     // print header
     print('<h1>Test Coverage</h1>');
