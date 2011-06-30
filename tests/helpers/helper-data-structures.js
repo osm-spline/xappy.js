@@ -191,7 +191,7 @@ module.exports = {
             test.strictEqual(toTestRelation.members[i].reference, Math.round(toTestRelation.members[i].reference),"Relation member reference not an integer");
 
             test.deepEqual(typeof toTestRelation.members[i].role, "string", "Relation member role is not a string!");
-            test.notDeepEqual(toTestRelation.members[i].role, "", "Relation member role is empty!");
+            //test.notDeepEqual(toTestRelation.members[i].role, "", "Relation member role is empty!");
         }
 
         //optional attributes
