@@ -41,8 +41,17 @@ module.exports = {
 
     'getGenerator': function(test) {
         var config = {};
-        var gen = getGeneratorSelector(config)("content-type", "uri");
+        var gen = getGeneratorSelector(config)("application/xml", "uri");
         test.equal(gen.contentType, xml);
+        test.finish();
+    },
+    'getGenerator, wrong Content-Type': function(test) {
+        var config = {};
+        try {
+        var gen = getGeneratorSelector(config)("content-typefoo", "uri");
+        } catch (e) {
+            test.deepEqual(e, {"message":"Invalid Content-Type","code":417});
+        }
         test.finish();
     },
     'getGenerator, get Json': function(test) {
