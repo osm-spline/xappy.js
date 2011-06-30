@@ -139,6 +139,10 @@ module.exports = {
         test.ok(res.writeHead.calledWith(400));
 
         test.finish();
+    },
+    'emitterHandlers' : function(test){
+        test.finish();
+
     // },
     // 'testHttpHandleCall': function(test) {
 
