@@ -14,12 +14,11 @@
 \institute{Institute for Computer Science, Free University Berlin}
 \date{26.6.2011}
 \begin{document}
+
 \begin{frame}
 \titlepage
 \end{frame}
 
-
-\begin{document}
 \begin{frame}{Parser}
     \begin{block}{Features}
         \begin{itemize}
@@ -32,8 +31,10 @@
             \item Child Predicates
             \item Excaping
         \end{itemize}
-    \end{block}{
+    \end{block}
+\end{frame}
 
+\begin{frame}{Parser 2}
     \begin{block}{Input}
         \begin{itemize}
             \item http://server/api/0.6/node
@@ -44,8 +45,8 @@
             \item http://server/api/0.6/*[highway=motorway|trunk]
             \item http://server/api/0.6/relation[not(relation)]
         \end{itemize}
-    \end{block}{Input}
-\end{frame}{Parser}
+    \end{block}
+\end{frame}
 
 \begin{frame}{Validator}
 
@@ -83,6 +84,9 @@
         \end{itemize}
     \end{block}
 
+\end{frame}
+
+\begin{frame}{xapi Request Object (2)}
     \begin{block}{tag*}
         \begin{itemize}
             \item key
@@ -106,6 +110,52 @@
 
 \end{frame}
 
+\begin{frame}{XML Generator}
+    \begin{itemize}
+        \item genxml(type, elem)
+        \item createHeader()
+        \item createFooter()
+    \end{itemize}
+
+    \begin{block}{The header}
+        $<$ ?xml version = "1.0" standalone="no"?$>$ \\
+        $<$ osm \\
+        version = "0.6" \\
+        generator="xappy.js v0.2" \\
+        xapi:planetDate = "200803150826"\\
+        xapi:copyright = "2011 OpenStreetMap contributors"$>$\\
+        \dots\\
+        $</$osm$>$
+    \end{block}
+\end{frame}
+
+\begin{frame}{JSON Generator}
+    \begin{itemize}
+        \item genjson(type, elem)
+        \item createHeader()
+        \item createFooter()
+    \end{itemize}
+
+    \begin{block}{The header}
+        \{\\
+            \hspace*{4mm}"version": 0.6,\\
+            \hspace*{4mm} "generator": "xappy.js v0.2",\\
+            \hspace*{4mm} "xapi":\{\\
+            \hspace*{8mm} "planetDate": 200803150826,\\
+            \hspace*{8mm} "copyright": "XXX"\\
+            \hspace*{4mm} \},\\
+
+            \hspace*{4mm}"elements": [\\
+            \hspace*{8mm}\dots\\
+            \hspace*{4mm}]\\
+            \}
+    \end{block}
+\end{frame}
+
+
+
+
+
 \begin{frame}{Internal Data Structure}
     \begin{block}{Node}
     \end{block}
@@ -114,66 +164,6 @@
     \begin{block}{Relation}
     \end{block}
 \end{frame}
-
-\frame{
-
-
-\Large
-XML Generator
-\normalsize
-\begin{itemize}
-\item genxml(type, elem)
-\item createHeader()
-\item createFooter()
-\end{itemize}
-
-\textbf{The header}:\\
-$<$ ?xml version = "1.0" standalone="no"?$>$ \\
-$<$ osm \\
-version = "0.6" \\
-generator="xappy.js v0.2" \\
-xapi:planetDate = "200803150826"\\
-xapi:copyright = "2011 OpenStreetMap contributors"$>$\\
-\dots\\
-$</$osm$>$
-}
-
-\frame{
-\Large
-JSON Generator\\
-\normalsize
-\begin{itemize}
-\item genjson(type, elem)
-\item createHeader()
-\item createFooter()
-\end{itemize}
-
-\textbf{The header}\\
-\{\\
-\hspace*{4mm}"version": 0.6,\\
-\hspace*{4mm} "generator": "xappy.js v0.2",\\
-\hspace*{4mm} "xapi":\{\\
-\hspace*{8mm} "planetDate": 200803150826,\\
-\hspace*{8mm} "copyright": "XXX"\\
-\hspace*{4mm} \},\\
-
-\hspace*{4mm}"elements": [\\
-\hspace*{8mm}\dots\\
-\hspace*{4mm}]\\
-\}
-
-}
-
-
-
-\frame{
-\Large{Coding Style}
-\\
-
-\normalsize
-Combination of Google \& Crockford\\
-Enforcement with the tool JSHint
-}
 
 \begin{frame}{Xappy.js Modules}
     This module contains glue code to stick various elements of the module to gether.
@@ -251,4 +241,9 @@ Enforcement with the tool JSHint
 \end{frame}
 
 \include{whosh}
+\begin{frame}{Coding Style}
+    \normalsize
+    Combination of Google \& Crockford\\
+    Enforcement with the tool JSHint
+\end{frame}
 \end{document}

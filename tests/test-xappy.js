@@ -12,7 +12,7 @@ var xml = 'application/xml';
 var json = 'application/json';
 
 module.exports = {
-    'errorHandler' : function(test,error){
+    'writeError' : function(test,error){
         var error = {code : 400,message : 'blabla'};
         var body = error.message;
         var res = {
@@ -20,30 +20,38 @@ module.exports = {
             write : sinon.spy(),
             end : sinon.spy()
         };
-        Xapi.errorHandler(res, error);
+        Xapi.writeError(res, error);
         test.ok(res.end.calledOnce);
         test.ok(res.writeHead.calledOnce);
         test.ok(res.writeHead.calledWith(400));
         test.ok(res.write.calledWith(body) || res.end.calledWith(body));
         test.finish();
     },
-    'errorHandler with 500' : function(test,error){
-        var error = {code : 500,message : 'blabla'};
-        var body = error.message;
+    'writeError with 204' : function(test,error){
+        var error = { code : 204, message : 'blabla'};
         var res = {
             writeHead : function(){},
             write : sinon.spy(),
             end : sinon.spy()
         };
-        Xapi.errorHandler(res, error);
-        test.ok(!res.write.calledWith(body) && !res.end.calledWith(body));
+        Xapi.writeError(res, error);
+        test.ok(!res.write.calledWith(error.message) && !res.end.calledWith(error.message));
         test.finish();
     },
 
     'getGenerator': function(test) {
         var config = {};
-        var gen = getGeneratorSelector(config)("content-type", "uri");
+        var gen = getGeneratorSelector(config)("application/xml", "uri");
         test.equal(gen.contentType, xml);
+        test.finish();
+    },
+    'getGenerator, wrong Content-Type': function(test) {
+        var config = {};
+        try {
+        var gen = getGeneratorSelector(config)("content-typefoo", "uri");
+        } catch (e) {
+            test.deepEqual(e, {"message":"Invalid Content-Type","code":417});
+        }
         test.finish();
     },
     'getGenerator, get Json': function(test) {
@@ -61,16 +69,15 @@ module.exports = {
     'httpHandler check uri': function(test) {
         var parse = sinon.spy();
         var uri = '/foo/bar';
-        var req = { url: uri + '?thisshouldberemoved' }
+        var req = { url: uri + '?thisshouldberemoved' };
         var res = sinon.spy();
-        var cb = function(err, emitter) {
-        }
+        var cb = function(err, emitter) {};
         var handler = getHttpHandler(parse, cb)(req, res);
         // parser should get uri in first argument of first call
         test.equal(parse.args[0][0], uri);
         test.finish();
     },
-    /* 'httpHandler callback': function(test) {
+    'httpHandler callback': function(test) {
         var callback = sinon.spy();
         var req = { url: '/xapi/node', headers: { 'content-type': 'test/test' } };
         var sampleRequest = require('./helpers/helper-samplexapirequestobjects.js');
@@ -85,13 +92,12 @@ module.exports = {
         test.ok(callback.calledOnce);
 
         test.equal(res,callback.args[0][0]);
-        test.equal(req.url,callback.args[0][1]);
-        test.equal(req.headers['content-type'],callback.args[0][2]);
-        test.equal(null,callback.args[0][3]);
-        test.equal(sampleRequest.node,callback.args[0][4]);
+        test.equal(req.headers['content-type'],callback.args[0][1]);
+        test.equal(null,callback.args[0][2]);
+        test.equal(sampleRequest.node,callback.args[0][3]);
 
         test.finish();
-    },*/
+    },
     'xapiRequestHandler': function(test){
         var generator =  sinon.spy();
         var emitterCallback = function() {};
@@ -142,6 +148,10 @@ module.exports = {
         test.ok(res.writeHead.calledWith(400));
 
         test.finish();
+    },
+    'emitterHandlers' : function(test){
+        test.finish();
+
     // },
     // 'testHttpHandleCall': function(test) {
 
