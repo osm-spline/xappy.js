@@ -106,10 +106,10 @@ module.exports = {
 
         if (typeof toTestNode.tags[0] != "undefined"){
             for (var x=0; x<toTestNode.tags.length; x++){
-                test.deepEqual(typeof toTestNode.tags[x].k, "string", "Node tag key is not a string!");
-                test.deepEqual(typeof toTestNode.tags[x].v, "string", "Node tag value is not a string!");
-                test.notDeepEqual(toTestNode.tags[x].k, "", "Node tag key is empty!");
-                test.notDeepEqual(toTestNode.tags[x].v, "", "Node tag value is empty!");
+                test.deepEqual(typeof toTestNode.tags[x].key, "string", "Node tag key is not a string!");
+                test.deepEqual(typeof toTestNode.tags[x].value, "string", "Node tag value is not a string!");
+                test.notDeepEqual(toTestNode.tags[x].key, "", "Node tag key is empty!");
+                test.notDeepEqual(toTestNode.tags[x].value, "", "Node tag value is empty!");
             }
         }
     }
@@ -164,10 +164,10 @@ module.exports = {
         if(typeof toTestWay.tags != "undefined"){
             if(typeof toTestWay.tags[0] != "undefined"){
                 for (x=0; x<toTestWay.tags.length; x++){
-                    test.deepEqual(typeof toTestWay.tags[x].k, "string", "Way tags key is not a string!");
-                    test.deepEqual(typeof toTestWay.tags[x].v, "string", "Way tags value is not a string!");
-                    test.notDeepEqual(toTestWay.tags[x].k, "", "Way tags key is empty!");
-                    test.notDeepEqual(toTestWay.tags[x].v, "", "Way tags value is empty!");
+                    test.deepEqual(typeof toTestWay.tags[x].key, "string", "Way tags key is not a string!");
+                    test.deepEqual(typeof toTestWay.tags[x].value, "string", "Way tags value is not a string!");
+                    test.notDeepEqual(toTestWay.tags[x].key, "", "Way tags key is empty!");
+                    test.notDeepEqual(toTestWay.tags[x].value, "", "Way tags value is empty!");
                 }
             }
         }
@@ -225,10 +225,10 @@ module.exports = {
         if(typeof toTestRelation.tags != "undefined"){
             if(typeof toTestRelation.tags[0] != "undefined"){
                 for (var x=0; x<toTestRelation.tags.length; x++){
-                test.deepEqual(typeof toTestRelation.tags[x].k, "string", "Relation tags key is not a string!");
-                test.deepEqual(typeof toTestRelation.tags[x].v, "string", "Relation tags value is not a string!");
-                test.notDeepEqual(toTestRelation.tags[x].k, "", "Relation tags key is empty!");
-                test.notDeepEqual(toTestRelation.tags[x].v, "", "Relation tags value is empty!");
+                test.deepEqual(typeof toTestRelation.tags[x].key, "string", "Relation tags key is not a string!");
+                test.deepEqual(typeof toTestRelation.tags[x].value, "string", "Relation tags value is not a string!");
+                test.notDeepEqual(toTestRelation.tags[x].key, "", "Relation tags key is empty!");
+                test.notDeepEqual(toTestRelation.tags[x].value, "", "Relation tags value is empty!");
                 }
             }
         }
