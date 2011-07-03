@@ -6,14 +6,14 @@ var SAMPLE_NODE = {
     lon : 19.3035366605548,
     version : 1,
     timestamp : new Date(),
-    tags : [{k : 'amenity', v : 'hospital'}]
+    tags : [{key : 'amenity', value : 'hospital'}]
 };
 
 var SAMPLE_WAY = {
     id : 496969,
     nodes : [1,2],
     version : 2,
-    tags : [{k : 'jk', v : 'bla'}]
+    tags : [{key : 'jk', value : 'bla'}]
 };
 
 var SAMPLE_RELATION = {
