@@ -39,20 +39,14 @@ module.exports = {
         test.finish();
     },
 
-    'getGenerator': function(test) {
-        var config = {};
-        var gen = getGeneratorSelector(config)("application/xml", "uri");
-        test.equal(gen.contentType, xml);
-        test.finish();
-    },
-    'getGenerator, wrong Content-Type': function(test) {
-        var config = {};
-        try {
-        var gen = getGeneratorSelector(config)("content-typefoo", "uri");
-        } catch (e) {
-            test.deepEqual(e, {"message":"Invalid Content-Type","code":417});
+    'getGenerator with invalid type': function(test) {
+        test.uncaughtExceptionHandler = function(err) {
+            test.equal('Invalid Content-Type',err.message);
+            test.equal(415,err.code);
+            test.finish();
         }
-        test.finish();
+        var config = {};
+        var gen = getGeneratorSelector(config)('text/text', 'uri');
     },
     'getGenerator, get Json': function(test) {
         var config = {};
@@ -150,8 +144,34 @@ module.exports = {
         test.finish();
     },
     'emitterHandlers' : function(test){
-        test.finish();
+        var res = {
+            writeHead : sinon.spy(),
+            write : sinon.spy(),
+            end : sinon.spy()
+        };
+        var gen = {
+            createHeader : sinon.stub().returns('header|'),
+            createFooter : sinon.stub().returns('footer'),
+            create : sinon.stub().returns('element|')
+        };
 
+        emitterCallback = Xapi.getEmitterHandler(res,gen);
+
+
+        var emitter = {
+            on : sinon.spy(),
+            once : sinon.spy()
+        };
+
+        emitterCallback(null,emitter);
+
+        test.ok(emitter.once.calledWith('start'));
+        test.ok(emitter.on.calledWith('node'));
+        test.ok(emitter.on.calledWith('way'));
+        test.ok(emitter.on.calledWith('relation'));
+        test.ok(emitter.once.calledWith('end'));
+
+        test.finish();
     // },
     // 'testHttpHandleCall': function(test) {
 
@@ -163,7 +183,7 @@ module.exports = {
     //     // create spies
     //     var ebSpy = sinon.spy(db);
 
-    //     var http = require('http'); 
+    //     var http = require('http');
     //     var httpStub = sinon.stub(http,'createServer');
     //     var httpSpy = sinon.spy();
     //     httpStub.returns({ listen : httpSpy });
