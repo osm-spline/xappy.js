@@ -16,7 +16,7 @@ else {
     testing.run(null, process.ARGV, done);
 }
 
-function done(allResults) {
+function done(allResults, coverage) {
     // we want to have our exit status be the number of problems
     var problems = 0;
 
@@ -39,8 +39,8 @@ function done(allResults) {
         // dump coverage data into coverage.json
         writeCoverage(reformatCoverageData(_$jscoverage));
     }
-    else if ('coverage' in testing) {
-        writeCoverage(testing.coverage);
+    else if (coverage) {
+        writeCoverage(coverage);
     }
 
     process.exit(problems);
