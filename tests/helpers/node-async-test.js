@@ -5,16 +5,33 @@ sys = require('sys'),
 fs = require('fs'),
 path = require('path');
 
-testing.run(null, process.ARGV, done);
+if (testing.hasOwnProperty('registerRunner')) {
+    // new async_testing version
+    process.ARGV.shift();
+    process.ARGV.shift();
+    process.ARGV.unshift('node');
+    testing.run(process.ARGV, done);
+}
+else {
+    testing.run(null, process.ARGV, done);
+}
 
 function done(allResults) {
     // we want to have our exit status be the number of problems
     var problems = 0;
 
     for(var i = 0; i < allResults.length; i++) {
-        if (allResults[i].tests.length > 0) {
-            problems += allResults[i].numErrors;
-            problems += allResults[i].numFailures;
+        if (allResults[i].hasOwnProperty('tests')) {
+            if (allResults[i].tests.length > 0) {
+                problems += allResults[i].numErrors;
+                problems += allResults[i].numFailures;
+            }
+        }
+        else {
+            // new async_testing version
+            if (allResults[i].results.tests.length > 0) {
+                problems += allResults[i].results.numFailures;
+            }
         }
     }
 
