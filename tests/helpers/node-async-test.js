@@ -5,7 +5,7 @@ sys = require('sys'),
 fs = require('fs'),
 path = require('path');
 
-if (testing.hasOwnProperty('registerRunner')) {
+if (testing.run.length != 3) {
     // new async_testing version
     process.ARGV.shift();
     process.ARGV.shift();
