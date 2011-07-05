@@ -20,7 +20,10 @@ function done(allResults) {
 
     if (typeof _$jscoverage === 'object') {
         // dump coverage data into coverage.json
-        writeCoverage(_$jscoverage);
+        writeCoverage(reformatCoverageData(_$jscoverage));
+    }
+    else if ('coverage' in testing) {
+        writeCoverage(testing.coverage);
     }
 
     process.exit(problems);
@@ -48,6 +51,6 @@ function writeCoverage(data) {
                              '..', '..', 'coverage.json');
 
     var fp = fs.openSync(filename, 'w');
-    fs.writeSync(fp, JSON.stringify(reformatCoverageData(data)), null);
+    fs.writeSync(fp, JSON.stringify(data), null);
     fs.closeSync(fp);
 }
