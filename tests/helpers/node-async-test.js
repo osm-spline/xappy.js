@@ -1,12 +1,12 @@
 #! /usr/bin/env node
 
-var testing = require('async_testing'),
+var testing = require('coverage_testing'),
 sys = require('sys'),
 fs = require('fs'),
 path = require('path');
 
 if (testing.run.length != 3) {
-    // new async_testing version
+    // new coverage_testing version
     process.ARGV.shift();
     process.ARGV.shift();
     process.ARGV.unshift('node');
@@ -28,7 +28,7 @@ function done(allResults, coverage) {
             }
         }
         else {
-            // new async_testing version
+            // new coverage_testing version
             if (allResults[i].results.tests.length > 0) {
                 problems += allResults[i].results.numFailures;
             }

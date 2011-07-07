@@ -4,7 +4,7 @@ var log4js = require('log4js')();
 var log = log4js.getLogger('sql-realDatabase');
 
 var utility = require('../../lib/utility');
-var nodeunit = require('async_testing');
+var nodeunit = require('coverage_testing');
 var wrap = nodeunit.wrap;
 
 var configPath = 'etc/my-config.json';

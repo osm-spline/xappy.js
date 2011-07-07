@@ -12,7 +12,7 @@
         "optimist" : ">=0.2.0"
     },
     "devDependencies" : {
-        "async_testing" : "*",
+        "coverage_testing" : "*",
         "sinon" : "*",
         "jshint" : "*"
     },
