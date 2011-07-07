@@ -47,7 +47,7 @@ var node4 = {
     timestamp: null,
     tags: {
         key: ['amenity', 'name'],
-        value: ['hotel', 'WalthersTruckStop'];
+        value: ['hotel', 'WalthersTruckStop']
     }
 };
 
@@ -143,12 +143,12 @@ var relation1 = {
         key: ['note', 'type'],
         value: ['OstDeutschland', 'multipolygon']
     },
-    members: {
+    members: [
         {type: "node", ref: 1, role: "" },
         {type: "node", ref: 6, role: "" },
         {type: "way", ref: 123 },
         {type: "way", ref: 789 }
-    }
+    ]
 };
 
 var relation2 = {
@@ -161,7 +161,7 @@ var relation2 = {
         key: ['note', 'type'],
         value: ['WestDeutschland', 'multipolygon']
     },
-    members: {
+    members: [
         {type: "node", ref: 2, role: "" },
         {type: "node", ref: 3, role: "" },
         {type: "node", ref: 4, role: "" },
@@ -170,7 +170,7 @@ var relation2 = {
         {type: "way", ref: 123 },
         {type: "way", ref: 456 },
         {type: "way", ref: 789 }
-    }
+    ]
 }
 
 var relations = [relation1, relation2];
