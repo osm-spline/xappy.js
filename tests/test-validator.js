@@ -224,7 +224,7 @@ module.exports = {
 };
 
 if (module == require.main) {
-  return require('async_testing').run(__filename, process.ARGV);
+  return require('coverage_testing').run(__filename, process.ARGV);
 }
 
 

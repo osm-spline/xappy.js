@@ -1,26 +1,46 @@
 #! /usr/bin/env node
 
-var testing = require('async_testing'),
+var testing = require('coverage_testing'),
 sys = require('sys'),
 fs = require('fs'),
 path = require('path');
 
-testing.run(null, process.ARGV, done);
+if (testing.run.length != 3) {
+    // new coverage_testing version
+    process.ARGV.shift();
+    process.ARGV.shift();
+    process.ARGV.unshift('node');
+    testing.run(process.ARGV, done);
+}
+else {
+    testing.run(null, process.ARGV, done);
+}
 
-function done(allResults) {
+function done(allResults, coverage) {
     // we want to have our exit status be the number of problems
     var problems = 0;
 
     for(var i = 0; i < allResults.length; i++) {
-        if (allResults[i].tests.length > 0) {
-            problems += allResults[i].numErrors;
-            problems += allResults[i].numFailures;
+        if (allResults[i].hasOwnProperty('tests')) {
+            if (allResults[i].tests.length > 0) {
+                problems += allResults[i].numErrors;
+                problems += allResults[i].numFailures;
+            }
+        }
+        else {
+            // new coverage_testing version
+            if (allResults[i].results.tests.length > 0) {
+                problems += allResults[i].results.numFailures;
+            }
         }
     }
 
     if (typeof _$jscoverage === 'object') {
         // dump coverage data into coverage.json
-        writeCoverage(_$jscoverage);
+        writeCoverage(reformatCoverageData(_$jscoverage));
+    }
+    else if (coverage) {
+        writeCoverage(coverage);
     }
 
     process.exit(problems);
@@ -48,6 +68,6 @@ function writeCoverage(data) {
                              '..', '..', 'coverage.json');
 
     var fp = fs.openSync(filename, 'w');
-    fs.writeSync(fp, JSON.stringify(reformatCoverageData(data)), null);
+    fs.writeSync(fp, JSON.stringify(data), null);
     fs.closeSync(fp);
 }
