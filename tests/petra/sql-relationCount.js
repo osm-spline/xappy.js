@@ -1,5 +1,5 @@
 var configPath = 'etc/my-config.json';
-var petra = require('./sql-petraData');
+var petra = require('./petraData');
 var helper = require('./helper');
 var testing = require('coverage_testing');
 

@@ -6,10 +6,10 @@ var node1 = {
     uid: 291857,
     changeset: 123456,
     timestamp: '2011-05-26T16:47:48.000Z',  // ???
-    tags: {
-        key: ['amenity', 'name'],
-        value: ['hospital', 'Wilhelminenspital']
-    }
+    tags: [
+        { key: 'amenity', value: 'hospital' },
+        { key: 'name', value: 'Wilhelminenspital' }
+    ]
 };
 
 var node2 = {
@@ -20,7 +20,7 @@ var node2 = {
     uid: 291857,
     changeset: 123456,
     timestamp: '2011-05-26T16:47:48.000Z',  // ???
-    tags: {}
+    tags: []
 };
 
 var node3 = {
@@ -31,10 +31,10 @@ var node3 = {
     uid: 291857,
     changeset: 123456,
     timestamp: '2011-05-26T16:47:48.000Z',  // ???
-    tags: {
-        key: ['amenity', 'name'],
-        value: ['hotel', 'HomeSweetHome']
-    }
+    tags: [
+        { key: 'amenity', value: 'hotel' },
+        { key: 'name', value: 'HomeSeetHome' }
+    ]
 };
 
 var node4 = {
@@ -45,10 +45,10 @@ var node4 = {
     uid: 291857,
     changeset: 123456,
     timestamp: null,
-    tags: {
-        key: ['amenity', 'name'],
-        value: ['hotel', 'WalthersTruckStop']
-    }
+    tags: [
+        { key: 'amenity', value: 'hotel' },
+        { key: 'name', value: 'WalthersTruckStop' }
+    ]
 };
 
 var node5 = {
@@ -59,10 +59,10 @@ var node5 = {
     uid: 291857,
     changeset: 123456,
     timestamp: '2011-05-26T16:47:48.000Z',  // ???
-    tags: {
-        key: ['amenity', 'name'],
-        value: ['bar', 'Lucies']
-    }
+    tags: [
+        { key: 'amenity', value: 'bar' },
+        { key: 'name', value: 'Lucies' }
+    ]
 };
 
 var node6 = {
@@ -73,10 +73,10 @@ var node6 = {
     uid: 291857,
     changeset: 123456,
     timestamp: '2011-05-26T16:47:48.000Z',  // ???
-    tags: {
-        key: ['building', 'name'],
-        value: ['emblem', 'BrandenburgerTor']
-    }
+    tags: [
+        { key: 'building', value: 'emblem' },
+        { key: 'name', value: 'BrandenburgerTor' }
+    ]
 };
 
 var node7 = {
@@ -87,10 +87,10 @@ var node7 = {
     uid: 291857,
     changeset: 123456,
     timestamp: '2011-05-26T16:47:48.000Z',  // ???
-    tags: {
-        key: ['amenity', 'name'],
-        value: ['hospital', 'HeisseSchwestern']
-    }
+    tags: [
+        { key: 'amenity', value: 'hospital' },
+        { key: 'name', value: 'HeisseSchwestern' }
+    ]
 };
 
 var nodes = [node1, node2, node3, node4, node5, node6, node7];
@@ -125,10 +125,9 @@ var way3 = {
     changeset: 2211,
     timestamp: '2011-05-26T16:47:48.000Z',  // ???
     nodes: [ 2,3 ],
-    tags: {
-        key: ['value'],
-        value: ['Strandweg']
-    }
+    tags: [
+        { key: 'value', value: 'Strandweg' }
+    ]
 };
 
 var ways = [way1, way2, way3];
@@ -157,10 +156,10 @@ var relation2 = {
     uid: 291857,
     changeset: 5334067,
     timestamp: '2010-07-27T22:34:46.000Z',  // ???
-    tags: {
-        key: ['note', 'type'],
-        value: ['WestDeutschland', 'multipolygon']
-    },
+    tags: [
+        { key: 'note', value: 'WestDeutschland' },
+        { key: 'type', value: 'multipolygon' }
+    ],
     members: [
         {type: "node", ref: 2, role: "" },
         {type: "node", ref: 3, role: "" },
@@ -183,9 +182,9 @@ var bbox = {
 };
 
 var tags = {
-    hospital: {key: ['amenity'], value: ['hospital'] }, // nodes 1,7
-    emblem: {key: ['building'], value: ['emblem'] }, // node 6
-    strandweg: {key: ['value'], value: ['Strandweg']}
+    hospital: {key: 'amenity', value: 'hospital'}, // nodes 1,7
+    emblem: {key: 'building', value: 'emblem'}, // node 6
+    strandweg: {key: 'value', value: 'Strandweg'}
 }
 
 var relations = [relation1, relation2];

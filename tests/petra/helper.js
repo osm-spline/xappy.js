@@ -2,6 +2,62 @@ var utility = require('../../lib/utility');
 var PostgresDb = require('../../lib/postgresdb/postgresdb').PostgresDb;
 var testing = require('coverage_testing');
 var wrap = testing.wrap;
+var _ = require('underscore')._;
+
+function containsElement(request, test, elements) {
+    test.db.executeRequest(request, function(e, emitter) {
+        containsElementsEmitter(emitter, elements, function(success, msg) {
+            // emitter.removeAllListeners();
+            test.ok(success, msg);
+            test.finish();
+        });
+    });
+}
+
+function containsElementsEmitter(emitter, elements, cb) {
+    var nodes = _.clone(elements.nodes) || [];
+    var ways = _.clone(elements.ways) || [];
+    var relations = _.clone(elements.relations) || [];
+
+    emitter.on('node', function(node) {
+        if (_.include(nodes, node)) {
+            console.log('uih');
+            nodes = _.reject(nodes, node);
+        } else {
+            console.log('pfui');
+            var e = JSON.stringify(node);
+            var l = JSON.stringify(nodes);
+            cb(false, e + ' is not in list ' + l);
+        }
+    });
+
+    emitter.on('way', function(way) {
+        if (_.include(ways, way)) {
+            ways = _.reject(ways, way);
+        } else {
+            cb(JSON.stringify(way) + ' is not in list');
+        }
+    });
+
+    emitter.on('relation', function(rel) {
+        if (_.include(relations, rel)) {
+            relations = _.reject(relations, rel);
+        } else {
+            cb(JSON.stringify(rel) + ' is not in list');
+        }
+    });
+
+    emitter.on('end', function() {
+        var ndEmpty = _.isEmpty(nodes);
+        var wayEmpty = _.isEmpty(ways);
+        var relEmpty = _.isEmpty(relations);
+        if (ndEmpty && wayEmpty && relEmpty) {
+            cb(true);
+        } else {
+            cb(false, 'not empty'); // todo send debug
+        }
+    });
+}
 
 function countNumberOfNodes(emitter, cb) {
     var nodes = 0;
@@ -57,3 +113,4 @@ function SuiteUp(configPath) {
 exports.SuiteUp = SuiteUp;
 exports.testForError = testForError;
 exports.testForCount = testForCount;
+exports.containsElement = containsElement;
