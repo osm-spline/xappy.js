@@ -173,8 +173,25 @@ var relation2 = {
     ]
 }
 
+var bbox = {
+    all: { left: 7, bottom: 47, right: 14, top: 54}, // all nodes
+    bottom: { left: 7, bottom: 47, right: 14, top: 51}, // nodes 4,5,7
+    top: { left: 7, bottom: 51, right: 14, top: 54}, // 1,2,3,6
+    left: { left: 7, bottom: 47, right: 9.49, top: 54}, // 1,2,4
+    right: { left: 9.5, bottom: 47, right: 14, top: 54}, // 3,4,6,7
+    empty: { left: -11.43, bottom: 49.81, right: 0.95, top: 59 }
+};
+
+var tags = {
+    hospital: {key: ['amenity'], value: ['hospital'] }, // nodes 1,7
+    emblem: {key: ['building'], value: ['emblem'] }, // node 6
+    strandweg: {key: ['value'], value: ['Strandweg']}
+}
+
 var relations = [relation1, relation2];
 
+exports.bbox = bbox;
+exports.tags = tags;
 exports.nodes = nodes;
 exports.ways = ways;
 exports.relations = relations;
