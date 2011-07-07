@@ -1,15 +1,11 @@
-var PostgresDb = require('../../lib/postgresdb/postgresdb').PostgresDb;
-
-var log4js = require('log4js')();
-var log = log4js.getLogger('sql-realDatabase');
-
-var utility = require('../../lib/utility');
-var nodeunit = require('coverage_testing');
-var wrap = nodeunit.wrap;
 
 var configPath = 'etc/my-config.json';
-
 var petra = require('./sql-petraData');
+var helper = require('./helper');
+
+var testForError = helper.testForError;
+var testForCount = helper.testForCount;
+var suiteUp = helper.SuiteUp(configPath).suiteUp;
 
 // for details please read `petra.osm`
 // all contains nodes [1..7]
@@ -32,54 +28,7 @@ var tagEmblem = {key: ['building'], value: ['emblem'] };
 // contains nodes [3,4]
 var tagHotel = {key: ['amenity'], value: ['hotel']};
 
-function countNumberOfNodes(emitter, cb) {
-    var nodes = 0;
-    var ways = 0;
-    var relations = 0;
-    emitter.on('node', function() { nodes++; });
-    emitter.on('way', function() { ways++; });
-    emitter.on('relation', function() { relations++; });
-    emitter.on('end', function() { cb(nodes, ways, relations); });
-}
-
-
-function testForCount(request, test, nodes, ways, relations) {
-    test.db.executeRequest(request, function(error, emitter) {
-        countNumberOfNodes(emitter, function(n, w, r) {
-            test.equal(nodes, n, 'nodes: expected: ' + nodes + ' was: ' + n);
-            test.equal(ways, w, 'ways: expected: ' + ways + ' was: ' + w);
-            test.equal(relations, r, 'relations: expected: ' + relations + ' was: ' + r);
-            test.finish();
-        });
-    });
-}
-
-function testForError(request, test) {
-    test.db.executeRequest(request, function(error, emitter) {
-        test.ok(error == null, "there is an error in the callback " + JSON.stringify(error));
-        test.ok(emitter !== null, "emitter in the callback is null");
-        test.finish();
-    });
-}
-
-var nodesErrorSuite = {
-    'nodes only': function(test) {
-        var request = { object: 'node' };
-        testForError(request, test);
-    },
-    'node and bbox': function(test) {
-        var request = { object: 'node', bbox: allBbox };
-        testForError(request, test);
-    },
-    'nodes and tag': function(test) {
-        var request = { object: 'node', tag: tagHospital };
-        testForError(request, test);
-    },
-    'node tag and bbox': function(test) {
-        var request  = { object: 'node', tag: tagHospital, bbox: allBbox };
-        testForError(request, test);
-    },
-};
+var tagStrandweg = {key: ['value'], value: ['Strandweg']};
 
 var nodesCountSuite = {
     'nodes: all nodes (7 in db)': function(test) {
@@ -105,6 +54,14 @@ var nodesCountSuite = {
     }
 };
 
+var nodeContainsSuite = {
+    'nodes: contains all 7 nodes': function(test) {
+        // var request = { object: 'node' };
+        console.log('petra: %j', petra.nodes);
+        test.finish();
+    }
+};
+
 var wayCountSuite = {
     'ways: all ways': function(test) {
         var request = { object: 'way' };
@@ -117,8 +74,34 @@ var wayCountSuite = {
     'ways: empty bbox': function(test) {
         var request = {object: 'way', bbox: emptyBbox };
         testForCount(request, test, 0, 0, 0);
+    },
+    'ways: tag': function(test) {
+        // should be Norden - Usedom with nodes 2 and 3
+        var request = {object: 'way', tag: tagStrandweg };
+        testForCount(request, test, 2, 1, 0);
+    },
+    'ways: tag and empty bbox': function(test) {
+        var request = {object: 'way', tag: tagStrandweg, bbox: emptyBbox};
+        testForCount(request, test, 0,0,0);
+    },
+    'ways: tag amd full bbox': function(test) {
+        var request = {object: 'way', tag: tagStrandweg, bbox: allBbox};
+        testForCount(request, test, 2,1,0);
     }
-}
+    // TODO need another tag for another way
+    // TODO test 2 ways with same tag, split by bbox
+    // TODO test 2 ways with same bbox, split by tag
+};
+
+var relationCountSuite = {
+    'relations: count all relations': function(test) {
+        var request = {object: 'relation'};
+        testForCount(request, test, 7,3,2);
+    }
+    // TODO test for bbox
+    // TODO test for tag
+    // TODO test for bbox and tag
+};
 
 var relationErrorSuite = {
     'relations error: all': function(test) {
@@ -138,6 +121,7 @@ var relationErrorSuite = {
         testForError(request, test);
     }
 };
+
 
 var wayErrorSuite = {
     'ways: all': function(test) {
@@ -178,35 +162,38 @@ var allErrorSuite = {
     }
 };
 
-function suiteUp(suite) {
-    return wrap({
-        suite: suite,
-        setup: setup,
-        teardown: teardown
-    });
-}
-
-var setup = function(test, finish) {
-    utility.readRelJson(configPath, function(error, config) {
-        test.db = new PostgresDb(config.database);
-        finish();
-    });
-};
-
-var teardown = function(test, finish) {
-    test.db.end();
-    finish();
+var nodesErrorSuite = {
+    'nodes only': function(test) {
+        var request = { object: 'node' };
+        testForError(request, test);
+    },
+    'node and bbox': function(test) {
+        var request = { object: 'node', bbox: allBbox };
+        testForError(request, test);
+    },
+    'nodes and tag': function(test) {
+        var request = { object: 'node', tag: tagHospital };
+        testForError(request, test);
+    },
+    'node tag and bbox': function(test) {
+        var request  = { object: 'node', tag: tagHospital, bbox: allBbox };
+        testForError(request, test);
+    },
 };
 
 // Error testing
 exports.nodesError = suiteUp(nodesErrorSuite);
 exports.relationsError = suiteUp(relationErrorSuite);
 exports.wayError = suiteUp(wayErrorSuite);
-// exports.allError = suiteUp(allErrorSuite);
+exports.allError = suiteUp(allErrorSuite);
 
 // Count testing
 exports.nodesCount = suiteUp(nodesCountSuite);
 exports.waysCount = suiteUp(wayCountSuite);
+exports.relationsCount = suiteUp(relationCountSuite);
+
+// Contains testing
+exports.nodeContains = suiteUp(nodeContainsSuite);
 
 
 if (module == require.main) {
