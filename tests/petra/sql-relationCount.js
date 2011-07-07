@@ -9,7 +9,7 @@ var suiteUp = helper.SuiteUp(configPath).suiteUp;
 var relationCountSuite = {
     'relations: count all relations': function(test) {
         var request = {object: 'relation'};
-        testForCount(request, test, 7,3,2);
+        testForCount(request, test, 7,3,5);
     }
     // TODO test for bbox
     // TODO test for tag
