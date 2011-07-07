@@ -42,7 +42,7 @@ function testForCount(request, count, test) {
     test.db.executeRequest(request, function(error, emitter) {
         countNumberOfNodes(emitter, function(res) {
             test.equal(count, res);
-            test.done();
+            test.finish();
         });
     });
 }
@@ -51,7 +51,7 @@ function testForError(request, test) {
     test.db.executeRequest(request, function(error, emitter) {
         test.ok(error == null, "there is an error in the callback " + JSON.stringify(error));
         test.ok(emitter !== null, "emitter in the callback is null");
-        test.done();
+        test.finish();
     });
 }
 
@@ -120,16 +120,16 @@ function suiteUp(suite) {
     });
 }
 
-var setup = function(test, done) {
+var setup = function(test, finish) {
     utility.readRelJson(configPath, function(error, config) {
         test.db = new PostgresDb(config.database);
-        done();
+        finish();
     });
 };
 
-var teardown = function(test, done) {
+var teardown = function(test, finish) {
     test.db.end();
-    done();
+    finish();
 };
 
 exports.nodesError = suiteUp(nodesErrorSuite);
