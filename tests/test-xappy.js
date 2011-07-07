@@ -144,19 +144,10 @@ module.exports = {
         test.finish();
     },
     'emitterHandlers' : function(test){
-        var res = {
-            writeHead : sinon.spy(),
-            write : sinon.spy(),
-            end : sinon.spy()
-        };
-        var gen = {
-            createHeader : sinon.stub().returns('header|'),
-            createFooter : sinon.stub().returns('footer'),
-            create : sinon.stub().returns('element|')
-        };
+        var res;
+        var gen;
 
         emitterCallback = Xapi.getEmitterHandler(res,gen);
-
 
         var emitter = {
             on : sinon.spy(),
@@ -172,7 +163,84 @@ module.exports = {
         test.ok(emitter.once.calledWith('end'));
 
         test.finish();
-    // },
+    },
+    'emitterHandler callbacks' : function(test) {
+
+        var res = {
+            writeHead : sinon.spy(),
+            write : sinon.spy(),
+            end : sinon.spy()
+        };
+        var gen = {
+            createHeader : sinon.stub().returns('header|'),
+            createFooter : sinon.stub().returns('footer'),
+            create : sinon.stub().returns('element|')
+        };
+
+        var callbacks = {};
+        var mock = function(anEvent, callback) {
+            callbacks[anEvent]=callback
+        };
+        var emitter = {
+            on : mock,
+            once : mock
+        };
+
+        emitterCallback = Xapi.getEmitterHandler(res,gen);
+        emitterCallback(null,emitter);
+
+        // start request
+        callbacks.start();
+        test.ok(res.writeHead.calledWith(200));
+        test.ok(gen.createHeader.called);
+        test.ok(res.write.calledWith('header|'));
+
+        // write node
+        callbacks.node('aNode');
+        test.ok(res.write.calledWith('element|'));
+        test.ok(gen.create.calledWith('node','aNode'));
+
+        // write way
+        callbacks.way('aWay');
+        test.ok(res.write.calledWith('element|'));
+        test.ok(gen.create.calledWith('way','aWay'));
+
+        // write way
+        callbacks.relation('aRel');
+        test.ok(res.write.calledWith('element|'));
+        test.ok(gen.create.calledWith('relation','aRel'));
+
+        // end request
+        callbacks.end();
+        test.ok(gen.createFooter.called);
+        test.ok(res.end.called);
+
+        test.finish();
+    },
+    'testHandlersWithError' : function(test) {
+        var res = {
+            writeHead : sinon.spy(),
+            write : sinon.spy(),
+            end : sinon.spy()
+        };
+
+        var callbacks = {};
+        var mock = function(anEvent, callback) {
+            callbacks[anEvent]=callback
+        };
+        var emitter = {
+            on : mock,
+            once : mock
+        };
+
+        emitterCallback = Xapi.getEmitterHandler(res,null);
+        emitterCallback(null,emitter);
+
+        // error issued
+        callbacks.error();
+        test.ok(res.writeHead.calledWith(500));
+
+        test.finish();
     // 'testHttpHandleCall': function(test) {
 
     //     fakeConfig = {
