@@ -144,19 +144,10 @@ module.exports = {
         test.finish();
     },
     'emitterHandlers' : function(test){
-        var res = {
-            writeHead : sinon.spy(),
-            write : sinon.spy(),
-            end : sinon.spy()
-        };
-        var gen = {
-            createHeader : sinon.stub().returns('header|'),
-            createFooter : sinon.stub().returns('footer'),
-            create : sinon.stub().returns('element|')
-        };
+        var res;
+        var gen;
 
         emitterCallback = Xapi.getEmitterHandler(res,gen);
-
 
         var emitter = {
             on : sinon.spy(),
@@ -172,30 +163,84 @@ module.exports = {
         test.ok(emitter.once.calledWith('end'));
 
         test.finish();
-    // },
-    // 'testHttpHandleCall': function(test) {
+    },
+    'emitterHandler callbacks' : function(test) {
 
-    //     fakeConfig = {
-    //         host : "localhost",
-    //         port : 90
-    //     };
+        var res = {
+            writeHead : sinon.spy(),
+            write : sinon.spy(),
+            end : sinon.spy()
+        };
+        var gen = {
+            createHeader : sinon.stub().returns('header|'),
+            createFooter : sinon.stub().returns('footer'),
+            create : sinon.stub().returns('element|')
+        };
 
-    //     // create spies
-    //     var ebSpy = sinon.spy(db);
+        var callbacks = {};
+        var mock = function(anEvent, callback) {
+            callbacks[anEvent]=callback
+        };
+        var emitter = {
+            on : mock,
+            once : mock
+        };
 
-    //     var http = require('http');
-    //     var httpStub = sinon.stub(http,'createServer');
-    //     var httpSpy = sinon.spy();
-    //     httpStub.returns({ listen : httpSpy });
+        emitterCallback = Xapi.getEmitterHandler(res,gen);
+        emitterCallback(null,emitter);
 
+        // start request
+        callbacks.start();
+        test.ok(res.writeHead.calledWith(200));
+        test.ok(gen.createHeader.called);
+        test.ok(res.write.calledWith('header|'));
 
-    //     var xapi = Xapi.Xapi(fakeConfig);
+        // write node
+        callbacks.node('aNode');
+        test.ok(res.write.calledWith('element|'));
+        test.ok(gen.create.calledWith('node','aNode'));
 
-    //     test.ok(httpStub.called);
-    //     test.ok(httpSpy.calledWithExactly(fakeConfig.port,fakeConfig.host));
+        // write way
+        callbacks.way('aWay');
+        test.ok(res.write.calledWith('element|'));
+        test.ok(gen.create.calledWith('way','aWay'));
 
-    //     http.createServer.restore();
-    //     test.finish();
+        // write way
+        callbacks.relation('aRel');
+        test.ok(res.write.calledWith('element|'));
+        test.ok(gen.create.calledWith('relation','aRel'));
+
+        // end request
+        callbacks.end();
+        test.ok(gen.createFooter.called);
+        test.ok(res.end.called);
+
+        test.finish();
+    },
+    'testHandlersWithError' : function(test) {
+        var res = {
+            writeHead : sinon.spy(),
+            write : sinon.spy(),
+            end : sinon.spy()
+        };
+
+        var callbacks = {};
+        var mock = function(anEvent, callback) {
+            callbacks[anEvent]=callback
+        };
+        var emitter = {
+            on : mock,
+            once : mock
+        };
+
+        emitterCallback = Xapi.getEmitterHandler(res,null);
+        emitterCallback(null,emitter);
+
+        // error issued
+        callbacks.error({code:500, message: 'cause'});
+        test.ok(res.writeHead.calledWith(500,'cause'));
+
+        test.finish();
     }
 };
 
