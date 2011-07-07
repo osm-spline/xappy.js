@@ -4,8 +4,8 @@ var log4js = require('log4js')();
 var log = log4js.getLogger('sql-realDatabase');
 
 var utility = require('../../lib/utility');
-var async_testing = require('async_testing');
-var wrap = async_testing.wrap;
+var nodeunit = require('async_testing');
+var wrap = nodeunit.wrap;
 
 var configPath = 'etc/my-config.json';
 
@@ -42,7 +42,7 @@ function testForCount(request, count, test) {
     test.db.executeRequest(request, function(error, emitter) {
         countNumberOfNodes(emitter, function(res) {
             test.equal(count, res);
-            test.finish();
+            test.done();
         });
     });
 }
@@ -51,7 +51,7 @@ function testForError(request, test) {
     test.db.executeRequest(request, function(error, emitter) {
         test.ok(error == null, "there is an error in the callback " + JSON.stringify(error));
         test.ok(emitter !== null, "emitter in the callback is null");
-        test.finish();
+        test.done();
     });
 }
 
@@ -121,7 +121,7 @@ function suiteUp(suite) {
 }
 
 var setup = function(test, done) {
-    utility.readRelConfig(configPath, function(error, config) {
+    utility.readRelJson(configPath, function(error, config) {
         test.db = new PostgresDb(config.database);
         done();
     });
@@ -138,5 +138,5 @@ exports.nodesCount = suiteUp(nodesCountSuite);
 exports.wayError = suiteUp(wayErrorSuite);
 
 if (module == require.main) {
-    return require('async_testing').run(__filename, process.ARGV);
+    return require('nodeunit').run(__filename, process.ARGV);
 }
