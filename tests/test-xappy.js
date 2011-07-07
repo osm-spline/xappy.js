@@ -241,29 +241,6 @@ module.exports = {
         test.ok(res.writeHead.calledWith(500,'cause'));
 
         test.finish();
-    // 'testHttpHandleCall': function(test) {
-
-    //     fakeConfig = {
-    //         host : "localhost",
-    //         port : 90
-    //     };
-
-    //     // create spies
-    //     var ebSpy = sinon.spy(db);
-
-    //     var http = require('http');
-    //     var httpStub = sinon.stub(http,'createServer');
-    //     var httpSpy = sinon.spy();
-    //     httpStub.returns({ listen : httpSpy });
-
-
-    //     var xapi = Xapi.Xapi(fakeConfig);
-
-    //     test.ok(httpStub.called);
-    //     test.ok(httpSpy.calledWithExactly(fakeConfig.port,fakeConfig.host));
-
-    //     http.createServer.restore();
-    //     test.finish();
     }
 };
 
