@@ -237,8 +237,8 @@ module.exports = {
         emitterCallback(null,emitter);
 
         // error issued
-        callbacks.error();
-        test.ok(res.writeHead.calledWith(500));
+        callbacks.error({code:500, message: 'cause'});
+        test.ok(res.writeHead.calledWith(500,'cause'));
 
         test.finish();
     // 'testHttpHandleCall': function(test) {
