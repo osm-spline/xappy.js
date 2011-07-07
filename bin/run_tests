@@ -1,1 +1,16 @@
-../lib/run_tests.js
+#!/usr/bin/env sh
+REL_PATH="`dirname \"$0\"`"
+ROOT="${REL_PATH}/.."
+
+if [ -n "${JSCOVERAGE}" -a -x "${JSCOVERAGE}" ]; then
+    COVERAGE_DIR=$(mktemp -d --tmpdir="${ROOT}" cov-XXXXXXX)
+    ${JSCOVERAGE} "${ROOT}/lib" "${COVERAGE_DIR}/lib/"
+    cp -a "${ROOT}/tests/" "${ROOT}/etc/" "${COVERAGE_DIR}/"
+    ${ROOT}/tests/helpers/node-async-test.js "$@" "${COVERAGE_DIR}/tests/"
+    RESULT=$?
+    rm -rf "${COVERAGE_DIR}"
+
+    exit $RESULT
+else
+    ${ROOT}/tests/helpers/node-async-test.js "$@" "${ROOT}/tests/"
+fi
