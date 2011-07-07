@@ -138,5 +138,6 @@ exports.nodesCount = suiteUp(nodesCountSuite);
 exports.wayError = suiteUp(wayErrorSuite);
 
 if (module == require.main) {
-    return require('nodeunit').run(__filename, process.ARGV);
+    var testing = require('coverage_testing');
+    return testing.run(__filename, process.ARGV);
 }
