@@ -1,4 +1,4 @@
-var async_testing = require('async_testing');
+var coverage_testing = require('async_testing');
 
 var testObj = {
     object : 'node',
@@ -42,4 +42,4 @@ module.exports = {
     }
 };
 
-async_testing.run(__filename, process.ARGV);
+coverage_testing.run(__filename, process.ARGV);
