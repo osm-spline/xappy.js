@@ -9,7 +9,6 @@
         "xmlbuilder" : "*",
         "underscore" : "*",
         "log4js" : ">=0.2.6",
-        "opts" : "*",
         "optimist" : ">=0.2.0"
     },
     "devDependencies" : {
