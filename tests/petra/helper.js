@@ -12,6 +12,22 @@ function containsElement(request, test, elements) {
             test.finish();
         });
     });
+};
+
+function compareKeyValue(a, b) {
+    if (a.key < b.key) {
+        return -1;
+    } else if (a.key > b.key) {
+        return 1;
+    } else { //a.key == b.key
+        if (a.value < b.value) {
+            return -1;
+        } else if (a.value > b.value) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }
 
 function containsElementsEmitter(emitter, elements, cb) {
@@ -19,15 +35,31 @@ function containsElementsEmitter(emitter, elements, cb) {
     var ways = _.clone(elements.ways) || [];
     var relations = _.clone(elements.relations) || [];
 
+    // sort tags of nodes
+    tags = _.pluck(nodes, 'tags');
+    _.each(tags, function(tag) {
+        if (tag) {
+            tag.sort(compareKeyValue);
+        }
+    });
+
+    nodes = _.map(nodes, function(node) {
+        return JSON.stringify(node);
+    });
+
     emitter.on('node', function(node) {
-        if (_.include(nodes, node)) {
-            console.log('uih');
-            nodes = _.reject(nodes, node);
+        // sort results tags
+        if (node.tags) {
+            node.tags.sort(compareKeyValue);
+        }
+        // jsonify
+        var elem = JSON.stringify(node);
+
+        if (_.include(nodes, elem)) {
+            nodes = _.without(nodes, elem);
         } else {
-            console.log('pfui');
-            var e = JSON.stringify(node);
             var l = JSON.stringify(nodes);
-            cb(false, e + ' is not in list ' + l);
+            cb(false, elem + ' is not in list ' + l);
         }
     });
 
