@@ -4,8 +4,9 @@ var node1 = {
     lon: 9.427,
     version: 1,
     uid: 291857,
+    user: 'sladda',
     changeset: 123456,
-    timestamp: '2011-05-26T16:47:48.000Z',  // ???
+    timestamp: '2011-05-26T16:47:48.000Z',
     tags: [
         { key: 'amenity', value: 'hospital' },
         { key: 'name', value: 'Wilhelminenspital' }
@@ -18,9 +19,9 @@ var node2 = {
     lon: 7.2,
     version: 1,
     uid: 291857,
+    user: 'sladda',
     changeset: 123456,
-    timestamp: '2011-05-26T16:47:48.000Z',  // ???
-    tags: []
+    timestamp: '2011-05-26T16:47:48.000Z'
 };
 
 var node3 = {
@@ -29,11 +30,12 @@ var node3 = {
     lon: 13.9108,
     version: 1,
     uid: 291857,
+    user: 'sladda',
     changeset: 123456,
-    timestamp: '2011-05-26T16:47:48.000Z',  // ???
+    timestamp: '2011-05-26T16:47:48.000Z',
     tags: [
         { key: 'amenity', value: 'hotel' },
-        { key: 'name', value: 'HomeSeetHome' }
+        { key: 'name', value: 'HomeSweetHome' }
     ]
 };
 
@@ -43,8 +45,9 @@ var node4 = {
     lon: 7.8526,
     version: 1,
     uid: 291857,
+    user: 'sladda',
     changeset: 123456,
-    timestamp: null,
+    timestamp: '2011-05-26T16:47:48.000Z',
     tags: [
         { key: 'amenity', value: 'hotel' },
         { key: 'name', value: 'WalthersTruckStop' }
@@ -57,8 +60,9 @@ var node5 = {
     lon: 13.4,
     version: 1,
     uid: 291857,
+    user: 'sladda',
     changeset: 123456,
-    timestamp: '2011-05-26T16:47:48.000Z',  // ???
+    timestamp: '2011-05-26T16:47:48.000Z',
     tags: [
         { key: 'amenity', value: 'bar' },
         { key: 'name', value: 'Lucies' }
@@ -71,8 +75,9 @@ var node6 = {
     lon: 11.52,
     version: 1,
     uid: 291857,
+    user: 'sladda',
     changeset: 123456,
-    timestamp: '2011-05-26T16:47:48.000Z',  // ???
+    timestamp: '2011-05-26T16:47:48.000Z',
     tags: [
         { key: 'building', value: 'emblem' },
         { key: 'name', value: 'BrandenburgerTor' }
@@ -85,8 +90,9 @@ var node7 = {
     lon: 11.7,
     version: 1,
     uid: 291857,
+    user: 'sladda',
     changeset: 123456,
-    timestamp: '2011-05-26T16:47:48.000Z',  // ???
+    timestamp: '2011-05-26T16:47:48.000Z',
     tags: [
         { key: 'amenity', value: 'hospital' },
         { key: 'name', value: 'HeisseSchwestern' }
@@ -101,9 +107,8 @@ var way1 = {
     version: 3,
     uid: 291857,
     changeset: 2211,
-    timestamp: '2007-07-25T01:55:35.010Z',  // ???
-    nodes: [ 1,6,7 ],
-    tags: {}
+    timestamp: '2007-07-25T01:55:35.010Z',
+    nodes: [ 1,6,7 ]
 };
 
 //Norden - Waldkirchen
@@ -112,7 +117,7 @@ var way2 = {
     version: 3,
     uid: 291857,
     changeset: 2211,
-    timestamp: '2007-07-25T01:55:35.010Z',  // ???
+    timestamp: '2007-07-25T01:55:35.010Z',
     nodes: [ 2,5 ],
     tags: {}
 };
@@ -123,7 +128,7 @@ var way3 = {
     version: 3,
     uid: 291857,
     changeset: 2211,
-    timestamp: '2011-05-26T16:47:48.000Z',  // ???
+    timestamp: '2011-05-26T16:47:48.000Z',
     nodes: [ 2,3 ],
     tags: [
         { key: 'value', value: 'Strandweg' }
@@ -137,7 +142,7 @@ var relation1 = {
     version: 17,
     uid: 291857,
     changeset: 5334067,
-    timestamp: '2010-07-27T22:34:46.000Z',  // ???
+    timestamp: '2010-07-27T22:34:46.000Z',
     tags: {
         key: ['note', 'type'],
         value: ['OstDeutschland', 'multipolygon']
@@ -155,7 +160,7 @@ var relation2 = {
     version: 17,
     uid: 291857,
     changeset: 5334067,
-    timestamp: '2010-07-27T22:34:46.000Z',  // ???
+    timestamp: '2010-07-27T22:34:46.000Z',
     tags: [
         { key: 'note', value: 'WestDeutschland' },
         { key: 'type', value: 'multipolygon' }
