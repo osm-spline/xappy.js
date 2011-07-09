@@ -99,7 +99,6 @@ var node7 = {
     ]
 };
 
-var nodes = [node1, node2, node3, node4, node5, node6, node7];
 
 //Berlin - Kassel - Munich
 var way1 = {
@@ -135,7 +134,6 @@ var way3 = {
     ]
 };
 
-var ways = [way1, way2, way3];
 
 var relation1 = {
     id: 1111,
@@ -177,6 +175,53 @@ var relation2 = {
     ]
 }
 
+var relation3 = {
+    id: 1113,
+    version: 17,
+    uid: 291857,
+    changeset: 5334067,
+    timestamp: '2010-07-27T22:34:46.000Z',
+    tags: [{key: 'note', value: 'Deutschland'}],
+    members: [
+        {type: 'relation', ref: 1111, role: ''},
+        {type: 'relation', ref: 1112, role: ''}
+    ]
+};
+
+var relation4 = {
+    id: 1114,
+    version: 17,
+    uid: 291857,
+    changeset: 5334067,
+    timestamp: '2010-07-27T22:34:46.000Z',
+    tags: [{key: 'note', value: 'all'}],
+    members: [
+        {type: 'node', ref: 1, role: ''},
+        {type: 'node', ref: 2, role: ''},
+        {type: 'node', ref: 3, role: ''},
+        {type: 'node', ref: 4, role: ''},
+        {type: 'node', ref: 5, role: ''},
+        {type: 'node', ref: 6, role: ''},
+        {type: 'node', ref: 7, role: ''},
+        {type: 'way', ref: 123},
+        {type: 'way', ref: 123},
+        {type: 'way', ref: 456},
+        {type: 'way', ref: 789},
+        {type: 'way', ref: 789},
+        {type: 'relation', ref: 1111},
+        {type: 'relation', ref: 1112}
+    ]
+};
+
+var relation5 = {
+    id: 1115,
+    version: 17,
+    uid: 291857,
+    changeset: 5334067,
+    timestamp: '2010-07-27T22:34:46.000Z',
+    tags: [{key: 'note', value: 'recursive'}],
+    members: [{type: 'relation', ref: 1115, role: ''}]
+};
 var bbox = {
     all: { left: 7, bottom: 47, right: 14, top: 54}, // all nodes
     bottom: { left: 7, bottom: 47, right: 14, top: 51}, // nodes 4,5,7
@@ -192,7 +237,9 @@ var tags = {
     strandweg: {key: 'value', value: 'Strandweg'}
 }
 
-var relations = [relation1, relation2];
+var nodes = [node1, node2, node3, node4, node5, node6, node7];
+var relations = [relation1, relation2, relation3, relation4, relation5];
+var ways = [way1, way2, way3];
 
 exports.bbox = bbox;
 exports.tags = tags;
