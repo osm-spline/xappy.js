@@ -232,9 +232,9 @@ var bbox = {
 };
 
 var tags = {
-    hospital: {key: 'amenity', value: 'hospital'}, // nodes 1,7
-    emblem: {key: 'building', value: 'emblem'}, // node 6
-    strandweg: {key: 'value', value: 'Strandweg'}
+    hospital: {key: ['amenity'], value: ['hospital']}, // nodes 1,7
+    emblem: {key: ['building'], value: ['emblem']}, // node 6
+    strandweg: {key: ['value'], value: ['Strandweg']}
 }
 
 var nodes = [node1, node2, node3, node4, node5, node6, node7];
