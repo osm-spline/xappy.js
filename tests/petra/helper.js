@@ -98,6 +98,7 @@ function countNumberOfNodes(emitter, cb) {
     emitter.on('node', function() { nodes++; });
     emitter.on('way', function() { ways++; });
     emitter.on('relation', function() { relations++; });
+    emitter.on('error', function(e) { throw e; });
     emitter.on('end', function() { cb(nodes, ways, relations); });
 }
 
