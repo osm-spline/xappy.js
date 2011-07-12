@@ -216,6 +216,23 @@ module.exports = {
         test.ok(res.writeHead.calledWith(500,'cause'));
 
         test.finish();
+    },
+    'emitterHandler with error' : function(test) {
+         var res = {
+            writeHead : sinon.spy(),
+            write : sinon.spy(),
+            end : sinon.spy()
+        };
+
+        var error = {};
+
+        emitterCallback = Xapi.getEmitterHandler(res,null);
+        emitterCallback(error,null);
+
+        // error issued
+        test.ok(res.writeHead.calledWith(500));
+
+        test.finish();
     }
 };
 
