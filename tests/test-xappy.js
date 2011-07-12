@@ -1,6 +1,5 @@
 var sinon = require('sinon');
 var Xapi = require('../lib/xappy');
-var getGeneratorSelector = Xapi.getGeneratorSelector;
 var getHttpHandler = Xapi.getHttpHandler;
 var _ = require('underscore')._;
 
@@ -8,8 +7,6 @@ if (module == require.main) {
   require('coverage_testing').run(__filename, process.ARGV);
 }
 
-var xml = 'application/xml';
-var json = 'application/json';
 
 module.exports = {
     'writeError' : function(test,error){
@@ -36,28 +33,6 @@ module.exports = {
         };
         Xapi.writeError(res, error);
         test.ok(!res.write.calledWith(error.message) && !res.end.calledWith(error.message));
-        test.finish();
-    },
-
-    'getGenerator with invalid type': function(test) {
-        test.uncaughtExceptionHandler = function(err) {
-            test.equal('Invalid Content-Type',err.message);
-            test.equal(415,err.code);
-            test.finish();
-        }
-        var config = {};
-        var gen = getGeneratorSelector(config)('text/text', 'uri');
-    },
-    'getGenerator, get Json': function(test) {
-        var config = {};
-        var gen = getGeneratorSelector(config)(json, 'uri');
-        test.equal(gen.contentType, json);
-        test.finish();
-    },
-    'getGenerator, get Xml': function(test) {
-        var config = {};
-        var gen = getGeneratorSelector(config)(xml, 'uri');
-        test.equal(gen.contentType, xml);
         test.finish();
     },
     'httpHandler check uri': function(test) {
