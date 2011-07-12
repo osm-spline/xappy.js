@@ -5,7 +5,7 @@
     "autor" : "osm@spline <osm@lists.spline.de> (http://osm.spline.de)",
     "files" : ["."],
     "dependencies" : {
-        "pg" : "*",
+        "xappy-pg" : "*",
         "xmlbuilder" : "*",
         "underscore" : "*",
         "log4js" : ">=0.2.6",
