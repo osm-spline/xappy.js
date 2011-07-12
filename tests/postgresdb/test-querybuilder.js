@@ -32,7 +32,7 @@ module.exports = {
     'create query for *' : function(test) {
         var starQueryBuilder = require('../../lib/postgresdb/starquerybuilder');
         var spy = sinon.spy(starQueryBuilder,'createQueryPlan');
-        queryBuilder.createQueryPlan(sampleObjects['*']);
+        queryBuilder.createQueryPlan(sampleObjects.star);
         test.ok(spy.called);
         test.finish();
     }

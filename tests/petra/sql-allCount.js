@@ -8,29 +8,29 @@ var suiteUp = helper.SuiteUp(configPath).suiteUp;
 
 var allBbox = petra.bbox.all;
 var emptyBbox = petra.bbox.empty;
-var bottomBbox = petra.bbox.bottom;
+var top = petra.bbox.top;
 var tagHospital = petra.tags.hospital;
 
 var nodesCountSuite = {
-    'all': function(test) {
-        var request = { object: 'node' };
-        testForCount(request, test, 7, 0, 0);
+    'all elements': function(test) {
+        var request = { object: '*' };
+        testForCount(request, test, 7, 3, 2);
     },
-    'all with bbox': function(test) {
-        var request = { object: 'node', bbox: allBbox };
-        testForCount(request, test, 7, 0, 0);
+    'all elements in big bbox': function(test) {
+        var request = { object: '*', bbox: allBbox };
+        testForCount(request, test, 7, 3, 2);
     },
     'empty bbox': function(test) {
-        var request = { object: 'node', bbox: emptyBbox };
+        var request = { object: '*', bbox: emptyBbox };
         testForCount(request, test, 0, 0, 0);
     },
-    // 'tag': function(test) {
-    //     var request = { object: 'node', tag: tagHospital };
-    //     testForCount(request, test, 2, 0, 0);
-    // },
-    'tag and bbox': function(test) {
+    'special tag': function(test) {
+        var request = { object: '*', tag: tagHospital };
+        testForCount(request, test, 2, 0, 0);
+    },
+    'nodes: all nodes with a tag and a bbox': function(test) {
         // should return id 7
-        var request = {object: 'node', tag: tagHospital, bbox: bottomBbox };
+        var request = {object: '*', tag: tagHospital, bbox: top };
         testForCount(request, test, 1, 0, 0);
     }
 };

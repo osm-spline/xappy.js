@@ -127,7 +127,7 @@ module.exports = {
             value : ['OstDeutschland']
         }
     },
-    '*' : {
+    'star' : {
         object : '*'
     }
 };

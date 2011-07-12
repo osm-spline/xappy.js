@@ -1,5 +1,5 @@
 var configPath = 'etc/my-config.json';
-var petra = require('./sql-petraData');
+var petra = require('./petraData');
 var helper = require('./helper');
 var testing = require('coverage_testing');
 
@@ -41,7 +41,7 @@ var wayCountSuite = {
     // TODO test 2 ways with same bbox, split by tag
 };
 
-exports.wayCountSuite = suiteUp(wayCountSuite);
+exports.wayCount = suiteUp(wayCountSuite);
 
 if (module == require.main) {
     return testing.run(__filename, process.ARGV);
