@@ -30,7 +30,7 @@ module.exports = {
         var expected = {
             node : {
                 name: '',
-                text: 'SELECT ' + NODE_COLUMNS + ' FROM nodes, users WHERE (nodes.tags @> hstore($1,$2));',
+                text: 'SELECT ' + NODE_COLUMNS + ' FROM nodes, users WHERE nodes.user_id = users.id AND (nodes.tags @> hstore($1,$2));',
                 values: ['amenity','hotel'],
                 binary: true
             }
@@ -45,7 +45,8 @@ module.exports = {
             node : {
                 name: '',
                 text: 'SELECT ' + NODE_COLUMNS + ' FROM nodes, users' +
-                        ' WHERE (nodes.tags @> hstore($1,$3) OR nodes.tags @> hstore($1,$4) OR nodes.tags @> hstore($2,$3) OR nodes.tags @> hstore($2,$4));',
+                        ' WHERE nodes.user_id = users.id' +
+                        ' AND (nodes.tags @> hstore($1,$3) OR nodes.tags @> hstore($1,$4) OR nodes.tags @> hstore($2,$3) OR nodes.tags @> hstore($2,$4));',
                 values: ['name','name:de','Home','HomeSweetHome'],
                 binary: true
             }
@@ -60,7 +61,8 @@ module.exports = {
             node : {
                 name: '',
                 text: 'SELECT ' + NODE_COLUMNS + ' FROM nodes, users' +
-                        ' WHERE (ST_intersects(st_setsrid(nodes.geom,4326),st_setsrid(st_makebox2d(st_setsrid(st_makepoint($1, $2),4326),st_setsrid(st_makepoint($3, $4),4326)),4326)));',
+                        ' WHERE nodes.user_id = users.id' +
+                        ' AND (ST_intersects(st_setsrid(nodes.geom,4326),st_setsrid(st_makebox2d(st_setsrid(st_makepoint($1, $2),4326),st_setsrid(st_makepoint($3, $4),4326)),4326)));',
                 values: [11,53,12,54],
                 binary: true
             }
@@ -75,7 +77,8 @@ module.exports = {
             node : {
                 name: '',
                 text: 'SELECT ' + NODE_COLUMNS + ' FROM nodes, users' +
-                        ' WHERE (ST_intersects(st_setsrid(nodes.geom,4326),st_setsrid(st_makebox2d(st_setsrid(st_makepoint($1, $2),4326),st_setsrid(st_makepoint($3, $4),4326)),4326)))' +
+                        ' WHERE nodes.user_id = users.id' +
+                        ' AND (ST_intersects(st_setsrid(nodes.geom,4326),st_setsrid(st_makebox2d(st_setsrid(st_makepoint($1, $2),4326),st_setsrid(st_makepoint($3, $4),4326)),4326)))' +
                         ' AND (nodes.tags @> hstore($5,$7) OR nodes.tags @> hstore($5,$8) OR nodes.tags @> hstore($6,$7)' +
                         ' OR nodes.tags @> hstore($6,$8));',
                 values: [11,53,12,54,'name','name:de','BrandenburgerGate','BrandenburgerTor'],
