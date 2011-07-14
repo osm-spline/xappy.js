@@ -8,7 +8,7 @@ exports.wayContains = require('./sql-wayContains').wayContains;
 
 exports.relationError = require('./sql-relationError').relationError;
 exports.relationCount = require('./sql-relationCount').relationCount;
-// TODO: relationContains
+exports.relationContains = require('./sql-relationContains').relationContains;
 
 exports.allError = require('./sql-allError').allError;
 exports.allCount = require('./sql-allCount').allCount;
