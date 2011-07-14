@@ -2,6 +2,105 @@
 % Dozentin: Katinka Wolter
 % Softwareprojekt Telematik
 
+Übersicht
+=========
+
+<br/>
+
+1. Überblick <span style="font-size:14px; color:#888;">  (Christoph)</span>
+2. Gründe für eine Neuimplementierung<span style="font-size:14px; color:#888;">  (Irena)</span>
+3. Implementierung<span style="font-size:14px; color:#888;">  (Mark)</span>
+4. Retrospektive <span style="font-size:14px; color:#888;">  (Robin)</span>
+
+Team
+====
+
+<center>
+<br/>
+<br/>
+<table>
+<tbody>
+<tr>
+<td>
+           Philipp Borgers
+</td>
+<td style="width: 200px;">
+&nbsp;
+</td>
+<td>
+           Yves Müller
+</td>
+</tr>
+<tr>
+<td>
+           Lyudmila Vaseva
+</td>
+<td style="width: 200px;">
+&nbsp;
+</td>
+<td>
+           Irena Kpogbezan
+</td>
+</tr>
+<tr>
+<td>
+           David Hirsch
+</td>
+<td style="width: 200px;">
+&nbsp;
+</td>
+<td>
+           Dario Brand
+</td>
+</tr>
+<tr>
+<td>
+           Mark Engel
+</td>
+<td style="width: 200px;">
+&nbsp;
+</td>
+<td>
+           Alex Sulfrian
+</td>
+</tr>
+<tr>
+<td>
+           Robin Nehls
+</td>
+<td style="width: 200px;">
+&nbsp;
+</td>
+<td>
+           Mohammed Keita
+</td>
+</tr>
+<tr>
+<td>
+           Andreas Nüßlein
+</td>
+<td style="width: 200px;">
+&nbsp;
+</td>
+<td>
+           Mareike Ziese
+</td>
+</tr>
+<tr>
+<td>
+           Christoph Beuck
+</td>
+<td style="width: 200px;">
+&nbsp;
+</td>
+<td>
+           Max Krüger
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+
 OpenStreetMap
 =============
 <!--
@@ -10,6 +109,13 @@ Unser Projekt behandelt die Xapi, ein OpenStreetMap Projekt
 -->
 
 ![](osm-logo.png)
+
+<span style="position:absolute; top:150px;left: 400px;">
+Ziel: freie Geodatenbank und <br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lizenzkostenfreie Nutzung für Alle<br/><br/>
+
+
+</span>
 
 <!--
 Openstreetmap ist ein Projekt, das freie Geo Daten sammelt und diese
@@ -34,8 +140,10 @@ wichtige module vorstellen
 Was ist die Xapi
 ================
 
-- Http-Schnittstelle zu den OSM Daten
-- erweiterte Suchfunktionen
+<center>
+![](was_ist_xapi.jpg)
+</center>
+
 
 <!--
 ![bild mit querystring -> xapi -> 3 Datentypen]()
@@ -64,25 +172,89 @@ Diese kann wieder Unter Relationen beinhalten (Beispiel)
 
  gib mir alle Knoten aus
 
-    /*
-    /nodes
-    /way
-    /relation
+   /*
+   /nodes
+   /way
+   /relation
 
 
 gib mir alle alle Bars aus
 
-    /nodes[amenity=bar]
+   /nodes[amenity=bar]
 
  gib mir alle Bars und Clubs aus
 
-    /nodes[amenity=bar|club]
+   /nodes[amenity=bar|club]
 
 gib mir alle Bars und Clubs in Berlin aus
 
-    /nodes[amenity=bar|club][bbox=x,x,x,x]
+   /nodes[amenity=bar|club][bbox=x,x,x,x]
 
 -->
+
+Beispiele für XAPI-Anfragen
+===========================
+<center>
+<br/>
+<br/>
+<table >
+<tbody>
+<tr>
+<td style="font-size=12px;width:300px;">
+           Anfrage für alle Knoten:
+</td>
+<td style="font-size=12px;" style="width: 200px;">
+&nbsp;
+</td>
+<td style="font-size=12px;">
+           /node
+</td>
+</tr>
+<tr>
+<td><br/></td>
+</tr>
+<tr>
+<td style="font-size=12px;">
+           alle Bars:
+</td>
+<td style="font-size=12px;" style="width: 200px;">
+&nbsp;
+</td>
+<td style="font-size=12px;">
+           /node[amenity=bar]
+</td>
+</tr>
+<tr>
+<td><br/></td>
+</tr>
+<tr>
+<td style="font-size=12px;">
+           alle Bars und Clubs:
+</td>
+<td style="font-size=12px;" style="width: 200px;">
+&nbsp;
+</td>
+<td style="font-size=12px;">
+           /node[amenity=bar|club]
+</td>
+</tr>
+<tr>
+<td><br/></td>
+</tr>
+<tr>
+<td style="font-size=12px;">
+           alle Bars und Clubs in Berlin:
+</td>
+<td style="font-size=12px;" style="width: 200px;">
+&nbsp;
+</td>
+<td style="font-size=12px;">
+           /node[amenity=bar|club][bbox=13.088,52.341,13.760,52.669]
+</td>
+</tr>
+</tbody>
+</table>
+</center>
 
 Für was wird die xapi benutzt
 =============================

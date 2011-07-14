@@ -35,6 +35,122 @@
 </div>
 <div class="slide">
 
+<h1>Übersicht</h1>
+<br/>
+<ol class="incremental" style="list-style-type: decimal">
+<li>Überblick <span style="font-size:14px; color:#888;"> (Christoph)</span></li>
+<li>Gründe für eine Neuimplementierung<span style="font-size:14px; color:#888;"> (Irena)</span></li>
+<li>Implementierung<span style="font-size:14px; color:#888;"> (Mark)</span></li>
+<li>Retrospektive <span style="font-size:14px; color:#888;"> (Robin)</span></li>
+</ol>
+</div>
+
+<div class="slide">
+
+<h1>Team</h1>
+<center>
+<br/> <br/>
+<table>
+<tbody>
+<tr>
+<td>
+           
+Philipp Borgers
+</td>
+<td style="width: 200px;">
+ 
+</td>
+<td>
+           
+Yves Müller
+</td>
+</tr>
+<tr>
+<td>
+           
+Lyudmila Vaseva
+</td>
+<td style="width: 200px;">
+ 
+</td>
+<td>
+           
+Irena Kpogbezan
+</td>
+</tr>
+<tr>
+<td>
+           
+David Hirsch
+</td>
+<td style="width: 200px;">
+ 
+</td>
+<td>
+           
+Dario Brand
+</td>
+</tr>
+<tr>
+<td>
+           
+Mark Engel
+</td>
+<td style="width: 200px;">
+ 
+</td>
+<td>
+           
+Alex Sulfrian
+</td>
+</tr>
+<tr>
+<td>
+           
+Robin Nehls
+</td>
+<td style="width: 200px;">
+ 
+</td>
+<td>
+           
+Mohammed Keita
+</td>
+</tr>
+<tr>
+<td>
+           
+Andreas Nüßlein
+</td>
+<td style="width: 200px;">
+ 
+</td>
+<td>
+           
+Mareike Ziese
+</td>
+</tr>
+<tr>
+<td>
+           
+Christoph Beuck
+</td>
+<td style="width: 200px;">
+ 
+</td>
+<td>
+           
+Max Krüger
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+
+</div>
+
+<div class="slide">
+
 <h1>OpenStreetMap</h1>
 <!--
 Begrüßung und Einordnung in das Softwareprojekt Telematik
@@ -44,6 +160,8 @@ Unser Projekt behandelt die Xapi, ein OpenStreetMap Projekt
 <div class="figure">
 <img src="osm-logo.png" /><p class="caption"></p>
 </div>
+<p><span style="position:absolute; top:150px;left: 400px;"> Ziel: freie Geodatenbank und <br/><br/>         lizenzkostenfreie Nutzung für Alle<br/><br/></p>
+</span>
 <!--
 Openstreetmap ist ein Projekt, das freie Geo Daten sammelt und diese
 auf verschiedenste Art aufbereitet
@@ -72,10 +190,11 @@ wichtige module vorstellen
 <div class="slide">
 
 <h1>Was ist die Xapi</h1>
-<ul class="incremental">
-<li>Http-Schnittstelle zu den OSM Daten</li>
-<li>erweiterte Suchfunktionen</li>
-</ul>
+<center>
+<img src="was_ist_xapi.jpg" />
+</center>
+
+
 <!--
 ![bild mit querystring -> xapi -> 3 Datentypen]()
 -->
@@ -103,25 +222,107 @@ Diese kann wieder Unter Relationen beinhalten (Beispiel)
 
  gib mir alle Knoten aus
 
-    /*
-    /nodes
-    /way
-    /relation
+   /*
+   /nodes
+   /way
+   /relation
 
 
 gib mir alle alle Bars aus
 
-    /nodes[amenity=bar]
+   /nodes[amenity=bar]
 
  gib mir alle Bars und Clubs aus
 
-    /nodes[amenity=bar|club]
+   /nodes[amenity=bar|club]
 
 gib mir alle Bars und Clubs in Berlin aus
 
-    /nodes[amenity=bar|club][bbox=x,x,x,x]
+   /nodes[amenity=bar|club][bbox=x,x,x,x]
 
 -->
+
+</div>
+
+<div class="slide">
+
+<h1>Beispiele für XAPI-Anfragen</h1>
+<center>
+<br/> <br/>
+<table >
+<tbody>
+<tr>
+<td style="font-size=12px;width:300px;">
+           
+Anfrage für alle Knoten:
+</td>
+<td style="font-size=12px;" style="width: 200px;">
+ 
+</td>
+<td style="font-size=12px;">
+           
+/node
+</td>
+</tr>
+<tr>
+<td>
+<br/>
+</td>
+</tr>
+<tr>
+<td style="font-size=12px;">
+           
+alle Bars:
+</td>
+<td style="font-size=12px;" style="width: 200px;">
+ 
+</td>
+<td style="font-size=12px;">
+           
+/node[amenity=bar]
+</td>
+</tr>
+<tr>
+<td>
+<br/>
+</td>
+</tr>
+<tr>
+<td style="font-size=12px;">
+           
+alle Bars und Clubs:
+</td>
+<td style="font-size=12px;" style="width: 200px;">
+ 
+</td>
+<td style="font-size=12px;">
+           
+/node[amenity=bar|club]
+</td>
+</tr>
+<tr>
+<td>
+<br/>
+</td>
+</tr>
+<tr>
+<td style="font-size=12px;">
+           
+alle Bars und Clubs in Berlin:
+</td>
+<td style="font-size=12px;" style="width: 200px;">
+ 
+</td>
+<td style="font-size=12px;">
+           
+/node[amenity=bar|club][bbox=13.088,52.341,13.760,52.669]
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+
+
 
 </div>
 
