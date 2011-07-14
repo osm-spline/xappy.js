@@ -1,9 +1,0 @@
-[submodule "deps/nvm"]
-	path = deps/nvm
-	url = https://github.com/creationix/nvm.git
-[submodule "deps/pg"]
-	path = deps/pg
-	url = https://github.com/AlexanderS/node-postgres.git
-[submodule "deps/async_testing"]
-	path = deps/async_testing
-	url = https://github.com/bentomas/node-async-testing.git
