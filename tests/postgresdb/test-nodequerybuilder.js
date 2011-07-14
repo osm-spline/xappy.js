@@ -6,8 +6,7 @@ if (module == require.main) {
 var nodeQueryBuilder = require('../../lib/postgresdb/nodequerybuilder');
 var sampleObjects = require('../helpers/helper-samplexapirequestobjects');
 
-var NODE_COLUMNS = 'nodes.id, nodes.version, nodes.user_id, users.name AS user_name, nodes.tstamp, nodes.changeset_id,' +
-                   ' hstore_to_array(nodes.tags) AS tags, Y(nodes.geom) AS lat, X(nodes.geom) AS lon';
+var NODE_COLUMNS = require('./helper-common').NODE_COLUMNS;
 
 module.exports = {
     'node': function(test) {
