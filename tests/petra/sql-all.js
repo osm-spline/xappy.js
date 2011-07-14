@@ -4,6 +4,7 @@ exports.nodeContains = require('./sql-nodeContains').nodeContains;
 
 exports.wayError = require('./sql-wayError').wayError;
 exports.wayCount = require('./sql-wayCount').wayCount;
+exports.wayContains = require('./sql-wayContains').wayContains;
 
 exports.relationError = require('./sql-relationError').relationError;
 exports.relationCount = require('./sql-relationCount').relationCount;
