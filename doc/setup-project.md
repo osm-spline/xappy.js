@@ -15,7 +15,7 @@ After executing the script jump to `Configure`
 Getting the Code
 ================
 
-    git clone git://github.com/slomo/osm-spline-xapi.git
+    git://github.com/osm-spline/xappy.js.git
 
 Initializing the Project
 ========================
