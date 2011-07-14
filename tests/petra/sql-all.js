@@ -3,14 +3,14 @@ exports.nodeCount = require('./sql-nodeCount').nodeCount;
 exports.nodeContains = require('./sql-nodeContains').nodeContains;
 
 exports.wayError = require('./sql-wayError').wayError;
-// exports.wayCount = require('./sql-wayCount').wayCount;
+exports.wayCount = require('./sql-wayCount').wayCount;
 
 exports.relationError = require('./sql-relationError').relationError;
 exports.relationCount = require('./sql-relationCount').relationCount;
 // TODO: relationContains
 
 exports.allError = require('./sql-allError').allError;
-exports.allError = require('./sql-allCount').allCount;
+exports.allCount = require('./sql-allCount').allCount;
 // TODO: allContains
 
 
