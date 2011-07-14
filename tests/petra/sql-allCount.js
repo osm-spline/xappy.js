@@ -15,7 +15,7 @@ var nodesCountSuite = {
     'all elements': function(test) {
         var request = { object: '*' };
         testForCount(request, test, 7, 3, 5);
-    },
+    }/*,
     'all elements in big bbox': function(test) {
         var request = { object: '*', bbox: allBbox };
         testForCount(request, test, 7, 3, 2);
@@ -32,7 +32,7 @@ var nodesCountSuite = {
         // should return id 7
         var request = {object: '*', tag: tagHospital, bbox: top };
         testForCount(request, test, 1, 0, 0);
-    }
+    } */
 };
 
 exports.nodeCount = suiteUp(nodesCountSuite);

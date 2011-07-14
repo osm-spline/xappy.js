@@ -12,7 +12,8 @@ module.exports = {
 
         var relationColumns = 'relations.id, relations.version, relations.user_id, ' +
             'relations.tstamp, relations.changeset_id, hstore_to_array(relations.tags) AS tags, ' +
-            'users.name AS user_name';
+            'users.name AS user_name, relation_members.member_id, relation_members.member_type, ' +
+            'relation_members.member_role, relation_members.sequence_id';
             
         var node_query1 = 'SELECT relation_members.member_id AS id' +
             ' FROM relations, relation_members' +
@@ -62,9 +63,10 @@ module.exports = {
             relation: {
                       name: '',
                       text: 'SELECT ' + relationColumns + ' FROM' +
-                            ' relations, users, (' + relation_query1 + ' UNION ' + relation_query2 + ') AS relationIds' +
+                            ' relations, users, relation_members, (' + relation_query1 + ' UNION ' + relation_query2 + ') AS relationIds' +
                             ' WHERE relations.id = relationIds.id' +
-                            ' AND users.id = relations.user_id;',
+                            ' AND users.id = relations.user_id' +
+                            ' AND relations.id = relation_members.relation_id;',
                       values: [],
                       binary: true
                       }
@@ -84,7 +86,8 @@ module.exports = {
 
         var relationColumns = 'relations.id, relations.version, relations.user_id, ' +
             'relations.tstamp, relations.changeset_id, hstore_to_array(relations.tags) AS tags, ' +
-            'users.name AS user_name';
+            'users.name AS user_name, relation_members.member_id, relation_members.member_type, ' +
+            'relation_members.member_role, relation_members.sequence_id';
             
         var node_query1 = 'SELECT relation_members.member_id AS id' +
             ' FROM relations, relation_members' +
@@ -134,9 +137,10 @@ module.exports = {
             relation: {
                       name: '',
                       text: 'SELECT ' + relationColumns + ' FROM' +
-                              ' relations, users, (' + relation_query1 + ' UNION ' + relation_query2 + ') AS relationIds' +
+                              ' relations, users, relation_members, (' + relation_query1 + ' UNION ' + relation_query2 + ') AS relationIds' +
                               ' WHERE relations.id = relationIds.id' +
-                              ' AND users.id = relations.user_id;',
+                              ' AND users.id = relations.user_id' +
+                              ' AND relations.id = relation_members.relation_id;',
                       values: ['note','OstDeutschland','note','OstDeutschland'],
                       binary: true
                       }
