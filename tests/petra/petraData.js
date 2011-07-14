@@ -228,7 +228,9 @@ var bbox = {
     top: { left: 7, bottom: 51, right: 14, top: 54}, // 1,2,3,6
     left: { left: 7, bottom: 47, right: 9.49, top: 54}, // 1,2,4
     right: { left: 9.5, bottom: 47, right: 14, top: 54}, // 3,4,6,7
-    empty: { left: -11.43, bottom: 49.81, right: 0.95, top: 59 }
+    empty: { left: -11.43, bottom: 49.81, right: 0.95, top: 59 },
+    node2: { left: 7.2, bottom: 53.6, right: 7.3, top: 53.7 }, // 2
+    node3: { left: 13.9, bottom: 53.875, right: 13.92, top: 53.876} // 3
 };
 
 var tags = {
