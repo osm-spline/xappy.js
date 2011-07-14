@@ -1,4 +1,4 @@
-var configPath = 'etc/my-config.json';
+var configPath = 'etc/petra-config.json';
 var petra = require('./petraData');
 var helper = require('./helper');
 var testing = require('coverage_testing');
@@ -35,6 +35,17 @@ var wayCountSuite = {
     'ways: tag amd full bbox': function(test) {
         var request = {object: 'way', tag: tagStrandweg, bbox: allBbox};
         testForCount(request, test, 2,1,0);
+    },
+    'bbox with two way': function(test) {
+        var request = {object: 'way', bbox: petra.bbox.node2};
+        // node2 belongs to way2 (nodes 2 and 5)
+        // node2 belongs to way3 (nodes 2,3)
+        testForCount(request, test, 3, 2, 0);
+    },
+    'bbox with one way': function(test) {
+        var request = {object: 'way', bbox: petra.bbox.node3};
+        // node3 belongs to way3 (nodes 2, 3)
+        testForCount(request, test, 2, 1, 0);
     }
     // TODO need another tag for another way
     // TODO test 2 ways with same tag, split by bbox

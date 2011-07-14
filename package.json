@@ -7,7 +7,7 @@
     "dependencies" : {
         "xappy-pg" : "*",
         "xmlbuilder" : "*",
-        "underscore" : "*",
+        "underscore" : "1.1.6",
         "log4js" : ">=0.2.6",
         "optimist" : ">=0.2.0"
     },

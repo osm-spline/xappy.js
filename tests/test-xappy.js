@@ -1,5 +1,6 @@
 var sinon = require('sinon');
 var Xapi = require('../lib/xappy');
+var errorModule = require('../lib/error');
 var getHttpHandler = Xapi.getHttpHandler;
 var _ = require('underscore')._;
 
@@ -9,7 +10,7 @@ if (module == require.main) {
 
 
 module.exports = {
-    'writeError' : function(test,error){
+/*    'writeError' : function(test,error){
         var error = {code : 400,message : 'blabla'};
         var body = error.message;
         var res = {
@@ -35,6 +36,7 @@ module.exports = {
         test.ok(!res.write.calledWith(error.message) && !res.end.calledWith(error.message));
         test.finish();
     },
+*/
     'httpHandler check uri': function(test) {
         var parse = sinon.spy();
         var uri = '/foo/bar';

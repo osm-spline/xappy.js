@@ -43,16 +43,15 @@ function containsElementsEmitter(emitter, elements, cb) {
         }
     });
 
-    nodes = _.map(nodes, function(node) {
-        return JSON.stringify(node);
-    });
+    nodes = _.map(nodes, JSON.stringify);
+    ways = _.map(ways, JSON.stringify);
+    relations = _.map(relations, JSON.stringify);
 
     emitter.on('node', function(node) {
         // sort results tags
         if (node.tags) {
             node.tags.sort(compareKeyValue);
         }
-        // jsonify
         var elem = JSON.stringify(node);
 
         if (_.include(nodes, elem)) {
@@ -64,10 +63,12 @@ function containsElementsEmitter(emitter, elements, cb) {
     });
 
     emitter.on('way', function(way) {
-        if (_.include(ways, way)) {
-            ways = _.reject(ways, way);
+        var elem = JSON.stringify(way);
+        if (_.include(ways, elem)) {
+           ways  = _.reject(ways, elem);
         } else {
-            cb(JSON.stringify(way) + ' is not in list');
+            console.log(ways);
+            cb(false, JSON.stringify(way) + ' is not in list');
         }
     });
 
@@ -124,6 +125,7 @@ function testForError(request, test) {
 function SuiteUp(configPath) {
     var setup = function(test, finish) {
         utility.readRelJson(configPath, function(error, config) {
+            if (error) throw error;
             test.db = new PostgresDb(config.database);
             finish();
         });

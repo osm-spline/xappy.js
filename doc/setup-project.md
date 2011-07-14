@@ -21,23 +21,10 @@ Initializing the Project
 ========================
 
     cd osm-spline-xapi
-
-First we initialize the submodules
-
-    git submodule init
-    git submoudle update
-    cd deps/pg
     npm link
-    cd ../..
 
-Then we initialize the project
-
-    npm link
-    npm link pg 
-
-
-Testing Xapi
-============
+Running the test suite
+======================
 
     bin/run_tests
 
