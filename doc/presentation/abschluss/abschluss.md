@@ -267,27 +267,11 @@ Für was wird die xapi benutzt
 xappy.js
 ========
 
-- libmad.js
-- linux.js
-- pdf.js
-- git.js
+ - Neuimplementierung der XAPI
+ - Notwendigkeit?
 
-jetzt auch
-
-xappy.js
-
-<!--
-everything in js
-Neuimplementierung in nodejs
--->
-<!--
-Erste Implementierung in Mumps
- - versteht keiner
- - hat fehler, keiner kann es fixen)
--->
-
-Die wirklichen Gründe
-=====================
+Codeaussschnitt
+===============
 
     add(sNode)      ; Public ; Add a node
         ; #sNode = stream object containing node
@@ -314,28 +298,26 @@ Die wirklichen Gründe
 Warum nodejs
 ============
 
-- 10000 Verbindungen in der Sekunde (hallo Apache)
-- asynchrone Events (hallo Semaphore)
-- alles wird gestreamed
-- fancy und neu
+- 10000 Verbindungen in der Sekunde
+- asynchrone Events
+- Streaming
 
 Zielsetzung xappy.js
 ====================
 
  - modulares Design
  - Dokumentation
- - getesteter Code <!-- andere Vorschläge? -->
+ - getesteter Code 
  - effiziente Implementierung
-
 
 Zielsetzung für uns
 ===================
 
  - freies Softwareprojekt umsetzen
- - agil Entwickeln
- - testgetrieben Entwickeln
- - flexibler Arbeitsprozess
+ - agiles Entwickeln
+ - testgetriebenes Entwickeln
  - Erschließen und Verwenden von nodejs
+
 
 Implementierung
 ===============
