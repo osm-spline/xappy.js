@@ -124,6 +124,7 @@ function testForError(request, test) {
 function SuiteUp(configPath) {
     var setup = function(test, finish) {
         utility.readRelJson(configPath, function(error, config) {
+            if (error) throw error;
             test.db = new PostgresDb(config.database);
             finish();
         });
