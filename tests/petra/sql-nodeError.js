@@ -8,7 +8,9 @@ var testForCount = helper.testForCount;
 var suiteUp = helper.SuiteUp(configPath).suiteUp;
 
 var allBbox = petra.bbox.allBbox;
+var bottomBbox = petra.bbox.bottom;
 var tagHospital = petra.tags.hospital;
+
 
 var nodesErrorSuite = {
     'nodes only': function(test) {
@@ -27,9 +29,13 @@ var nodesErrorSuite = {
         var request  = { object: 'node', tag: tagHospital, bbox: allBbox };
         testForError(request, test);
     },
+    'node tag and bottomBbox': function(test) {
+        var request  = { object: 'node', tag: tagHospital, bbox: bottomBbox };
+        testForError(request, test);
+    },
 };
 
-exports.nodesError = suiteUp(nodesErrorSuite);
+exports.nodeError = suiteUp(nodesErrorSuite);
 
 if (module == require.main) {
     return testing.run(__filename, process.ARGV);

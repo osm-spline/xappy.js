@@ -1,0 +1,312 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Dozentin: Katinka Wolter" />
+  <meta name="date" content="Softwareprojekt Telematik" />
+  <title>xappy.js</title>
+  <!-- configuration parameters -->
+  <meta name="defaultView" content="slideshow" />
+  <meta name="controlVis" content="hidden" />
+  <!-- style sheet links -->
+  <link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj" />
+  <link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" />
+  <link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint" />
+  <link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" />
+  <!-- S5 JS -->
+  <script src="ui/default/slides.js" type="text/javascript"></script>
+</head>
+<body>
+<div class="layout">
+<div id="controls"></div>
+<div id="currentSlide"></div>
+<div id="header"></div>
+<div id="footer">
+  <h1>Softwareprojekt Telematik</h1>
+  <h2>xappy.js</h2>
+</div>
+</div>
+<div class="presentation">
+<div class="slide">
+  <h1>xappy.js</h1>
+  <h3>Dozentin: Katinka Wolter</h3>
+  <h4>Softwareprojekt Telematik</h4>
+</div>
+<div class="slide">
+
+<h1>OpenStreetMap</h1>
+<!--
+Begrüßung und Einordnung in das Softwareprojekt Telematik
+Unser Projekt behandelt die Xapi, ein OpenStreetMap Projekt
+-->
+
+<div class="figure">
+<img src="osm-logo.png" /><p class="caption"></p>
+</div>
+<!--
+Openstreetmap ist ein Projekt, das freie Geo Daten sammelt und diese
+auf verschiedenste Art aufbereitet
+-->
+
+</div>
+
+<div class="slide">
+
+<h1>OpenStreetMap Infrastruktur</h1>
+<div class="figure">
+<img src="OSM_Components.png" /><p class="caption"></p>
+</div>
+<!--
+
+vereinfachte componentenübersicht?
+wichtige module vorstellen
+ - osmosis
+ - mapnik
+ - ui
+ - xapi
+-->
+
+</div>
+
+<div class="slide">
+
+<h1>Was ist die Xapi</h1>
+<ul class="incremental">
+<li>Http-Schnittstelle zu den OSM Daten</li>
+<li>erweiterte Suchfunktionen</li>
+</ul>
+<!--
+![bild mit querystring -> xapi -> 3 Datentypen]()
+-->
+
+
+<!--
+An diesem Bild die 3 Objekttypen erklären
+mit Beispielen
+
+node kann beispielsweise eine bar sein, oder xxx
+ways sind intuitiv wege aber auch beispielsweise grundrisse von gebäuden
+relations ...
+
+Es gibt Nodes (Punkte) auf der Karte.
+Es gibt Wege. Wege bestehen aus geordneten Punkten.
+Es gibt Relationen. Relationen bestehen aus Relationen, Wegen und Knodes
+
+Beispiele für jeden Punkt. FU-Berlin Beispiel.
+
+Die Kafete ist ein Punkt.
+Wege sind intuitiv alle Straßen.
+Aber auch Gebäude sind als Wege gezeichnet (Informatikfakultät)
+kompletter Uni Bereich ist eine Relation.
+Diese kann wieder Unter Relationen beinhalten (Beispiel)
+
+ gib mir alle Knoten aus
+
+    /*
+    /nodes
+    /way
+    /relation
+
+
+gib mir alle alle Bars aus
+
+    /nodes[amenity=bar]
+
+ gib mir alle Bars und Clubs aus
+
+    /nodes[amenity=bar|club]
+
+gib mir alle Bars und Clubs in Berlin aus
+
+    /nodes[amenity=bar|club][bbox=x,x,x,x]
+
+-->
+
+</div>
+
+<div class="slide">
+
+<h1>Für was wird die xapi benutzt</h1>
+<ul class="incremental">
+<li>Overlay über bestehende Karten</li>
+<li>Replikation</li>
+<li>Anfragen über Editoren</li>
+<li>Analyse / Statistiken</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>xappy.js</h1>
+<ul class="incremental">
+<li>libmad.js</li>
+<li>linux.js</li>
+<li>pdf.js</li>
+<li>git.js</li>
+</ul>
+<p>jetzt auch</p>
+<p>xappy.js</p>
+<!--
+everything in js
+Neuimplementierung in nodejs
+-->
+<!--
+Erste Implementierung in Mumps
+ - versteht keiner
+ - hat fehler, keiner kann es fixen)
+-->
+
+</div>
+
+<div class="slide">
+
+<h1>Die wirklichen Gründe</h1>
+<pre><code>add(sNode)      ; Public ; Add a node
+    ; #sNode = stream object containing node
+    ;
+    n line,nodeId,users,lat,lon,timestamp,user,uid,version,changeset
+    ;
+    s line=sNode(&quot;current&quot;)
+    ;
+    s nodeId=$p($p(line,&quot;id=&quot;&quot;&quot;,2),&quot;&quot;&quot;&quot;,1)
+    s version=$p($p(line,&quot;version=&quot;&quot;&quot;,2),&quot;&quot;&quot;&quot;,1)
+    i $g(^nodetag(nodeId,&quot;@version&quot;))&gt;version d  q  ; Don't load older versions
+    . i line[&quot;/&gt;&quot; q
+    . f  d  i line[&quot;&lt;/node&gt;&quot; q
+    . . s line=$$read^stream(.sNode)
+    d delete(nodeId)
+    ;
+    s lat=$p($p(line,&quot;lat=&quot;&quot;&quot;,2),&quot;&quot;&quot;&quot;,1)
+    s lon=$p($p(line,&quot;lon=&quot;&quot;&quot;,2),&quot;&quot;&quot;&quot;,1)
+    i lon[&quot;e&quot; s lon=+$tr(lon,&quot;e&quot;,&quot;E&quot;)
+    s ^node(nodeId)=lat_$c(0)_lon
+</code></pre>
+<!-- rant -->
+
+</div>
+
+<div class="slide">
+
+<h1>Warum nodejs</h1>
+<ul class="incremental">
+<li>10000 Verbindungen in der Sekunde (hallo Apache)</li>
+<li>asynchrone Events (hallo Semaphore)</li>
+<li>alles wird gestreamed</li>
+<li>fancy und neu</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Zielsetzung xappy.js</h1>
+<ul class="incremental">
+<li>modulares Design</li>
+<li>Dokumentation</li>
+<li>getesteter Code <!-- andere Vorschläge? --></li>
+<li>effiziente Implementierung</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Zielsetzung für uns</h1>
+<ul class="incremental">
+<li>freies Softwareprojekt umsetzen</li>
+<li>agil Entwickeln</li>
+<li>testgetrieben Entwickeln</li>
+<li>flexibler Arbeitsprozess</li>
+<li>Erschließen und Verwenden von nodejs</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Implementierung</h1>
+<p>simples Implementierungsbild (Parser, Db, Generator) Grobe Beschreibung des Flußdiagrams</p>
+<!--
+[img]
+-->
+
+</div>
+
+<div class="slide">
+
+<h1>Parser</h1>
+<p>Erstellt aus den übergebenen urls Javascript Objekte</p>
+<!--
+[bild von urlstring -> json]
+-->
+
+</div>
+
+<div class="slide">
+
+<h1>Datenbankmodul</h1>
+<p>Fragt Datenbank ab und liefert Ergebnisse</p>
+<!--
+[bild requestobject -> Datenbank -> responseobject (node, way,relation)]
+-->
+
+<p>Emittieren, Streamen</p>
+</div>
+
+<div class="slide">
+
+<h1>OutputGenerator</h1>
+<p>Generiert aus den Ergebnissen JSON oder XML</p>
+</div>
+
+<div class="slide">
+
+<h1>Implementierung mit allen Modules</h1>
+<p>Implementierungsbild</p>
+<p>Beschreibung des Validators, der mehreren Generatoren, xappy.js, cli.js</p>
+</div>
+
+<div class="slide">
+
+<h1>Abgefallene Projekte</h1>
+<ul class="incremental">
+<li>whoosh</li>
+<li>postgresmodul</li>
+<li>coverage in unit test implementiert</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Arbeitsweise</h1>
+<ul class="incremental">
+<li>git</li>
+<li>jenkins</li>
+<li>stories</li>
+<li>scrum</li>
+<li>issues</li>
+<li>standup meetings</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Retrospektive</h1>
+<p>coverage sloc git history</p>
+<!-- fancy statistiken machen -->
+
+</div>
+
+<div class="slide">
+
+<h1>Fazit</h1>
+<ul class="incremental">
+<li>funktionsweise implementiert</li>
+<li>kinderkrankheiten</li>
+<li>releases haben sich bewährt.</li>
+<li>hackweekends bewährt</li>
+<li>blaues club mate brot ist lecker</li>
+<li>fritz cola brot mit zitrone nicht so...</li>
+</ul>
+</div>
+</div>
+</body>
+</html>

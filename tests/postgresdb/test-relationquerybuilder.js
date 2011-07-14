@@ -1,19 +1,12 @@
 var relationQueryBuilder = require('../../lib/postgresdb/relationquerybuilder');
 var sampleObjects = require('../helpers/helper-samplexapirequestobjects');
 
+var NODE_COLUMNS = require('./helper-common').NODE_COLUMNS;
+var WAY_COLUMNS = require('./helper-common').WAY_COLUMNS;
+var RELATION_COLUMNS = require('./helper-common').RELATION_COLUMNS;
+
 module.exports = {
     'relation' : function(test) {
-
-        var nodeColumns = 'nodes.id, nodes.version, nodes.user_id, nodes.tstamp,' +
-            ' nodes.changeset_id, hstore_to_array(nodes.tags) AS tags,' +
-            ' X(nodes.geom) AS lat, Y(nodes.geom) AS lon, users.name AS user_name';
-
-        var wayColumns = 'ways.id, ways.version, ways.user_id, ways.tstamp, ways.changeset_id,' +
-            ' hstore_to_array(ways.tags) AS tags, ways.nodes, users.name AS user_name';
-
-        var relationColumns = 'relations.id, relations.version, relations.user_id, relations.tstamp,' +
-            ' relations.changeset_id, hstore_to_array(relations.tags) AS tags, users.name AS user_name,' +
-            ' relation_members.member_id, relation_members.member_type, relation_members.member_role, relation_members.sequence_id';
 
         var query1 = 'SELECT relation_members.member_id AS id FROM relations, relation_members' +
              ' WHERE relations.id = relation_members.relation_id' +
@@ -27,14 +20,14 @@ module.exports = {
         var expected = {
             node: {
                       name: '',
-                      text: 'SELECT ' + nodeColumns + ' FROM nodes, users, ' + union +
+                      text: 'SELECT ' + NODE_COLUMNS + ' FROM nodes, users, ' + union +
                             ' WHERE nodes.id = nodeIds.id AND users.id = nodes.user_id;',
                       values: [],
                       binary: true
                   },
             way: {
                       name: '',
-                      text: 'SELECT DISTINCT ' + wayColumns + ' FROM' +
+                      text: 'SELECT DISTINCT ' + WAY_COLUMNS + ' FROM' +
                           ' relations, relation_members, ways, users' +
                           ' WHERE relations.id = relation_members.relation_id' +
                           ' AND relation_members.member_type = \'W\'' +
@@ -45,7 +38,7 @@ module.exports = {
                  },
             relation: {
                       name: '',
-                      text: 'SELECT ' + relationColumns + ' FROM' +
+                      text: 'SELECT ' + RELATION_COLUMNS + ' FROM' +
                           ' relations, users, relation_members' +
                           ' WHERE relations.user_id = users.id' +
                           ' AND relations.id = relation_members.relation_id' +
@@ -59,17 +52,6 @@ module.exports = {
         test.finish();
     },
     'relation[note=OstDeutschland]' : function(test) {
-
-        var nodeColumns = 'nodes.id, nodes.version, nodes.user_id, nodes.tstamp,' +
-            ' nodes.changeset_id, hstore_to_array(nodes.tags) AS tags,' +
-            ' X(nodes.geom) AS lat, Y(nodes.geom) AS lon, users.name AS user_name';
-
-        var wayColumns = 'ways.id, ways.version, ways.user_id, ways.tstamp, ways.changeset_id,' +
-            ' hstore_to_array(ways.tags) AS tags, ways.nodes, users.name AS user_name';
-
-        var relationColumns = 'relations.id, relations.version, relations.user_id, relations.tstamp,' +
-            ' relations.changeset_id, hstore_to_array(relations.tags) AS tags, users.name AS user_name,' +
-            ' relation_members.member_id, relation_members.member_type, relation_members.member_role, relation_members.sequence_id';
 
         var query1 = 'SELECT relation_members.member_id AS id FROM relations, relation_members' +
              ' WHERE relations.id = relation_members.relation_id' +
@@ -85,14 +67,14 @@ module.exports = {
         var expected = {
             node: {
                       name: '',
-                      text: 'SELECT ' + nodeColumns + ' FROM nodes, users, ' + union +
+                      text: 'SELECT ' + NODE_COLUMNS + ' FROM nodes, users, ' + union +
                             ' WHERE nodes.id = nodeIds.id AND users.id = nodes.user_id;',
                       values: ['note','OstDeutschland'],
                       binary: true
                   },
             way: {
                       name: '',
-                      text: 'SELECT DISTINCT ' + wayColumns + ' FROM' +
+                      text: 'SELECT DISTINCT ' + WAY_COLUMNS + ' FROM' +
                           ' relations, relation_members, ways, users' +
                           ' WHERE relations.id = relation_members.relation_id' +
                           ' AND relation_members.member_type = \'W\'' +
@@ -104,7 +86,7 @@ module.exports = {
                  },
             relation: {
                       name: '',
-                      text: 'SELECT ' + relationColumns + ' FROM' +
+                      text: 'SELECT ' + RELATION_COLUMNS + ' FROM' +
                           ' relations, users, relation_members' +
                           ' WHERE relations.user_id = users.id' +
                           ' AND relations.id = relation_members.relation_id' +

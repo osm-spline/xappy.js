@@ -14,7 +14,7 @@ var tagHospital = petra.tags.hospital;
 var nodesCountSuite = {
     'all elements': function(test) {
         var request = { object: '*' };
-        testForCount(request, test, 7, 3, 2);
+        testForCount(request, test, 7, 3, 5);
     },
     'all elements in big bbox': function(test) {
         var request = { object: '*', bbox: allBbox };

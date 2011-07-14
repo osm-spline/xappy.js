@@ -1,6 +1,6 @@
 var XmlGenerator = require('../lib/genxml').XmlGenerator; // Konstruktor aufrufen
 var underscore = require('underscore');
-var coverage_testing = require('async_testing');
+var coverage_testing = require('coverage_testing');
 var builder = require('xmlbuilder');
 var log4js = require('log4js')();
 var log = log4js.getLogger('test-xmlgenerator');
