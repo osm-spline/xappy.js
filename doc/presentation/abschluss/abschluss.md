@@ -379,38 +379,60 @@ Implementierungsbild
 
 Beschreibung des Validators, der mehreren Generatoren, xappy.js, cli.js
 
-Abgefallene Projekte
-====================
+Seiteneffekte des Projekts
+==========================
 
-- whoosh
-- postgresmodul
-- coverage in unit test implementiert
+- Code Coverage in Unit Test implementiert
+<!-- Alex nach mehr infos fragen -->
 
-Arbeitsweise
-============
+- Verbesserungen am nodejs postgress Modul
+- Unterstützung für das binäre Clientprotokoll wurde Implementiert
+- in reinem Javascript
+- Tests für die Änderungen
+- Code wartet auf die Aufnahme ins offizielle Projekt
 
-- git
-- jenkins
-- stories
-- scrum
-- issues
-- standup meetings
+whoosh
+======
 
-Retrospektive
-=============
+- Tool zum Importieren von OSM Daten in postgress Datenbanken
+- es existieren bereits solche Tools aber ...
+ - sie unterstützen unser Datenbankschema nicht
+ - und / oder speichern alle Daten auf der Festplatte oder im Ram zwischen
+- geschrieben in C++
+- streamt geparse Daten direkt in die Datenbank (COPY Befehl)
+- zur Zeit noch nicht ganz stabil
 
-coverage
-sloc
-git history
+Verwendete Technologieen
+========================
+
+- Neben Nodejs:
+- Git als Versionsverwaltung
+- Jenkins als Continuous Integration System
+- Github als Koordinations und Ticketsystem
+
+Verwendete Arbeitsmethoden
+==========================
+
+- Agile Entwicklung nach Crystal Clear
+- Stories welche einezelne Problemgruppen abbilden
+- ca. 10 minütige Standup Meetings
+- Hackweekends mit geballter Entwicklungskraft
+
+Visualisierte Retrospektive des Codes
+=====================================
+
+- Coverage der Tests
+- SLOC und Github Graphen
+- Git History Visualisiert mit Gource
 
 <!-- fancy statistiken machen -->
 
 Fazit
 =====
 
-- funktionsweise implementiert
-- kinderkrankheiten
-- releases haben sich bewährt.
-- hackweekends bewährt
-- blaues club mate brot ist lecker
-- fritz cola brot mit zitrone nicht so...
+- Funktionsweise wurde implementiert
+- Kinderkrankheiten
+- Projekt ist Open Source
+- Releases und Hackweekends haben sich bewährt
+- blaues Club Mate Brot ist lecker
+- Fritz Cola Brot mit Zitrone nicht so...
