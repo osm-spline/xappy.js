@@ -322,12 +322,7 @@ Zielsetzung für uns
 Implementierung
 ===============
 
-simples Implementierungsbild (Parser, Db, Generator)
-Grobe Beschreibung des Flußdiagrams
-
-<!--
-[img]
--->
+![](grob.svg)
 
 Parser
 ======
@@ -348,20 +343,10 @@ Parser
         }
     }
 
-<!--
-[bild von urlstring -> json]
--->
-
 Datenbankmodul
 ==============
 
-Fragt Datenbank ab und liefert Ergebnisse
-
-<!--
-[bild requestobject -> Datenbank -> responseobject (node, way,relation)]
--->
-
-Emittieren, Streamen
+![](anders.svg)
 
 OutputGenerator
 ===============
