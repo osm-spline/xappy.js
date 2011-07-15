@@ -356,9 +356,7 @@ Generiert aus den Ergebnissen JSON oder XML
 Implementierung mit allen Modules
 =========================
 
-Implementierungsbild
-
-Beschreibung des Validators, der mehreren Generatoren, xappy.js, cli.js
+![](detailed2.svg)
 
 Seiteneffekte des Projekts
 ==========================
