@@ -365,21 +365,19 @@ Seiteneffekte des Projekts
 ==========================
 
 - Code Coverage in Unit Test implementiert
-<!-- Alex nach mehr infos fragen -->
-
 - Verbesserungen am nodejs postgress Modul
-- Unterstützung für das binäre Clientprotokoll wurde Implementiert
-- in reinem Javascript
-- Tests für die Änderungen
-- Code wartet auf die Aufnahme ins offizielle Projekt
+    - Unterstützung für das binäre Clientprotokoll wurde Implementiert
+    - in reinem Javascript
+    - Tests für die Änderungen
+    - Code wartet auf die Aufnahme ins offizielle Projekt
 
 whoosh
 ======
 
 - Tool zum Importieren von OSM Daten in postgress Datenbanken
 - es existieren bereits solche Tools aber ...
- - sie unterstützen unser Datenbankschema nicht
- - und / oder speichern alle Daten auf der Festplatte oder im Ram zwischen
+    - sie unterstützen unser Datenbankschema nicht
+    - und / oder speichern alle Daten auf der Festplatte oder im Ram zwischen
 - geschrieben in C++
 - streamt geparse Daten direkt in die Datenbank (COPY Befehl)
 - zur Zeit noch nicht ganz stabil
@@ -387,7 +385,7 @@ whoosh
 Verwendete Technologieen
 ========================
 
-- Neben Nodejs:
+- Neben Nodejs
 - Git als Versionsverwaltung
 - Jenkins als Continuous Integration System
 - Github als Koordinations und Ticketsystem
@@ -395,7 +393,12 @@ Verwendete Technologieen
 Verwendete Arbeitsmethoden
 ==========================
 
-- Agile Entwicklung nach Crystal Clear
+- Agile Entwicklung nach Crystal Clear mit
+    - heufige Realeases
+    - automatisiertes Testen
+    - Verwendung von Versionsverwaltung
+    - ungebundene Komikation
+    - Collective Code Ownership
 - Stories welche einezelne Problemgruppen abbilden
 - ca. 10 minütige Standup Meetings
 - Hackweekends mit geballter Entwicklungskraft
