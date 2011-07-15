@@ -332,7 +332,21 @@ Grobe Beschreibung des Flußdiagrams
 Parser
 ======
 
-Erstellt aus den übergebenen urls Javascript Objekte
+    /node[bbox=10,10,15,15][amenity=bar|club]
+
+    {
+        object: "node",
+        bbox: {
+            left: 10,
+            bottom: 10,
+            right: 15,
+            top: 15
+        },
+        tag: {
+            key: [ "amenity" ],
+            value: [ "bar", "club" ]
+        }
+    }
 
 <!--
 [bild von urlstring -> json]
