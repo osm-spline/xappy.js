@@ -414,7 +414,7 @@ Fazit
 
 - Funktionsweise wurde implementiert
 - Kinderkrankheiten
-- Projekt ist Open Source
+- Projekt ist Open Source (AGPLv3 und CDDL)
 - Releases und Hackweekends haben sich bewährt
 - blaues Club Mate Brot ist lecker
 - Fritz Cola Brot mit Zitrone nicht so...
