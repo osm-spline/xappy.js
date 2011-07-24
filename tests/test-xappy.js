@@ -1,13 +1,11 @@
 var sinon = require('sinon');
 var Xapi = require('../lib/xappy');
-var errorModule = require('../lib/error');
 var getHttpHandler = Xapi.getHttpHandler;
 var _ = require('underscore')._;
 
 if (module == require.main) {
   require('coverage_testing').run(__filename, process.ARGV);
 }
-
 
 module.exports = {
     'httpHandler check uri': function(test) {
@@ -21,27 +19,27 @@ module.exports = {
         test.equal(parse.args[0][0], uri);
         test.finish();
     },
-    'httpHandler callback': function(test) {
-        var callback = sinon.spy();
-        var req = { url: '/xapi/node', headers: { 'content-type': 'test/test' } };
-        var sampleRequest = require('./helpers/helper-samplexapirequestobjects.js');
-        var parse = sinon.spy();
-        var res = { an : "object" };
+    // 'httpHandler callback': function(test) {
+    //     var callback = sinon.spy();
+    //     var req = { url: '/xapi/node', headers: { 'content-type': 'test/test' } };
+    //     var sampleRequest = require('./helpers/helper-samplexapirequestobjects.js');
+    //     var parse = sinon.spy();
+    //     var res = { an : "object" };
 
-        var httpHandler = getHttpHandler(parse, callback);
-        httpHandler(req,res);
+    //     var httpHandler = getHttpHandler(parse, callback);
+    //     httpHandler(req,res);
 
-        parse.args[0][1](null,sampleRequest.node);
+    //     parse.args[0][1](null,sampleRequest.node);
 
-        test.ok(callback.calledOnce);
+    //     test.ok(callback.calledOnce);
 
-        test.equal(res,callback.args[0][0]);
-        test.equal(req.headers['content-type'],callback.args[0][1]);
-        test.equal(null,callback.args[0][2]);
-        test.equal(sampleRequest.node,callback.args[0][3]);
+    //     test.equal(res,callback.args[0][0]);
+    //     test.equal(req.headers['content-type'],callback.args[0][1]);
+    //     test.equal(null,callback.args[0][2]);
+    //     test.equal(sampleRequest.node,callback.args[0][3]);
 
-        test.finish();
-    },
+    //     test.finish();
+    // },
     'xapiRequestHandler': function(test){
         var generator =  sinon.spy();
         var emitterCallback = function() {};
