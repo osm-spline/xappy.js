@@ -1,5 +1,4 @@
 var validator = require('../lib/validator');
-//var helperObj = require('./helpers/helper-xapi-request.js');
 
 module.exports = {
     'validate correct simple object' : function(test){
@@ -8,9 +7,9 @@ module.exports = {
         };
 
         validator.validate(xapiRequestInput,function(error, xapiRequestOut){
-                test.deepEqual(error, null);
-                test.deepEqual(xapiRequestInput,xapiRequestOut);
-                test.finish();
+            test.deepEqual(error, null);
+            test.deepEqual(xapiRequestInput,xapiRequestOut);
+            test.finish();
         });
     },
 
@@ -25,9 +24,9 @@ module.exports = {
             }
         };
         validator.validate(xapiRequestInput, function(error, xapiRequestOut){
-                test.deepEqual(error, null);
-                test.deepEqual(xapiRequestInput,xapiRequestOut);
-                test.finish();
+            test.deepEqual(error, null);
+            test.deepEqual(xapiRequestInput,xapiRequestOut);
+            test.finish();
         });
     },
 
@@ -51,9 +50,9 @@ module.exports = {
         };
 
         validator.validate(xapiRequestInput, function(error, xapiRequestOut){
-                test.deepEqual(error, null);
-                test.deepEqual(xapiRequestInput,xapiRequestOut);
-                test.finish();
+            test.deepEqual(error, null);
+            test.deepEqual(xapiRequestInput,xapiRequestOut);
+            test.finish();
         });
     },
 
@@ -69,11 +68,11 @@ module.exports = {
         };
 
         validator.validate(xapiRequestInput, function(error, xapiRequestOut){
-                //what should be the format of an error: (code,message)?
-                test.equal(error.code, 400);
-                test.strictEqual(error.message, "Bbox out of range. Please input values for left and right [-180,180], for top and bottom [-90,90]");
-                test.deepEqual(xapiRequestOut, null);
-                test.finish();
+            //what should be the format of an error: (code,message)?
+            test.equal(error.code, 400);
+            test.strictEqual(error.message, "Bbox out of range. Please input values for left and right [-180,180], for top and bottom [-90,90]");
+            test.deepEqual(xapiRequestOut, null);
+            test.finish();
 
         });
     },
@@ -108,9 +107,9 @@ module.exports = {
                 has : false,
                 attribute : 'tag'
             }
-       };
+        };
 
-       validator.validate(xapiRequestInput, function(error,xapiRequestOut){
+        validator.validate(xapiRequestInput, function(error,xapiRequestOut){
             //HTTP 204 means "No content"; tag predicate with child predicate no(tags) returns no results
             test.equal(error.code, 204);
             test.deepEqual(xapiRequestOut, null);
@@ -119,7 +118,7 @@ module.exports = {
     },
 
     'validate tag predicate with child predicate tags' : function(test){
-    //ignore child predicate, pass on the rest of the request
+        //ignore child predicate, pass on the rest of the request
         var xapiRequestInput = {
             object : 'node',
             tag : {
@@ -145,7 +144,7 @@ module.exports = {
     },
 
     'validate node object with child predicate node or no(node)' : function(test){
-    //return empty object
+        //return empty object
         var xapiRequestInput = {
             object : 'node',
             tag : {
@@ -167,7 +166,7 @@ module.exports = {
     },
 
     'validate way object with child predicate way or no(way)' : function(test){
-    //return empty object
+        //return empty object
         var xapiRequestInput = {
             object : 'way',
             tag : {
@@ -189,8 +188,8 @@ module.exports = {
     },
 
     'validate way object with child predicate node or no(node)' : function(test){
-    //ignore child predicates and process query
-         var xapiRequestInput = {
+        //ignore child predicates and process query
+        var xapiRequestInput = {
             object : 'way',
             tag : {
                 key : ['bla','blup'],
@@ -214,17 +213,17 @@ module.exports = {
             test.deepEqual(xapiRequestOut.child, undefined);
             test.finish();
         });
-     }
+    }
 
 
-    /*
+/*
 
-     */
+*/
 
 };
 
 if (module == require.main) {
-  return require('coverage_testing').run(__filename, process.ARGV);
+    return require('coverage_testing').run(__filename, process.ARGV);
 }
 
 
