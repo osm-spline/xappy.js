@@ -10,33 +10,6 @@ if (module == require.main) {
 
 
 module.exports = {
-/*    'writeError' : function(test,error){
-        var error = {code : 400,message : 'blabla'};
-        var body = error.message;
-        var res = {
-            writeHead : sinon.spy(),
-            write : sinon.spy(),
-            end : sinon.spy()
-        };
-        Xapi.writeError(res, error);
-        test.ok(res.end.calledOnce);
-        test.ok(res.writeHead.calledOnce);
-        test.ok(res.writeHead.calledWith(400));
-        test.ok(res.write.calledWith(body) || res.end.calledWith(body));
-        test.finish();
-    },
-    'writeError with 204' : function(test,error){
-        var error = { code : 204, message : 'blabla'};
-        var res = {
-            writeHead : function(){},
-            write : sinon.spy(),
-            end : sinon.spy()
-        };
-        Xapi.writeError(res, error);
-        test.ok(!res.write.calledWith(error.message) && !res.end.calledWith(error.message));
-        test.finish();
-    },
-*/
     'httpHandler check uri': function(test) {
         var parse = sinon.spy();
         var uri = '/foo/bar';
@@ -191,31 +164,6 @@ module.exports = {
         callbacks.end();
         test.ok(gen.createFooter.called);
         test.ok(res.end.called);
-
-        test.finish();
-    },
-    'testHandlersWithError' : function(test) {
-        var res = {
-            writeHead : sinon.spy(),
-            write : sinon.spy(),
-            end : sinon.spy()
-        };
-
-        var callbacks = {};
-        var mock = function(anEvent, callback) {
-            callbacks[anEvent]=callback
-        };
-        var emitter = {
-            on : mock,
-            once : mock
-        };
-
-        emitterCallback = Xapi.getEmitterHandler(res,null);
-        emitterCallback(null,emitter);
-
-        // error issued
-        callbacks.error({code:500, message: 'cause'});
-        test.ok(res.writeHead.calledWith(500,'cause'));
 
         test.finish();
     },
