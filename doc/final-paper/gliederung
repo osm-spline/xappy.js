@@ -1,0 +1,31 @@
+Hi,
+
+das ist nurmal so nen Vorschlag, der aus der Gliederung der Abschlusspräse kommt.
+
+
+
+* Was ist OSM
+* Einordnung der XAPI in die OSM-Infrastruktur
+* Problembeschreibung
+ * Was ist die XAPI
+ * Was kann man damit machen (Anwendungsbeispiele)
+* Grober Überblick über die Architektur (Schaubild)
+* Interessante Komponenten des Projekts
+ * Request-Struktur
+ * Parser
+ * Interne Objekt (XapiRequestObject, Node, Way, Relation)
+ * Datenbankmodul
+  * Datenbankschema
+  * Queries
+  * Events
+ * Output
+ * Import
+* Prozess
+ * Agile Entwicklung
+ * Standup
+ * TDD
+ * Collective Codebase
+ * CI-System
+ * (Planing Game)
+
+
