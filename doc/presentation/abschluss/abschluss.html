@@ -406,32 +406,38 @@ alle Bars und Clubs in Berlin:
 <div class="slide">
 
 <h1>Implementierung</h1>
-<p>simples Implementierungsbild (Parser, Db, Generator) Grobe Beschreibung des Flußdiagrams</p>
-<!--
-[img]
--->
-
+<div class="figure">
+<img src="grob.svg" /><p class="caption"></p>
+</div>
 </div>
 
 <div class="slide">
 
 <h1>Parser</h1>
-<p>Erstellt aus den übergebenen urls Javascript Objekte</p>
-<!--
-[bild von urlstring -> json]
--->
+<pre><code>/node[bbox=10,10,15,15][amenity=bar|club]
 
+{
+    object: &quot;node&quot;,
+    bbox: {
+        left: 10,
+        bottom: 10,
+        right: 15,
+        top: 15
+    },
+    tag: {
+        key: [ &quot;amenity&quot; ],
+        value: [ &quot;bar&quot;, &quot;club&quot; ]
+    }
+}
+</code></pre>
 </div>
 
 <div class="slide">
 
 <h1>Datenbankmodul</h1>
-<p>Fragt Datenbank ab und liefert Ergebnisse</p>
-<!--
-[bild requestobject -> Datenbank -> responseobject (node, way,relation)]
--->
-
-<p>Emittieren, Streamen</p>
+<div class="figure">
+<img src="anders.svg" /><p class="caption"></p>
+</div>
 </div>
 
 <div class="slide">
@@ -443,20 +449,23 @@ alle Bars und Clubs in Berlin:
 <div class="slide">
 
 <h1>Implementierung mit allen Modules</h1>
-<p>Implementierungsbild</p>
-<p>Beschreibung des Validators, der mehreren Generatoren, xappy.js, cli.js</p>
+<div class="figure">
+<img src="detailed2.svg" /><p class="caption"></p>
+</div>
 </div>
 
 <div class="slide">
 
 <h1>Seiteneffekte des Projekts</h1>
 <ul class="incremental">
-<li><p>Code Coverage in Unit Test implementiert <!-- Alex nach mehr infos fragen --></p></li>
-<li>Verbesserungen am nodejs postgress Modul</li>
+<li>Code Coverage in Unit Test implementiert</li>
+<li>Verbesserungen am nodejs postgress Modul
+<ul class="incremental">
 <li>Unterstützung für das binäre Clientprotokoll wurde Implementiert</li>
 <li>in reinem Javascript</li>
 <li>Tests für die Änderungen</li>
-<li><p>Code wartet auf die Aufnahme ins offizielle Projekt</p></li>
+<li>Code wartet auf die Aufnahme ins offizielle Projekt</li>
+</ul></li>
 </ul>
 </div>
 
@@ -465,9 +474,11 @@ alle Bars und Clubs in Berlin:
 <h1>whoosh</h1>
 <ul class="incremental">
 <li>Tool zum Importieren von OSM Daten in postgress Datenbanken</li>
-<li>es existieren bereits solche Tools aber ...</li>
+<li>es existieren bereits solche Tools aber ...
+<ul class="incremental">
 <li>sie unterstützen unser Datenbankschema nicht</li>
 <li>und / oder speichern alle Daten auf der Festplatte oder im Ram zwischen</li>
+</ul></li>
 <li>geschrieben in C++</li>
 <li>streamt geparse Daten direkt in die Datenbank (COPY Befehl)</li>
 <li>zur Zeit noch nicht ganz stabil</li>
@@ -478,7 +489,7 @@ alle Bars und Clubs in Berlin:
 
 <h1>Verwendete Technologieen</h1>
 <ul class="incremental">
-<li>Neben Nodejs:</li>
+<li>Neben Nodejs</li>
 <li>Git als Versionsverwaltung</li>
 <li>Jenkins als Continuous Integration System</li>
 <li>Github als Koordinations und Ticketsystem</li>
@@ -489,7 +500,14 @@ alle Bars und Clubs in Berlin:
 
 <h1>Verwendete Arbeitsmethoden</h1>
 <ul class="incremental">
-<li>Agile Entwicklung nach Crystal Clear</li>
+<li>Agile Entwicklung nach Crystal Clear mit
+<ul class="incremental">
+<li>heufige Realeases</li>
+<li>automatisiertes Testen</li>
+<li>Verwendung von Versionsverwaltung</li>
+<li>ungebundene Komikation</li>
+<li>Collective Code Ownership</li>
+</ul></li>
 <li>Stories welche einezelne Problemgruppen abbilden</li>
 <li>ca. 10 minütige Standup Meetings</li>
 <li>Hackweekends mit geballter Entwicklungskraft</li>
@@ -514,7 +532,7 @@ alle Bars und Clubs in Berlin:
 <ul class="incremental">
 <li>Funktionsweise wurde implementiert</li>
 <li>Kinderkrankheiten</li>
-<li>Projekt ist Open Source</li>
+<li>Projekt ist Open Source (AGPLv3 und CDDL)</li>
 <li>Releases und Hackweekends haben sich bewährt</li>
 <li>blaues Club Mate Brot ist lecker</li>
 <li>Fritz Cola Brot mit Zitrone nicht so...</li>

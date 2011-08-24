@@ -117,25 +117,10 @@ Ziel: freie Geodatenbank und <br/><br/>
 
 </span>
 
-<!--
-Openstreetmap ist ein Projekt, das freie Geo Daten sammelt und diese
-auf verschiedenste Art aufbereitet
--->
-
 OpenStreetMap Infrastruktur
 ===========================
 
 ![](OSM_Components.png)
-
-<!--
-
-vereinfachte componentenübersicht?
-wichtige module vorstellen
- - osmosis
- - mapnik
- - ui
- - xapi
--->
 
 Was ist die Xapi
 ================
@@ -322,12 +307,7 @@ Zielsetzung für uns
 Implementierung
 ===============
 
-simples Implementierungsbild (Parser, Db, Generator)
-Grobe Beschreibung des Flußdiagrams
-
-<!--
-[img]
--->
+![](grob.svg)
 
 Parser
 ======
@@ -348,32 +328,20 @@ Parser
         }
     }
 
-<!--
-[bild von urlstring -> json]
--->
-
 Datenbankmodul
 ==============
 
-Fragt Datenbank ab und liefert Ergebnisse
-
-<!--
-[bild requestobject -> Datenbank -> responseobject (node, way,relation)]
--->
-
-Emittieren, Streamen
+![](anders.svg)
 
 OutputGenerator
 ===============
 
 Generiert aus den Ergebnissen JSON oder XML
 
-Implementierung mit allen Modules
-=========================
+Detailierte Implementierung
+===========================
 
-Implementierungsbild
-
-Beschreibung des Validators, der mehreren Generatoren, xappy.js, cli.js
+![](detailed2.svg)
 
 Seiteneffekte des Projekts
 ==========================
