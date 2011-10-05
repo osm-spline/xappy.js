@@ -1,9 +1,11 @@
 Database setup
 ==============
 
-We use postgres 9.* with postgis 1.5. Postgres 9.0 is used because we need some
+We use postgres 9.\* with postgis 1.5. Postgres 9.0 is used because we need some
 functions on hstores and postgis 1.5 is used for fancy geometry things.
 
+You can find the database schema in the osm
+[svn](http://trac.openstreetmap.org/browser/applications/utils/osmosis/trunk/package/script).
 
 Linux
 -----
@@ -39,15 +41,15 @@ Create the actual schema for osm data. For this step you need osmosis. If your
 osmosis build is correct there should be a directory named package/scripts where
 you run:
 
-    psql -d osm < pgsql_simple_schema_0.6.sql
-    psql -d osm < pgsql_simple_schema_0.6_linestring.sql
+    psql -d osm < pgsql_snapshot_schema_0.6.sql
+    psql -d osm < pgsql_snapshot_schema_0.6_linestring.sql
 
 Optional/still to test:
 
-    psql -d osm < pgsql_simple_schema_0.6_action.sql
-    psql -d osm < pgsql_simple_schema_0.6_bbox.sql
+    psql -d osm < pgsql_snapshot_schema_0.6_action.sql
+    psql -d osm < pgsql_snapshot_schema_0.6_bbox.sql
 
-For documentation on the schema read pgsql_simple.txt.
+For documentation on the schema read pgsnapshot_and_pgsimple.txt.
 
 Import data from xml with:
 
