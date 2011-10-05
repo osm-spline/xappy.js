@@ -8,7 +8,8 @@
         "xappy-pg" : "*",
         "xmlbuilder" : "*",
         "underscore" : "1.1.6",
-        "log4js" : ">=0.2.6",
+        "underscore.string": "1.1.6",
+        "log4js" : "0.2.6",
         "optimist" : ">=0.2.0"
     },
     "devDependencies" : {
