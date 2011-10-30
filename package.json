@@ -6,7 +6,7 @@
     "files" : ["."],
     "dependencies" : {
         "xappy-pg" : "*",
-        "xmlbuilder" : "*",
+        "xmlbuilder" : "1.2",
         "underscore" : "1.1.6",
         "underscore.string": "1.1.6",
         "log4js" : "0.2.6",
