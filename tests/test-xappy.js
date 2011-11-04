@@ -1,6 +1,5 @@
 var sinon = require('sinon');
-var Xapi = require('../lib/xappy');
-var getHttpHandler = Xapi.getHttpHandler;
+var xapi = require('../lib/xappy');
 var _ = require('underscore')._;
 
 if (module == require.main) {
@@ -8,7 +7,27 @@ if (module == require.main) {
 }
 
 module.exports = {
-    'httpHandler check uri': function(test) {
+
+    'Excuter with one function' : function(test){
+
+        var obj = {};
+        var spy = function(myobj,next){
+            test.equal(obj,myobj);
+            myobj.mark=true;
+            next();
+        }
+
+        var callback = function (myobj){
+            test.ok(myobj.mark);
+            test.finish();
+        }
+
+        var fun = xapi.execList(obj,[spy, callback]);
+        fun();
+    }
+
+
+/*    'httpHandler check uri': function(test) {
         var parse = sinon.spy();
         var uri = '/foo/bar';
         var req = { url: uri + '?thisshouldberemoved' };
@@ -181,6 +200,6 @@ module.exports = {
         test.ok(res.writeHead.calledWith(500));
 
         test.finish();
-    }
+    }*/
 };
 
