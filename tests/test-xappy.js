@@ -11,19 +11,18 @@ module.exports = {
     'Excuter with one function' : function(test){
 
         var obj = {};
-        var spy = function(myobj,next){
+        var spy = function spy(myobj,next){
             test.equal(obj,myobj);
             myobj.mark=true;
             next();
         }
 
-        var callback = function (myobj){
+        var callback = function callback(err,myobj){
             test.ok(myobj.mark);
             test.finish();
         }
 
-        var fun = xapi.execList(obj,[spy, callback]);
-        fun();
+        xapi.execList(obj,[spy],callback);
     }
 
 
