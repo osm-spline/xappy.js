@@ -2,7 +2,7 @@
     "name" : "xappy.js",
     "version" : "0.0.1",
     "description" : "osm xapi implementation",
-    "autor" : "osm@spline <osm@lists.spline.de> (http://osm.spline.de)",
+    "author" : "osm@spline <osm@lists.spline.de> (http://osm.spline.de)",
     "files" : ["."],
     "dependencies" : {
         "xappy-pg" : "*",
