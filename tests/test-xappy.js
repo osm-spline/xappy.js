@@ -8,7 +8,7 @@ if (module == require.main) {
 
 module.exports = {
 
-    'Excuter with one function' : function(test){
+    'execute one function' : function(test){
 
         var obj = {};
         var spy = function spy(myobj,next){
@@ -17,13 +17,49 @@ module.exports = {
             next();
         }
 
-        var callback = function callback(err,myobj){
+        xapi.execute(obj,[spy],function callback(err,myobj){
             test.ok(myobj.mark);
             test.finish();
-        }
+        });
 
-        xapi.execList(obj,[spy],callback);
+    },
+
+    'execute more functions' : function(test){
+
+        var obj = {};
+        var fun = function spy(myobj,next){
+            sinon.assert.calledOnce(spy1);
+            next();
+        };
+
+        var spy1 = sinon.spy(fun);
+        var spy2 = sinon.spy(fun);
+
+        xapi.execute(obj,[spy1,spy2],function callback(err,myobj){
+            sinon.assert.calledOnce(spy2);
+            test.finish();
+        });
+    },
+
+    'execute abort with error' : function(test){
+
+        var err = "some error";
+        var obj = {};
+        var fun = function fun(myobj,next){
+            next(err);
+        };
+
+        var spy1 = sinon.spy(fun);
+        var spy2 = sinon.spy(fun);
+
+        xapi.execute(obj,[spy1,spy2],function callback(myerr,myobj){
+            test.equal(err,myerr);
+            sinon.assert.calledOnce(spy1);
+            sinon.assert.notCalled(spy2);
+            test.finish();
+        });
     }
+
 
 
 /*    'httpHandler check uri': function(test) {
