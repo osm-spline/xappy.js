@@ -46,8 +46,7 @@ module.exports = {
         var err = "some error";
         var obj = {};
         var fun = function fun(myobj,next){
-            next(err);
-        };
+            next(err);};
 
         var spy1 = sinon.spy(fun);
         var spy2 = sinon.spy(fun);
@@ -58,22 +57,117 @@ module.exports = {
             sinon.assert.notCalled(spy2);
             test.finish();
         });
-    }
-
-
-
-/*    'httpHandler check uri': function(test) {
-        var parse = sinon.spy();
-        var uri = '/foo/bar';
-        var req = { url: uri + '?thisshouldberemoved' };
-        var res = sinon.spy();
-        var cb = function(err, emitter) {};
-        var handler = getHttpHandler(parse, cb)(req, res);
-        // parser should get uri in first argument of first call
-        test.equal(parse.args[0][0], uri);
-        test.finish();
     },
-    // 'httpHandler callback': function(test) {
+
+    'remove parameters from uri': function(test) {
+        var uri = '/foo/bar';
+        var xrs = { 'req' : { 'url' : uri + '?thisshouldberemoved'}};
+
+        xapi.sanatizeUrl(xrs,function verifier(){
+            test.equal(xrs.saneUrl, uri);
+            test.finish();
+        });
+    },
+
+    'call generator factory, to get generator' : function(test) {
+        var stub = sinon.stub();
+        stub.returns('anFunction');
+        var xrs = { 'generatorSelector' : stub,
+                    req : { headers : { 'content-type' : 'jsonEG'} } };
+
+        xapi.getGenerator(xrs,function verifier(){
+            test.ok(stub.calledWith('jsonEG'));
+            test.equal(xrs.generator,'anFunction');
+            test.finish();
+        });
+    },
+
+    'call generator factory with invalid contenttype' : function(test) {
+        var stub = sinon.stub();
+        stub.throws('unknown content type');
+        var xrs = { 'generatorSelector' : stub,
+                    req : { headers : { 'content-type' : 'jsonEG'} } };
+
+        xapi.getGenerator(xrs,function verifier(err){
+            test.deepEqual(err,{ code: 400, msg: 'Unknown content type'});
+            test.finish();
+        });
+    },
+
+
+    'parser is called correctly' : function(test) {
+        var stub = sinon.stub();
+        var xrs = { 'parse' : stub,
+                    'saneUrl' : '/sane/url' };
+
+        xapi.callParse(xrs,function verifier(){
+            test.ok(xrs.xapiReq,'xapiRequest');
+            test.finish();
+        });
+
+        // execute call back by hand, not so cool
+        test.ok(stub.calledWith('/sane/url'));
+        stub.getCall(0).args[1](null,'xapiRequest');
+    },
+
+    'parser retruned error' : function(test) {
+        var stub = sinon.stub();
+        var xrs = { 'parse' : stub,
+                    'saneUrl' : '/sane/url' };
+
+        xapi.callParse(xrs,function verifier(err){
+            test.ok(err,'err'); // TODO: be more specific test this error
+            test.finish();
+        });
+
+        // execute call back by hand, not so cool
+        stub.getCall(0).args[1]('err');
+    },
+
+    'validater is called correctly' : function(test) {
+        var stub = sinon.stub();
+        var xrs = { 'validate' : stub,
+                    'xapiReq' : 'xapiRequest' };
+
+        xapi.callValidate(xrs,function verifier(){
+            test.ok(xrs.xapiReq,'validRequest');
+            test.finish();
+        });
+
+        // execute call back by hand, not so cool
+        test.ok(stub.calledWith('xapiRequest'));
+        stub.getCall(0).args[1](null,'validRequest');
+    },
+
+    'validater retruned error' : function(test) {
+        var stub = sinon.stub();
+        var xrs = { 'validate' : stub };
+
+        xapi.callValidate(xrs,function verifier(err){
+            test.equal(err,'err'); // TODO: be more specific test this error
+            test.finish();
+        });
+
+        // execute call back by hand, not so cool
+        stub.getCall(0).args[1]('err');
+    },
+
+    'db query started and event emitter recieved' : function(test) {
+        var stub = sinon.stub();
+        var xrs = { 'db': { 'executeRequest' : stub},
+                    'xapiReq' : 'xapiRequest' };
+
+        xapi.execQuery(xrs,function verifier(){
+            test.equal(xrs.emitter,'emitter');
+            test.finish();
+        });
+
+        // execute call back by hand, not so cool
+        test.ok(stub.calledWith('xapiRequest'));
+        stub.getCall(0).args[1](null,'emitter');
+    },
+/*
+    'httpHandler callback': function(test) {
     //     var callback = sinon.spy();
     //     var req = { url: '/xapi/node', headers: { 'content-type': 'test/test' } };
     //     var sampleRequest = require('./helpers/helper-samplexapirequestobjects.js');
@@ -144,19 +238,23 @@ module.exports = {
         test.ok(res.writeHead.calledWith(400));
 
         test.finish();
-    },
-    'emitterHandlers' : function(test){
+    },*/
+    'enough and regesitered to correct event' : function(test){
         var res;
         var gen;
-
-        emitterCallback = Xapi.getEmitterHandler(res,gen);
 
         var emitter = {
             on : sinon.spy(),
             once : sinon.spy()
         };
 
-        emitterCallback(null,emitter);
+        xrs = {
+            'emitter' : emitter
+        }
+
+        xapi.writeRes(xrs,function(){});
+
+        // WARNING: i assume this works syncronous, doesn't have to stay like this
 
         test.ok(emitter.once.calledWith('start'));
         test.ok(emitter.on.calledWith('node'));
@@ -166,7 +264,7 @@ module.exports = {
 
         test.finish();
     },
-    'emitterHandler callbacks' : function(test) {
+    'are emitter callbacks bound to rigth parser and res' : function(test) {
 
         var res = {
             writeHead : sinon.spy(),
@@ -179,6 +277,7 @@ module.exports = {
             create : sinon.stub().returns('element|')
         };
 
+        // complex  mock of emitter
         var callbacks = {};
         var mock = function(anEvent, callback) {
             callbacks[anEvent]=callback
@@ -188,8 +287,19 @@ module.exports = {
             once : mock
         };
 
-        emitterCallback = Xapi.getEmitterHandler(res,gen);
-        emitterCallback(null,emitter);
+        var xrs = {
+            'res' : res,
+            'generator' : gen,
+            'emitter' : emitter
+        }
+        xapi.writeRes(xrs,function(){
+            test.ok(gen.createFooter.called);
+            test.ok(res.end.called);
+            test.finish();
+        });
+
+        //emitterCallback = Xapi.getEmitterHandler(res,gen);
+        //emitterCallback(null,emitter);
 
         // start request
         callbacks.start();
@@ -214,27 +324,6 @@ module.exports = {
 
         // end request
         callbacks.end();
-        test.ok(gen.createFooter.called);
-        test.ok(res.end.called);
-
-        test.finish();
     },
-    'emitterHandler with error' : function(test) {
-         var res = {
-            writeHead : sinon.spy(),
-            write : sinon.spy(),
-            end : sinon.spy()
-        };
-
-        var error = {};
-
-        emitterCallback = Xapi.getEmitterHandler(res,null);
-        emitterCallback(error,null);
-
-        // error issued
-        test.ok(res.writeHead.calledWith(500));
-
-        test.finish();
-    }*/
 };
 
