@@ -89,7 +89,7 @@ module.exports = {
                     req : { headers : { 'content-type' : 'jsonEG'} } };
 
         xapi.getGenerator(xrs,function verifier(err){
-            test.deepEqual(err,{ code: 400, msg: 'Unknown content type'});
+            test.deepEqual(err,{ code: 500, msg: 'Error evaluate contenttyp'});
             test.finish();
         });
     },
