@@ -298,7 +298,7 @@ instead of console.log(); use log.debug();
 
 We use log4js as logging toolkit:
 
-    var log4js = require('log4js')();
+    var log4js = require('log4js');
     var log = log4js.getLogger('yourModuleHere');
 
     //log something with log level info
