@@ -17,5 +17,5 @@ exports.allCount = require('./sql-allCount').allCount;
 
 if (module == require.main) {
     var testing = require('coverage_testing');
-    return testing.run(__filename, process.ARGV);
+    return testing.run(__filename, process.argv);
 }

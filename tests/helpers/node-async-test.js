@@ -7,13 +7,13 @@ path = require('path');
 
 if (testing.run.length != 3) {
     // new coverage_testing version
-    process.ARGV.shift();
-    process.ARGV.shift();
-    process.ARGV.unshift('node');
-    testing.run(process.ARGV, done);
+    process.argv.shift();
+    process.argv.shift();
+    process.argv.unshift('node');
+    testing.run(process.argv, done);
 }
 else {
-    testing.run(null, process.ARGV, done);
+    testing.run(null, process.argv, done);
 }
 
 function done(allResults, coverage) {

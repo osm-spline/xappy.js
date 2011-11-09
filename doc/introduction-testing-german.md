@@ -16,7 +16,7 @@ Ein Beispiel für einen einfachen Test:
 
     // boilerplate
     if (module == require.main) {
-      return require('async_testing').run(__filename, process.ARGV);
+      return require('async_testing').run(__filename, process.argv);
     }
 
 Als Mock Framework benutzen wir [sinon](http://sinonjs.org/), auf der Webseite befinden sich eine [Präsentation](http://cjohansen.no/talks/2011/xp-meetup).

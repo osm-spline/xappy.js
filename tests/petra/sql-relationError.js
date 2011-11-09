@@ -33,5 +33,5 @@ var relationErrorSuite = {
 exports.relationError = suiteUp(relationErrorSuite);
 
 if (module == require.main) {
-    return testing.run(__filename, process.ARGV);
+    return testing.run(__filename, process.argv);
 }

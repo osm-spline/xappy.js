@@ -38,5 +38,5 @@ var nodesErrorSuite = {
 exports.nodeError = suiteUp(nodesErrorSuite);
 
 if (module == require.main) {
-    return testing.run(__filename, process.ARGV);
+    return testing.run(__filename, process.argv);
 }

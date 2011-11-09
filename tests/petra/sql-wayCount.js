@@ -55,5 +55,5 @@ var wayCountSuite = {
 exports.wayCount = suiteUp(wayCountSuite);
 
 if (module == require.main) {
-    return testing.run(__filename, process.ARGV);
+    return testing.run(__filename, process.argv);
 }

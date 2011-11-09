@@ -42,4 +42,4 @@ module.exports = {
     }
 };
 
-coverage_testing.run(__filename, process.ARGV);
+coverage_testing.run(__filename, process.argv);

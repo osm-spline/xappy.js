@@ -55,5 +55,5 @@ var nodesCountSuite = {
 exports.nodeContains = suiteUp(nodesCountSuite);
 
 if (module == require.main) {
-    return testing.run(__filename, process.ARGV);
+    return testing.run(__filename, process.argv);
 }

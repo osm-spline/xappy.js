@@ -64,5 +64,5 @@ module.exports = {
 
 if (module == require.main){
     coverage_testing = require('async_testing');
-    return coverage_testing.run(__filename, process.ARGV);
+    return coverage_testing.run(__filename, process.argv);
 }

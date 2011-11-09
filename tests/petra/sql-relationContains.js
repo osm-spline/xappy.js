@@ -24,5 +24,5 @@ var relationContains = {
 exports.relationContains = suiteUp(relationContains);
 
 if (module == require.main) {
-    return testing.run(__filename, process.ARGV);
+    return testing.run(__filename, process.argv);
 }

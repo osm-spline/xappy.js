@@ -3,7 +3,7 @@ var errorModule = require('../lib/error');
 var _ = require('underscore')._;
 
 if (module == require.main) {
-  require('coverage_testing').run(__filename, process.ARGV);
+  require('coverage_testing').run(__filename, process.argv);
 }
 
 

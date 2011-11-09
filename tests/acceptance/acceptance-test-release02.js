@@ -59,5 +59,5 @@ module.exports.accept01 = function(test){
 }
 
 if (module == require.main) {
-      return require('coverage_testing').run(__filename, process.ARGV);
+      return require('coverage_testing').run(__filename, process.argv);
 }
