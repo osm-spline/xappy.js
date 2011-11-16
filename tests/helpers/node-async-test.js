@@ -9,7 +9,7 @@ if (testing.run.length != 3) {
     // new coverage_testing version
     process.argv.shift();
     process.argv.shift();
-    process.argv.unshift('node');
+    //process.argv.unshift('node');
     testing.run(process.argv, done);
 }
 else {
