@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 var testing = require('coverage_testing'),
-sys = require('sys'),
+util = require('util'),
 fs = require('fs'),
 path = require('path');
 

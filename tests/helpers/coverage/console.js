@@ -2,7 +2,7 @@
 
 var path = require('path'),
 fs = require('fs'),
-sys = require('sys'),
+util = require('util'),
 common = require('./common'),
 contrib = require('../../../lib/contrib'),
 argv = require('optimist').argv,
@@ -22,7 +22,7 @@ function cli() {
 }
 
 function print(str){
-    sys.print(colorize(str));
+    util.print(colorize(str));
 }
 
 function colorize(str){
