@@ -6,9 +6,9 @@
     "files" : ["."],
     "dependencies" : {
         "xappy-pg" : "*",
-        "xmlbuilder" : "*",
-        "underscore" : "1.1.6",
-        "underscore.string": "1.1.6",
+        "xmlbuilder" : ">=0.1.7",
+        "underscore" : "*",
+        "underscore.string": "*",
         "log4js" : "*",
         "optimist" : ">=0.2.0"
     },
