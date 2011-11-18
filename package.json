@@ -10,7 +10,7 @@
         "underscore" : ">=1.2.2",
         "underscore.string": ">=1.2.0",
         "log4js" : "*",
-        "optimist" : "*"
+        "optimist" : ">=0.2.8"
     },
     "devDependencies" : {
         "coverage_testing" : "*",
