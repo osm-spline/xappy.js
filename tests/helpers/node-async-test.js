@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-var testing = require('coverage_testing'),
+var testing = require('async_testing'),
 util = require('util'),
 fs = require('fs'),
 path = require('path');
@@ -9,7 +9,7 @@ if (testing.run.length != 3) {
     // new coverage_testing version
     process.argv.shift();
     process.argv.shift();
-    //process.argv.unshift('node');
+    process.argv.unshift('node');
     testing.run(process.argv, done);
 }
 else {
@@ -52,12 +52,12 @@ function reformatCoverageData(data) {
     for (var key in data) {
         validData[key] = {};
         for (var line in data[key]) {
-            if (data[key][line] != null) {
+            if (data[key][line] !== null) {
                 validData[key][line] = data[key][line];
             }
         }
 
-        validData[key]['source'] = data[key].source;
+        validData[key].source = data[key].source;
     }
 
     return validData;

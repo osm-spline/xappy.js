@@ -9,11 +9,11 @@
         "xmlbuilder" : ">=0.1.7",
         "underscore" : ">=1.2.2",
         "underscore.string": ">=1.2.0",
-        "log4js" : "*",
+        "log4js" : "git+https://github.com/csausdev/log4js-node.git",
         "optimist" : ">=0.2.8"
     },
     "devDependencies" : {
-        "coverage_testing" : "*",
+        "coverage_testing" : "git+https://github.com/osm-spline/node-async-testing.git",
         "sinon" : "*",
         "jshint" : "*"
     },
