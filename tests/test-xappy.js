@@ -3,7 +3,7 @@ var xapi = require('../lib/xappy');
 var _ = require('underscore')._;
 
 if (module == require.main) {
-  require('coverage_testing').run(__filename, process.argv);
+  require('async_testing').run(__filename, process.argv);
 }
 
 module.exports = {
@@ -324,6 +324,26 @@ module.exports = {
 
         // end request
         callbacks.end();
+    },
+    'request cancelation' : function(test){
+
+        xrs = {
+            'req' : { on: sinon.spy() },
+            'emitter' : {
+                cancle : sinon.spy(),
+                on: function(){},
+                once: function(){}}
+        }
+
+        xapi.writeRes(xrs,function(){
+            test.finish();
+        });
+
+        test.ok(xrs.req.on.calledWith('close'));
+
+        // simulate closed connection
+        xrs.req.on.getCall(0).args[1]();
+        test.ok(xrs.emiter.cancle.called);
     },
 };
 
