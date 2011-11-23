@@ -1,6 +1,10 @@
 xappy.js
 ========
 
+Xappy.js is an implementation of the xapi specification. Please take a look at
+the osm [website](http://wiki.openstreetmap.org/wiki/Xapi) for more information.
+
+
 Contact
 --------
 Website: http://osm.spline.de
@@ -9,16 +13,11 @@ Mailing List: osm@lists.spline.de or xapi@lists.spline.de
 
 IRC: irc://irc.freenode.net/#spline
 
-Aim
----
+CI: http://ci.osm.spline.de
 
-We serve the node endpoint, but no others. We implement the tag based filtering,
-for only one tag and a bounding box.
+Issues: https://github.com/osm-spline/xappy.js/issues
 
-We like to rewrite some parts of the Xapi needed for our own application. Our
-aim is not get a full implementation of the Xapi, but to answer only specific
-requests, at low latency. For this subset of Xapi we want completly cover the
-original api.
+Documenation: Lives in the git as markdown (https://github.com/osm-spline/xappy.js/tree/master/doc)
 
 Requests
 ---------
