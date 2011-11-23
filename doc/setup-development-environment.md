@@ -1,11 +1,9 @@
 Setting up a  development environment
 =====================================
 
-Since we need nvm which is included as sub repo we first have to init the
-submodules.
-
-    git submodule init
-    git submodule update
+First we have to install nvm. Please take a look at the nvm documentation.
+Normaly you are going to install nvm into your home directory (linux) under
+`./nvm`. We recommand it.
 
 Next we use nvm (Node Version Manager) to set up node.js. It allows easy
 installation of node.js into a local folder, so no root rights are needed. For
@@ -15,36 +13,35 @@ Since nvm needs to modifiy the PATH var of the current shell it has to be
 sourced. If you use zsh or have other reasons for not using nvm have a look at
 nave.
 
-    source deps/nvm/nvm.sh
-    nvm sync
+    source ~./nvm/nvm.sh
 
-After sourcing it we actually compile node.js, this takes sometime and you have
-to install `libssl-dev`, `python2.X` and `build-essential` first.
+After sourcing nvm we actually compile node.js, this takes sometime and you have
+to install `libssl-dev`, `python2.X` and `build-essential` first. Please use the
+local package manager for this.
 
     nvm install stable
     nvm alias default stable
     nvm use stable
 
-To nvm also installs npm (Node Package Manager) a gems-like software package
+Nvm also installs npm (Node Package Manager), a gems-like software package
 manager. For further infos see `man npm`.
 
-For installing all deps, we link all dependencies and our project as development
-version with npm.
+To install all project dependencies we use the npm `install` command in the
+toplevel project directory.
 
-    cd deps/pg
-    npm link
-    cd -
-    npm link
+    npm install
 
 To have the node in execution path, when starting up add this line to your
 `~/.bashrc` file.
 
-    source path/to/project/deps/nvm/nvm.sh
+    source ~/.nvm/nvm.sh
 
-And done
+Congratulations, you are done.
 
 Windows
 -------
+
+We don't support windows. Please get yourself an operating system!
 
 **this section needs some love**
 
@@ -52,7 +49,7 @@ To install node on windows, get the cygwin paket from http://uves.spline.de/osm-
 
 ToDo:
 
-1. Change the name of the directory cygwin/home/yves to cygwin/home/yourname   
+1. Change the name of the directory cygwin/home/yves to cygwin/home/yourname
 2. Adapt the paths in the .bat file in the cygwin directory and start it.
 3. Add certificate: http://stackoverflow.com/questions/3777075/https-github-access/4454754#4454754
 4. Change your /etc/hosts file to:
