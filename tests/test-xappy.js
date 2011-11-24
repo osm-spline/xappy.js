@@ -328,7 +328,7 @@ module.exports = {
     'request cancelation' : function(test){
 
         xrs = {
-            'req' : { on: sinon.spy() },
+            'req' : { once: sinon.spy() },
             'emitter' : {
                 cancle : sinon.spy(),
                 on: function(){},
@@ -339,10 +339,10 @@ module.exports = {
             test.finish();
         });
 
-        test.ok(xrs.req.on.calledWith('close'));
+        test.ok(xrs.req.once.calledWith('close'));
 
         // simulate closed connection
-        xrs.req.on.getCall(0).args[1]();
+        xrs.req.once.getCall(0).args[1]();
         test.ok(xrs.emiter.cancle.called);
     },
 };
