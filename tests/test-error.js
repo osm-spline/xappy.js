@@ -3,9 +3,8 @@ var errorModule = require('../lib/error');
 var _ = require('underscore')._;
 
 if (module == require.main) {
-  require('coverage_testing').run(__filename, process.argv);
+  require('async_testing').run(__filename, process.argv);
 }
-
 
 module.exports = {
 /*    'createError with empty parameters' : function(test) {
@@ -27,8 +26,8 @@ module.exports = {
         test.finish();
     },
 
-    'writeError' : function(test,error) {
-        var error = {code : 400,message : 'blabla'};
+    'writeError' : function(test, error) {
+        error = {code : 400,message : 'blabla'};
         var body = error.message;
         var res = {
             writeHead : sinon.spy(),
@@ -44,7 +43,7 @@ module.exports = {
     },
 
     'writeError with 204' : function(test,error){
-        var error = { code : 204, message : 'blabla'};
+        error = { code : 204, message : 'blabla'};
         var res = {
             writeHead : function(){},
             write : sinon.spy(),

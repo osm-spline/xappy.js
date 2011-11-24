@@ -1,6 +1,6 @@
 //make this test standalone
 if (module == require.main) {
-    require('coverage_testing').run(__filename, process.argv);
+    require('async_testing').run(__filename, process.argv);
 }
 
 var nodeQueryBuilder = require('../../lib/postgresdb/nodequerybuilder');
@@ -20,7 +20,7 @@ module.exports = {
                 binary: true
             }
         };
-        var input = nodeQueryBuilder.createQueryPlan(sampleObjects['node']);
+        var input = nodeQueryBuilder.createQueryPlan(sampleObjects.node);
         test.deepEqual(input, expected, '\texpected: ' + JSON.stringify(expected) + '\n\treturned: '+ JSON.stringify(input));
         test.finish();
     },

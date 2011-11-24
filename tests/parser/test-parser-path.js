@@ -148,9 +148,9 @@ module.exports = {
         var p2 = makeParser('foo\\|bar\\|baz=blub');
         test.deepEqual(p2.tagPredicate(), {key: ['foo|bar|baz'], value: ['blub']});
         test.finish();
-    },
+    }
 };
 
 if (module === require.main) {
-    require('coverage_testing').run(__filename, process.argv);
+    require('async_testing').run(__filename, process.argv);
 }

@@ -101,7 +101,7 @@ module.exports = {
                         + '<member type="way" ref="234" role="role"/></relation>';
         var actual = xmlGenerator.create('relation', sample_rel);
 
-        var msg = "\n\texpected: " + expected + "\n\tcreated:  " + actual + "\n"
+        var msg = "\n\texpected: " + expected + "\n\tcreated:  " + actual + "\n";
         test.equal(expected, actual, msg);
         test.finish();
     },
@@ -126,5 +126,5 @@ module.exports = {
 };
 
 if (module === require.main) {
-    require('coverage_testing').run(__filename, process.argv);
+    require('async_testing').run(__filename, process.argv);
 }

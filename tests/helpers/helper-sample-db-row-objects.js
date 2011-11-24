@@ -163,12 +163,12 @@ module.exports = {
         },
         1 : {
             type : 'node',
-            id : 2    
+            id : 2
         },
         2: {
             type : 'node',
             id : 3
-        }       
+        }
     }/*,
     'way[name|amenity=BrandenburgerTor]': {
         0 : {

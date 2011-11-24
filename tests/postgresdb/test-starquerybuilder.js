@@ -14,7 +14,7 @@ module.exports = {
             'relations.tstamp, relations.changeset_id, hstore_to_array(relations.tags) AS tags, ' +
             'users.name AS user_name, relation_members.member_id, relation_members.member_type, ' +
             'relation_members.member_role, relation_members.sequence_id';
-            
+
         var node_query1 = 'SELECT relation_members.member_id AS id' +
             ' FROM relations, relation_members' +
             ' WHERE relations.id = relation_members.relation_id' +
@@ -28,19 +28,19 @@ module.exports = {
         var node_query4 = 'SELECT way_nodes.node_id AS id' +
             ' FROM ways, way_nodes' +
             ' WHERE ways.id = way_nodes.way_id';
-            
+
         var way_query1 = 'SELECT relation_members.member_id AS id' +
             ' FROM relations, relation_members' +
             ' WHERE relations.id = relation_members.relation_id' +
             ' AND relation_members.member_type = \'W\'';
         var way_query2 = 'SELECT id FROM ways';
-            
+
         var relation_query1 = 'SELECT relation_members.member_id AS id' +
             ' FROM relations, relation_members' +
             ' WHERE relations.id = relation_members.relation_id' +
             ' AND relation_members.member_type = \'R\'';
         var relation_query2 = 'SELECT id FROM relations';
-            
+
         var expected = {
             node: {
                       name: '',
@@ -71,7 +71,7 @@ module.exports = {
                       binary: true
                       }
         };
-        var input = starQueryBuilder.createQueryPlan(sampleObjects['relation']);
+        var input = starQueryBuilder.createQueryPlan(sampleObjects.relation);
         test.deepEqual(input, expected, '\texpected: ' + JSON.stringify(expected) + '\n\treturned: '+ JSON.stringify(input));
         test.finish();
     },
@@ -88,7 +88,7 @@ module.exports = {
             'relations.tstamp, relations.changeset_id, hstore_to_array(relations.tags) AS tags, ' +
             'users.name AS user_name, relation_members.member_id, relation_members.member_type, ' +
             'relation_members.member_role, relation_members.sequence_id';
-            
+
         var node_query1 = 'SELECT relation_members.member_id AS id' +
             ' FROM relations, relation_members' +
             ' WHERE relations.id = relation_members.relation_id' +
@@ -102,13 +102,13 @@ module.exports = {
         var node_query4 = 'SELECT way_nodes.node_id AS id' +
             ' FROM ways, way_nodes' +
             ' WHERE ways.id = way_nodes.way_id AND (ways.tags @> hstore($7, $8))';
-            
+
         var way_query1 = 'SELECT relation_members.member_id AS id' +
             ' FROM relations, relation_members' +
             ' WHERE relations.id = relation_members.relation_id' +
             ' AND relation_members.member_type = \'W\' AND (relations.tags @> hstore($1, $2))';
         var way_query2 = 'SELECT id FROM ways WHERE (ways.tags @> hstore($3, $4))';
-            
+
         var relation_query1 = 'SELECT relation_members.member_id AS id' +
             ' FROM relations, relation_members' +
             ' WHERE relations.id = relation_members.relation_id' +
@@ -153,5 +153,5 @@ module.exports = {
 
 //make this test standalone
 if (module == require.main) {
-    require('coverage_testing').run(__filename, process.argv);
+    require('async_testing').run(__filename, process.argv);
 }

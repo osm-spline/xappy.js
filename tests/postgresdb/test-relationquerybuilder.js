@@ -47,7 +47,7 @@ module.exports = {
                       binary: true
                       }
         };
-        var input = relationQueryBuilder.createQueryPlan(sampleObjects['relation']);
+        var input = relationQueryBuilder.createQueryPlan(sampleObjects.relation);
         test.deepEqual(input, expected, '\texpected: ' + JSON.stringify(expected) + '\n\treturned: '+ JSON.stringify(input));
         test.finish();
     },
@@ -104,5 +104,5 @@ module.exports = {
 
 //make this test standalone
 if (module == require.main) {
-    require('coverage_testing').run(__filename, process.argv);
+    require('async_testing').run(__filename, process.argv);
 }

@@ -223,7 +223,7 @@ module.exports = {
 };
 
 if (module == require.main) {
-    return require('coverage_testing').run(__filename, process.argv);
+    return require('async_testing').run(__filename, process.argv);
 }
 
 

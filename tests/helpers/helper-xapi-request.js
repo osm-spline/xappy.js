@@ -1,4 +1,3 @@
-
 var _ = require('underscore')._;
 
 var knownDatatypes = {
@@ -28,8 +27,8 @@ var knownDatatypes = {
 
 module.exports={
     'test_xapi_request_object': function(test,totest_xapi_request){
-        test.ok(_.include (["node","way","relation","*"], 
-			   totest_xapi_request.object, 
+        test.ok(_.include (["node","way","relation","*"],
+			   totest_xapi_request.object,
 			   "Invalid format of the xapi request object"),
 		"xapi request: invalid object");
     },
@@ -59,9 +58,9 @@ module.exports={
             test.ok(totest_xapi_request.bbox.bottom <= 90, "xapi request bbox out of range");
 
             //left must be on the left and top on the top
-            test.ok(totest_xapi_request.bbox.left < totest_xapi_request.bbox.right, 
+            test.ok(totest_xapi_request.bbox.left < totest_xapi_request.bbox.right,
 		    "left and right of the bbox are swapped");
-            test.ok(totest_xapi_request.bbox.bottom < totest_xapi_request.bbox.top, 
+            test.ok(totest_xapi_request.bbox.bottom < totest_xapi_request.bbox.top,
 		    "top and bottom of the bbox are swapped");
         }
     },
@@ -97,23 +96,23 @@ module.exports={
     'test_xapi_request_child': function(test,totest_xapi_request){
         if(typeof totest_xapi_request.child !== 'undefined'){
             test.deepEqual(typeof totest_xapi_request.child.has,
-			   'boolean', 
+			   'boolean',
 			   "The function of the child predicate is not a boolean");
             test.ok(_.include (["node","way","relation","tag"],
 			       totest_xapi_request.child.attribute),
 		    "Invalid format of the xapi request child predicate");
             if(totest_xapi_request.object == 'node'){
-                test.ok(totest_xapi_request.child.attribute !== 'node', 
+                test.ok(totest_xapi_request.child.attribute !== 'node',
 			"Child predicate of node cannot be a node");
             }
 
             if(totest_xapi_request.object == 'way'){
-                test.ok(totest_xapi_request.child.attribute !== 'way', 
+                test.ok(totest_xapi_request.child.attribute !== 'way',
 			"Child predicate of way cannot be a way");
             }
 
             if(totest_xapi_request.child.attribute == 'tag'){
-                test.deepEqual(totest_xapi_request.tag, 
+                test.deepEqual(totest_xapi_request.tag,
 			       'undefined',
 			       "Tag child predicate and tag predicate cannot exist simultaneously");
             }

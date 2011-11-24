@@ -22,7 +22,7 @@ module.exports = {
                 binary: true
              }
         };
-        var input = wayQueryBuilder.createQueryPlan(sampleObjects['way']);
+        var input = wayQueryBuilder.createQueryPlan(sampleObjects.way);
         test.deepEqual(input, expected, '\texpected: ' + JSON.stringify(expected) + '\n\treturned: '+ JSON.stringify(input));
         test.finish();
      },
@@ -177,5 +177,5 @@ module.exports = {
 
 //make this test standalone
 if (module == require.main) {
-    require('coverage_testing').run(__filename, process.argv);
+    require('async_testing').run(__filename, process.argv);
 }

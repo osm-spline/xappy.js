@@ -1,6 +1,6 @@
 //make this test standalone
 if (module == require.main) {
-	require('coverage_testing').run(__filename, process.argv);
+	require('async_testing').run(__filename, process.argv);
 }
 var _ = require('underscore');
 var sinon = require('sinon');

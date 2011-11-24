@@ -31,9 +31,3 @@ SqlQuery.prototype.createQuery = function(queryPlan, callback) {
 };
 
 exports.SqlQuery = SqlQuery;
-
-
-
-
-
-
