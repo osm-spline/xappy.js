@@ -11,10 +11,10 @@ module.exports = {
         var query1 = 'SELECT relation_members.member_id AS id FROM relations, relation_members' +
              ' WHERE relations.id = relation_members.relation_id' +
              ' AND relation_members.member_type = \'N\'';
-        var query2 = 'SELECT way_nodes.node_id AS id FROM relations, relation_members, way_nodes' +
+        var query2 = 'SELECT unnest(ways.nodes) AS id FROM relations, relation_members, ways' +
             ' WHERE relations.id = relation_members.relation_id' +
             ' AND relation_members.member_type = \'W\'' +
-            ' AND relation_members.member_id = way_nodes.way_id';
+            ' AND relation_members.member_id = ways.id';
 
         var union = '(' + query1 + ' UNION ' + query2 + ') AS nodeIds';
         var expected = {
@@ -57,10 +57,10 @@ module.exports = {
              ' WHERE relations.id = relation_members.relation_id' +
              ' AND relation_members.member_type = \'N\'' +
              ' AND (relations.tags @> hstore($1, $2))';
-        var query2 = 'SELECT way_nodes.node_id AS id FROM relations, relation_members, way_nodes' +
+        var query2 = 'SELECT unnest(ways.nodes) AS id FROM relations, relation_members, ways' +
             ' WHERE relations.id = relation_members.relation_id' +
             ' AND relation_members.member_type = \'W\'' +
-            ' AND relation_members.member_id = way_nodes.way_id' +
+            ' AND relation_members.member_id = ways.id' +
             ' AND (relations.tags @> hstore($1, $2))';
 
         var union = '(' + query1 + ' UNION ' + query2 + ') AS nodeIds';

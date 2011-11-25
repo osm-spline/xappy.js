@@ -10,8 +10,8 @@ module.exports = {
              node: {
                 name: '',
                 text: 'SELECT ' + NODE_COLUMNS + ' FROM nodes, users, ' +
-                        '(SELECT DISTINCT way_nodes.node_id FROM ways, way_nodes WHERE ways.id = way_nodes.way_id) AS nodesOfWays ' +
-                        'WHERE nodes.user_id = users.id AND nodesOfWays.node_id = nodes.id;',
+                        '(SELECT DISTINCT unnest(ways.nodes) AS id FROM ways) AS nodesOfWays ' +
+                        'WHERE nodes.user_id = users.id AND nodesOfWays.id = nodes.id;',
                 values: [],
                 binary: true
              },
@@ -32,11 +32,11 @@ module.exports = {
              node: {
                  name: '',
                  text: 'SELECT ' + NODE_COLUMNS + ' FROM nodes, users, ' +
-                        '(SELECT DISTINCT way_nodes.node_id FROM ways, way_nodes ' +
-                                'WHERE ways.id = way_nodes.way_id AND ' +
+                        '(SELECT DISTINCT unnest(ways.nodes) AS id FROM ways ' +
+                                'WHERE ' +
                                 '(ST_Intersects(st_setsrid(ways.linestring,4326),' +
                                     'st_setsrid(st_makebox2d(st_setsrid(st_makepoint($1, $2),4326),st_setsrid(st_makepoint($3, $4),4326)),4326)' +
-                                '))) AS nodesOfWays WHERE nodes.user_id = users.id AND nodesOfWays.node_id = nodes.id;',
+                                '))) AS nodesOfWays WHERE nodes.user_id = users.id AND nodesOfWays.id = nodes.id;',
                  values: [11, 53, 12, 54],
                  binary: true
              },
@@ -59,10 +59,10 @@ module.exports = {
              node: {
                  name: '',
                  text: 'SELECT ' + NODE_COLUMNS + ' FROM nodes, users, ' +
-                        '(SELECT DISTINCT way_nodes.node_id FROM ways, way_nodes ' +
-                                'WHERE ways.id = way_nodes.way_id AND ' +
+                        '(SELECT DISTINCT unnest(ways.nodes) AS id FROM ways ' +
+                                'WHERE ' +
                                 '(ways.tags @> hstore($1, $2))) AS nodesOfWays ' +
-                        'WHERE nodes.user_id = users.id AND nodesOfWays.node_id = nodes.id;',
+                        'WHERE nodes.user_id = users.id AND nodesOfWays.id = nodes.id;',
                  values: ['name', 'Strandweg'],
                  binary: true
              },
@@ -83,9 +83,9 @@ module.exports = {
              node: {
                  name: '',
                  text: 'SELECT ' + NODE_COLUMNS + ' FROM nodes, users, ' +
-                        '(SELECT DISTINCT way_nodes.node_id FROM ways, way_nodes ' +
-                                'WHERE ways.id = way_nodes.way_id AND ' + tagCondition + ') AS nodesOfWays ' +
-                        'WHERE nodes.user_id = users.id AND nodesOfWays.node_id = nodes.id;',
+                        '(SELECT DISTINCT unnest(ways.nodes) AS id FROM ways ' +
+                                'WHERE ' + tagCondition + ') AS nodesOfWays ' +
+                        'WHERE nodes.user_id = users.id AND nodesOfWays.id = nodes.id;',
                  values: ['name', 'Strandweg','name','Strandweg','name:de','Strandweg','name:de','Strandweg'],
                  binary: true
              },
@@ -107,9 +107,9 @@ module.exports = {
             node: {
                  name: '',
                  text: 'SELECT ' + NODE_COLUMNS + ' FROM nodes, users, ' +
-                        '(SELECT DISTINCT way_nodes.node_id FROM ways, way_nodes WHERE ' +
-                                'ways.id = way_nodes.way_id AND ' + tagCondition + ') AS nodesOfWays ' +
-                        'WHERE nodes.user_id = users.id AND nodesOfWays.node_id = nodes.id;',
+                        '(SELECT DISTINCT unnest(ways.nodes) AS id FROM ways WHERE ' +
+                                  tagCondition + ') AS nodesOfWays ' +
+                        'WHERE nodes.user_id = users.id AND nodesOfWays.id = nodes.id;',
                  values: ['name', 'BrandenburgerTor','name','HeisseSchwestern'],
                  binary: true
              },
@@ -131,9 +131,9 @@ module.exports = {
              node: {
                  name: '',
                  text: 'SELECT ' + NODE_COLUMNS + ' FROM nodes, users, ' +
-                        '(SELECT DISTINCT way_nodes.node_id FROM ways, way_nodes ' +
-                             'WHERE ways.id = way_nodes.way_id AND ' + tagCondition + ') AS nodesOfWays ' +
-                        'WHERE nodes.user_id = users.id AND nodesOfWays.node_id = nodes.id;',
+                        '(SELECT DISTINCT unnest(ways.nodes) AS id FROM ways ' +
+                             'WHERE ' + tagCondition + ') AS nodesOfWays ' +
+                        'WHERE nodes.user_id = users.id AND nodesOfWays.id = nodes.id;',
                  values: ['name', 'BrandenburgerTor','amenity','BrandenburgerTor'],
                  binary: true
              },
@@ -156,9 +156,9 @@ module.exports = {
              node: {
                  name: '',
                  text: 'SELECT ' + NODE_COLUMNS + ' FROM nodes, users, ' +
-                        '(SELECT DISTINCT way_nodes.node_id FROM ways, way_nodes ' +
-                                'WHERE ways.id = way_nodes.way_id AND ' + spacialCondition + ' AND ' + tagCondition + ') AS nodesOfWays ' +
-                        'WHERE nodes.user_id = users.id AND nodesOfWays.node_id = nodes.id;',
+                        '(SELECT DISTINCT unnest(ways.nodes) AS id FROM ways ' +
+                                'WHERE ' + spacialCondition + ' AND ' + tagCondition + ') AS nodesOfWays ' +
+                        'WHERE nodes.user_id = users.id AND nodesOfWays.id = nodes.id;',
                  values: [11, 53, 12, 54, 'name', 'Strandweg','name','Strandweg','name:de','Strandweg','name:de','Strandweg'],
                  binary: true
              },
