@@ -129,7 +129,6 @@ module.exports = {
             once : sinon.spy(),
             on : sinon.spy(),
             query : sinon.stub(),
-            cancel : sinon.stub()
 
         }
         var backend = {
@@ -138,7 +137,8 @@ module.exports = {
                 client.query.returns(query);
 
                 callback(null,client);
-            }
+            },
+            cancel : sinon.stub(),
         };
         var databaseModule = new PostgresDb('',backend);
 
@@ -147,7 +147,7 @@ module.exports = {
             test.equal(emitter._runningQueries.length,1);
 
             emitter.cancel();
-            client.cancel.calledWith(emitter._runningQueries[0]);
+            test.ok(backend.cancel.calledWith('',client,emitter._runningQueries[0]));
 
             for( i in query.once.args) {
                 if(query.once.args[i][0] == 'end'){

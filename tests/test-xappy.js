@@ -286,14 +286,17 @@ module.exports = {
         };
         var emitter = {
             on : mock,
-            once : mock
+            once : mock,
         };
 
         var xrs = {
             'res' : res,
             'generator' : gen,
             'emitter' : emitter,
-            'req' : { once: sinon.spy() }
+            'req' : {
+                once: sinon.spy(),
+                removeAllListeners: sinon.stub()
+            }
         }
         xapi.writeRes(xrs,function(){
             test.ok(gen.createFooter.called);
@@ -335,11 +338,14 @@ module.exports = {
             'emitter' : {
                 cancel : sinon.spy(),
                 on: function(){},
-                once: function(){}}
+                once: function(){},
+                removeAllListeners: sinon.stub()
+            }
         }
 
         xapi.writeRes(xrs,function(){
             test.ok(xrs.emitter.cancel.called);
+            test.ok(xrs.emitter.removeAllListeners.called);
             test.finish();
         });
 
