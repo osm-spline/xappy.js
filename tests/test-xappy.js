@@ -249,7 +249,9 @@ module.exports = {
         };
 
         xrs = {
-            'emitter' : emitter
+            'emitter' : emitter,
+            'req' : { once: sinon.spy() }
+
         }
 
         xapi.writeRes(xrs,function(){});
@@ -290,7 +292,8 @@ module.exports = {
         var xrs = {
             'res' : res,
             'generator' : gen,
-            'emitter' : emitter
+            'emitter' : emitter,
+            'req' : { once: sinon.spy() }
         }
         xapi.writeRes(xrs,function(){
             test.ok(gen.createFooter.called);
@@ -328,14 +331,15 @@ module.exports = {
     'request cancelation' : function(test){
 
         xrs = {
-            'req' : { once: sinon.spy() },
+            'req' : { once: sinon.spy(), connection: {} },
             'emitter' : {
-                cancle : sinon.spy(),
+                cancel : sinon.spy(),
                 on: function(){},
                 once: function(){}}
         }
 
         xapi.writeRes(xrs,function(){
+            test.ok(xrs.emitter.cancel.called);
             test.finish();
         });
 
@@ -343,7 +347,6 @@ module.exports = {
 
         // simulate closed connection
         xrs.req.once.getCall(0).args[1]();
-        test.ok(xrs.emiter.cancle.called);
     },
 };
 
