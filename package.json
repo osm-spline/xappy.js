@@ -5,7 +5,7 @@
     "author" : "osm@spline <osm@lists.spline.de> (http://osm.spline.de)",
     "files" : ["."],
     "dependencies" : {
-        "pg" : "git+https://github.com/AlexanderS/node-postgres.git",
+        "pg" : ">=0.6.9",
         "xmlbuilder" : ">=0.1.7",
         "underscore" : ">=1.2.2",
         "underscore.string": ">=1.2.0",
