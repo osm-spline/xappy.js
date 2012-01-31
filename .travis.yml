@@ -3,6 +3,6 @@ language: "node_js"
 node_js:
   - 0.6
 
-before_script: git clone https://github.com/visionmedia/node-jscoverage.git && cd node-jscoverage && ./configure && make && cd ..
+before_script: git clone https://github.com/visionmedia/node-jscoverage.git > /dev/null && cd node-jscoverage && ./configure > /dev/null && make > /dev/null && cd ..
 script: JSCOVERAGE="$PWD/node-jscoverage/jscoverage" $PWD/bin/run_tests
 after_script: node tests/helpers/coverage/console.js
