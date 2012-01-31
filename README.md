@@ -13,7 +13,7 @@ Mailing List: osm@lists.spline.de or xapi@lists.spline.de
 
 IRC: irc://irc.freenode.net/#spline
 
-CI: http://ci.osm.spline.de
+CI: [![Build Status](https://secure.travis-ci.org/osm-spline/xappy.js.png)](http://travis-ci.org/osm-spline/xappy.js)
 
 Issues: https://github.com/osm-spline/xappy.js/issues
 
